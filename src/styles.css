@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'noty/lib/noty.css';
+@import 'noty/lib/themes/nest.css';
+
 *{
 font-family: 'Signika Negative', sans-serif !important;
 }

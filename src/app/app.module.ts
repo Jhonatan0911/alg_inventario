@@ -17,6 +17,7 @@ import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-l
 // Paginas
 import { LoginComponent } from './pages/login/login.component';
 import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
+import { ModalProveedoresComponent } from './components/modal-proveedores/modal-proveedores.component';
 
 
 
@@ -26,7 +27,8 @@ import { ProveedoresComponent } from './pages/proveedores/proveedores.component'
     MainLayoutComponent,
     DashboardLayoutComponent,
     LoginComponent,
-    ProveedoresComponent
+    ProveedoresComponent,
+    ModalProveedoresComponent
   ],
   imports: [
     BrowserModule,
