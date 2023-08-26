@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ProovedoresService } from './proovedores.service';
+import { ErrorService } from './error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import { ProovedoresService } from './proovedores.service';
 export class MainService {
 
   constructor(
-    public ProovedoresService: ProovedoresService
+    public ProovedoresService: ProovedoresService,
+    public ErrorService: ErrorService
   ) { }
 }

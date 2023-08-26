@@ -1,1 +1,156 @@
-<p>modal-proveedores works!</p>
+<div class="min-h-full">
+  <nav class="bg-secondary">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+          </div>
+        </div>
+        <div class="hidden md:block">
+          <div class="ml-4 flex items-center md:ml-6">
+            <button type="button" class="relative rounded-full" (click)="onClose(false)">
+              <span class="absolute -inset-1.5"></span>
+              <span class="sr-only">View notifications</span>
+              <mat-icon class="text-gray-300 text-2xl inline-block">closed</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <header class="bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{dataTransfer.label + " proveedor"}}</h1>
+    </div>
+  </header>
+  <main>
+    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+      <form (ngSubmit)="dataTransfer.editMode ? editar(): crear()" [formGroup]="form">
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="nit">NIT</label>
+            <input id="nit" name="nit" formControlName="nit"
+              type="text"
+              placeholder="Digite el nit"
+              class="form-control"/>
+            <mat-error *ngIf="validate('nit')">
+              {{ check('nit') }}
+            </mat-error>
+          </div>
+          <div class="col-md-6">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" formControlName="nombre"
+              type="text"
+              placeholder="Digite el nombre"
+              class="form-control"/>
+            <mat-error *ngIf="validate('nombre')">
+              {{ check('nombre') }}
+            </mat-error>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="encargado">Encargado</label>
+            <input id="encargado" name="encargado" formControlName="encargado"
+              type="text"
+              placeholder="Digite el encargado"
+              class="form-control"/>
+            <mat-error *ngIf="validate('encargado')">
+              {{ check('encargado') }}
+            </mat-error>
+          </div>
+          <div class="col-md-6">
+            <label for="telefono">Telefono</label>
+            <input id="telefono" name="telefono" formControlName="telefono"
+              type="text"
+              placeholder="Digite el telefono"
+              class="form-control"/>
+            <mat-error *ngIf="validate('telefono')">
+              {{ check('telefono') }}
+            </mat-error>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="correo">Correo</label>
+            <input id="correo" name="correo" formControlName="correo"
+              type="text"
+              placeholder="Digite el correo"
+              class="form-control"/>
+            <mat-error *ngIf="validate('correo')">
+              {{ check('correo') }}
+            </mat-error>
+          </div>
+          <div class="col-md-6">
+            <label for="direccion">Direccion</label>
+            <input id="direccion" name="direccion" formControlName="direccion"
+              type="text"
+              placeholder="Digite la direccion"
+              class="form-control"/>
+            <mat-error *ngIf="validate('direccion')">
+              {{ check('direccion') }}
+            </mat-error>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="departamento">Departamento</label>
+            <input id="departamento" name="departamento" formControlName="departamento"
+              type="text"
+              placeholder="Digite el departamento"
+              class="form-control"/>
+            <mat-error *ngIf="validate('departamento')">
+              {{ check('departamento') }}
+            </mat-error>
+          </div>
+          <div class="col-md-6">
+            <label for="municipio">Municipio</label>
+            <input id="municipio" name="municipio" formControlName="municipio"
+              type="text"
+              placeholder="Digite el municipio"
+              class="form-control"/>
+            <mat-error *ngIf="validate('municipio')">
+              {{ check('municipio') }}
+            </mat-error>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="rubros">Rubros</label>
+            <input id="rubros" name="rubros" formControlName="rubros"
+              type="text"
+              placeholder="Digite el rubros"
+              class="form-control"/>
+            <mat-error *ngIf="validate('rubros')">
+              {{ check('rubros') }}
+            </mat-error>
+          </div>
+          <div class="col-md-6">
+            <label for="estado">Estado</label>
+            <input id="estado" name="estado" formControlName="estado"
+              type="text"
+              placeholder="Digite el estado"
+              class="form-control"/>
+            <mat-error *ngIf="validate('estado')">
+              {{ check('estado') }}
+            </mat-error>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-10"></div>
+          <div class="col-2">
+            <button
+              type="submit"
+              class="btn btn-third w-100"
+              [disabled]="!form.valid || isLoading" type="submit">
+              <i class="fa fa-search" aria-hidden="true"></i> {{dataTransfer.label}}
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </main>
+</div>

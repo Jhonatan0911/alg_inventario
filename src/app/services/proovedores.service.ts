@@ -11,6 +11,7 @@ import { Response } from '../models/response/response';
 export class ProovedoresService  extends BaseService {
 
   path: string = "Proveedor/";
+  usuarioId: string = "";
 
   constructor(
     private http: HttpClient
@@ -44,9 +45,9 @@ export class ProovedoresService  extends BaseService {
     );
   }
 
-  create(proveedor: any, usuarioId: any): Observable<any> {
+  create(proveedor: any): Observable<any> {
     return this.http
-    .post<Response<any>>(this._baseUrl +  "CrearProveedor?UsuarioId="+usuarioId, proveedor)
+    .post<Response<any>>(this._baseUrl +  "CrearProveedor?UsuarioId="+this.usuarioId, proveedor)
     .pipe(
       map((response) => response.data),
       tap((a) => {
@@ -57,9 +58,9 @@ export class ProovedoresService  extends BaseService {
     );
   }
 
-  edit(proveedor: any, usuarioId: any): Observable<any> {
+  edit(proveedor: any): Observable<any> {
     return this.http
-    .put<Response<any>>(this._baseUrl +  "EditarProveedor?UsuarioId="+usuarioId, proveedor)
+    .put<Response<any>>(this._baseUrl +  "EditarProveedor?UsuarioId="+this.usuarioId, proveedor)
     .pipe(
       map((response) => response.data),
       tap((a) => {
@@ -70,9 +71,9 @@ export class ProovedoresService  extends BaseService {
     );
   }
 
-  delete(IdProveedor: number, usuarioId: number): Observable<any> {
+  delete(IdProveedor: number): Observable<any> {
     return this.http
-    .delete<Response<any>>(this._baseUrl + "EliminarProveedor?IdProveedor="+IdProveedor+"&UsuarioId=22"+usuarioId)
+    .delete<Response<any>>(this._baseUrl + "EliminarProveedor?IdProveedor="+IdProveedor+"&UsuarioId="+this.usuarioId)
     .pipe(
       map((response) => response.data),
       tap((a) => {

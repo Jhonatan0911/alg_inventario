@@ -61,7 +61,7 @@ export class ProveedoresComponent implements OnInit, AfterViewInit {
       width: '60%',
       position: {top:'2%'},
       data: {
-        sede: data,
+        proveedor: data,
         editMode: editMode,
         label: editMode ? "Editar" : "Crear",
       }
