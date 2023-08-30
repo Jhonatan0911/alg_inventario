@@ -1,5 +1,8 @@
-export class Response<T> {
-  data!: T;
-  error: boolean | undefined;
-  mensaje: string | undefined;
+export interface Response<T> {
+  isSuccess: boolean;
+  statusCode: number;
+  mensaje: string;
+  exMensaje: string;
+  data: T;
+  erros: any | undefined;
 }

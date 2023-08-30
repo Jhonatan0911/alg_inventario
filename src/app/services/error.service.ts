@@ -63,7 +63,7 @@ export class ErrorService {
      * @returns A boolean value.
      */
     validateInput(form: FormGroup, nameInput: string) {
-      return !form.controls[nameInput].valid;
+      return !form.controls[nameInput].valid && form.controls[nameInput].touched;
     }
 
 

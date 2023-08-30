@@ -4,6 +4,8 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
+import { CategoriasComponent } from './pages/categorias/categorias.component';
+import { ClientesComponent } from './pages/clientes/clientes.component';
 
 const routes: Routes = [
   {
@@ -13,7 +15,9 @@ const routes: Routes = [
   },
   {
     path: "", component: DashboardLayoutComponent, children: [
-      { path: "proovedores", component: ProveedoresComponent },
+      { path: "proveedores", component: ProveedoresComponent },
+      { path: "categorias", component: CategoriasComponent },
+      { path: "clientes", component: ClientesComponent },
     ]
   },
 ];

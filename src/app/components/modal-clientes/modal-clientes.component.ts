@@ -6,13 +6,14 @@ import { Proveedor } from 'src/app/models/crud/proveedor';
 import Swal from 'sweetalert2';
 import { Departamento, Estados, TipoDocumento, municipio } from 'src/app/models/parametrizacion/parametrizacion';
 import { Response } from 'src/app/models/response/response';
+import { Cliente } from 'src/app/models/crud/cliente';
 
 @Component({
-  selector: 'app-modal-proveedores',
-  templateUrl: './modal-proveedores.component.html',
-  styleUrls: ['./modal-proveedores.component.css']
+  selector: 'app-modal-clientes',
+  templateUrl: './modal-clientes.component.html',
+  styleUrls: ['./modal-clientes.component.css']
 })
-export class ModalProveedoresComponent implements OnInit {
+export class ModalClientesComponent implements OnInit {
 
   comboTipoDocumento: TipoDocumento[] = [];
   comboEstados: Estados[] = [];
@@ -22,21 +23,20 @@ export class ModalProveedoresComponent implements OnInit {
   isLoading: Boolean = false;
 
   form = new FormGroup({
-    nit: new FormControl('', [Validators.required]),
+    tipoDocumento: new FormControl('', [Validators.required]),
+    documento: new FormControl('', [Validators.required]),
     nombre: new FormControl('', [Validators.required]),
-    encargado: new FormControl('', [Validators.required]),
+    empresa: new FormControl('', [Validators.required]),
+    direccion: new FormControl('', [Validators.required]),
     telefono: new FormControl('', [Validators.required]),
     correo: new FormControl('', [Validators.required, Validators.email]),
-    direccion: new FormControl('', [Validators.required]),
     departamento: new FormControl('', [Validators.required]),
     municipio: new FormControl('', [Validators.required]),
-    rubros: new FormControl('', [Validators.required]),
-    estado: new FormControl('', [Validators.required, Validators.maxLength(3)])
   })
 
   constructor(
     private MainService: MainService,
-    public dialogRef: MatDialogRef<ModalProveedoresComponent>,
+    public dialogRef: MatDialogRef<ModalClientesComponent>,
     @Inject(MAT_DIALOG_DATA) public dataTransfer: any
   ) { }
 
@@ -48,6 +48,7 @@ export class ModalProveedoresComponent implements OnInit {
       this.get();
     }
   }
+
 
   cargaTiposDocumento(){
     this.isLoading = true;
@@ -164,27 +165,23 @@ export class ModalProveedoresComponent implements OnInit {
           this.isLoading = false
         }
       })
-    }else{
-
-    }
-
+    }else{}
   }
 
   get(){
-    this.MainService.ProovedoresService.get(this.dataTransfer.proveedor.id).subscribe({
+    this.MainService.ClientesService.get(this.dataTransfer.cliente.id).subscribe({
       next: (req:any) => {
         this.form.disable();
         this.form.patchValue({
-          nit: req.nit,
+          tipoDocumento: req.tipoDocumento,
+          documento: req.documento,
           nombre: req.nombre,
-          encargado: req.encargado,
+          empresa: req.empresa,
+          direccion: req.direccion,
           telefono: req.telefono,
           correo: req.correo,
-          direccion: req.direccion,
           departamento: req.departamento,
           municipio: req.municipio,
-          rubros: req.rubros,
-          estado: req.estado,
         });
         this.form.enable();
         this.cargaMunicipio();
@@ -204,6 +201,7 @@ export class ModalProveedoresComponent implements OnInit {
     })
   }
 
+
   onClose(type: Boolean): void {
     this.dialogRef.close(type);
   }
@@ -212,20 +210,19 @@ export class ModalProveedoresComponent implements OnInit {
     if(this.form.valid){
       this.isLoading = true;
 
-      let object: Proveedor = {
-        nit: this.form.value.nit,
+      let object: Cliente = {
+        tipoDocumento: this.form.value.tipoDocumento,
+        documento: this.form.value.documento,
         nombre: this.form.value.nombre,
-        encargado: this.form.value.encargado,
+        empresa: this.form.value.empresa,
+        direccion: this.form.value.direccion,
         telefono: this.form.value.telefono,
         correo: this.form.value.correo,
-        direccion: this.form.value.direccion,
         departamento: this.form.value.departamento,
         municipio: this.form.value.municipio,
-        rubros: this.form.value.rubros,
-        estado: this.form.value.estado,
       }
 
-      this.MainService.ProovedoresService.create(object).subscribe({
+      this.MainService.ClientesService.create(object).subscribe({
         next: (req:any) => {
           if(req.isSuccess){
             Swal.fire({
@@ -265,21 +262,20 @@ export class ModalProveedoresComponent implements OnInit {
     if(this.form.valid){
       this.isLoading = true;
 
-      let object: Proveedor = {
-        id: this.dataTransfer.proveedor.id,
-        nit: this.form.value.nit,
+      let object: Cliente = {
+        id: this.dataTransfer.cliente.id,
+        tipoDocumento: this.form.value.tipoDocumento,
+        documento: this.form.value.documento,
         nombre: this.form.value.nombre,
-        encargado: this.form.value.encargado,
+        empresa: this.form.value.empresa,
+        direccion: this.form.value.direccion,
         telefono: this.form.value.telefono,
         correo: this.form.value.correo,
-        direccion: this.form.value.direccion,
         departamento: this.form.value.departamento,
         municipio: this.form.value.municipio,
-        rubros: this.form.value.rubros,
-        estado: this.form.value.estado,
       }
 
-      this.MainService.ProovedoresService.edit(object).subscribe({
+      this.MainService.ClientesService.edit(object).subscribe({
         next: (req:any) => {
 
           if(req.isSuccess){

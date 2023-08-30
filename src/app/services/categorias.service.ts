@@ -8,9 +8,9 @@ import { Response } from '../models/response/response';
 @Injectable({
   providedIn: 'root'
 })
-export class ProovedoresService  extends BaseService {
+export class CategoriasService extends BaseService {
 
-  path: string = "Proveedor/";
+  path: string = "Categoria/";
   usuarioId: number = 23;
 
   constructor(
@@ -21,11 +21,11 @@ export class ProovedoresService  extends BaseService {
 
   get(id: number): Observable<any> {
     return this.http
-    .get<Response<any>>(this._baseUrl + this.path + "ObtenerProvedor?IdProveedor="+id)
+    .get<Response<any>>(this._baseUrl + this.path + "ObtenerCategoria?IdCategoria="+id)
     .pipe(
       map((response) => response.data),
       tap((a) => {
-        this.logs('obtener proveedor por id');
+        this.logs('obtener categoria por id');
         this.logs(a);
       }),
       catchError(this.errorMgmt)
@@ -34,50 +34,50 @@ export class ProovedoresService  extends BaseService {
 
   getAll(): Observable<any[]> {
     return this.http
-    .get<any[]>(this._baseUrl + this.path + "ObtenerListadoProvedores?Estado=ACT")
+    .get<any[]>(this._baseUrl + this.path + "ObtenerListadoCategorias?Estado=ACT")
     .pipe(
       map((response) => response),
       tap((a) => {
-        this.logs('Buscar proveedores');
+        this.logs('Buscar categorias');
         this.logs(a);
       }),
       catchError(this.errorMgmt)
     );
   }
 
-  create(proveedor: any): Observable<any> {
+  create(categoria: any): Observable<any> {
     return this.http
-    .post<Response<any>>(this._baseUrl + this.path + "CrearProveedor?UsuarioId="+this.usuarioId, proveedor)
+    .post<Response<any>>(this._baseUrl + this.path + "CrearCategoria?UsuarioId="+this.usuarioId, categoria)
     .pipe(
       map((response) => response),
       tap((a) => {
-        this.logs('Crear proveedor con usuario id');
+        this.logs('Crear categoria con usuario id');
         this.logs(a);
       }),
       catchError(this.errorMgmt)
     );
   }
 
-  edit(proveedor: any): Observable<any> {
+  edit(categoria: any): Observable<any> {
     return this.http
-    .put<Response<any>>(this._baseUrl +  this.path + "EditarProveedor?UsuarioId="+this.usuarioId, proveedor)
+    .put<Response<any>>(this._baseUrl +  this.path + "EditarCategoria?UsuarioId="+this.usuarioId, categoria)
     .pipe(
       map((response) => response),
       tap((a) => {
-        this.logs('Editar Proveedor con usuarioId');
+        this.logs('Editar Categoria con usuarioId');
         this.logs(a);
       }),
       catchError(this.errorMgmt)
     );
   }
 
-  delete(IdProveedor: number): Observable<any> {
+  delete(IdCategoria: number): Observable<any> {
     return this.http
-    .delete<Response<any>>(this._baseUrl + this.path + "EliminarProveedor?IdProveedor="+IdProveedor+"&UsuarioId="+this.usuarioId)
+    .delete<Response<any>>(this._baseUrl + this.path + "EliminarCategoria?IdCategoria="+IdCategoria+"&UsuarioId="+this.usuarioId)
     .pipe(
       map((response) => response),
       tap((a) => {
-        this.logs('eliminar proveedor');
+        this.logs('eliminar categoria');
         this.logs(a);
       }),
       catchError(this.errorMgmt)

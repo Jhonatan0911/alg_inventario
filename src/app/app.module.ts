@@ -18,6 +18,12 @@ import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-l
 import { LoginComponent } from './pages/login/login.component';
 import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
 import { ModalProveedoresComponent } from './components/modal-proveedores/modal-proveedores.component';
+import { CategoriasComponent } from './pages/categorias/categorias.component';
+import { ModalCategoriasComponent } from './components/modal-categorias/modal-categorias.component';
+import { ModalClientesComponent } from './components/modal-clientes/modal-clientes.component';
+import { ClientesComponent } from './pages/clientes/clientes.component';
+import { ProductosComponent } from './pages/productos/productos.component';
+import { ModalProductosComponent } from './components/modal-productos/modal-productos.component';
 
 
 
@@ -28,7 +34,13 @@ import { ModalProveedoresComponent } from './components/modal-proveedores/modal-
     DashboardLayoutComponent,
     LoginComponent,
     ProveedoresComponent,
-    ModalProveedoresComponent
+    ModalProveedoresComponent,
+    CategoriasComponent,
+    ModalCategoriasComponent,
+    ModalClientesComponent,
+    ClientesComponent,
+    ProductosComponent,
+    ModalProductosComponent
   ],
   imports: [
     BrowserModule,

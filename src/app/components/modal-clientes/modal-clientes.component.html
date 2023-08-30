@@ -22,7 +22,7 @@
 
   <header class="bg-white">
     <div class="mx-auto max-w-7xl px-4 pb-3 pt-6 sm:px-6 lg:px-8">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{dataTransfer.label + " proveedor"}}</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{dataTransfer.label + " cliente"}}</h1>
     </div>
   </header>
   <main>
@@ -30,18 +30,33 @@
       <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
       <form (ngSubmit)="dataTransfer.editMode ? editar(): crear()" [formGroup]="form">
         <div class="flex mt-3">
-          <div class="w-1/2  px-3">
-            <label for="nit">NIT</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label>NIT</mat-label>
-              <input matInput id="nit" name="nit" formControlName="nit"type="text" placeholder="Digite el nit" class="form-control"/>
+          <div class="w-1/2 px-3">
+            <label for="tipoDocumento">Tipo documento</label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Seleccione</mat-label>
+              <mat-select name="tipoDocumento" id="tipoDocumento" formControlName="tipoDocumento">
+                <mat-option [value]="null">Seleccione</mat-option>
+                <mat-option *ngFor="let item of comboTipoDocumento" [value]="item.codigo">{{item.descripcion}}</mat-option>
+              </mat-select>
             </mat-form-field>
-            <mat-error *ngIf="validate('nit')">
-              {{ check('nit') }}
+            <mat-error *ngIf="validate('tipoDocumento')">
+              {{ check('tipoDocumento') }}
             </mat-error>
           </div>
           <div class="w-1/2  px-3">
-            <label for="nombre">Nombre</label>
+            <label for="municipio">Documento</label>
+            <mat-form-field appearance="outline" class="w-100" >
+              <mat-label>documento</mat-label>
+              <input matInput id="documento" name="documento" formControlName="documento" type="text" placeholder="Digite el documento" class="form-control"/>
+            </mat-form-field>
+            <mat-error *ngIf="validate('documento')">
+              {{ check('documento') }}
+            </mat-error>
+          </div>
+        </div>
+        <div class="flex mt-3">
+          <div class="w-full  px-3">
+            <label for="nombre">Nombre Completo</label>
             <mat-form-field appearance="outline" class="w-100" >
               <mat-label>Nombre</mat-label>
               <input matInput id="nombre" name="nombre" formControlName="nombre" type="text" placeholder="Digite el nombre" class="form-control"/>
@@ -53,16 +68,16 @@
         </div>
         <div class="flex mt-3">
           <div class="w-1/2  px-3">
-            <label for="encargado">Encargado</label>
+            <label for="empresa">Empresa</label>
             <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="encargado">Encargado</mat-label>
-              <input matInput id="encargado" name="encargado" formControlName="encargado"
+              <mat-label for="empresa">Empresa</mat-label>
+              <input matInput id="empresa" name="empresa" formControlName="empresa"
               type="text"
-              placeholder="Digite el encargado"
+              placeholder="Digite la empresa"
               class="form-control"/>
             </mat-form-field>
-            <mat-error *ngIf="validate('encargado')">
-              {{ check('encargado') }}
+            <mat-error *ngIf="validate('empresa')">
+              {{ check('empresa') }}
             </mat-error>
           </div>
           <div class="w-1/2  px-3">
@@ -132,34 +147,6 @@
             </mat-form-field>
             <mat-error *ngIf="validate('municipio')">
               {{ check('municipio') }}
-            </mat-error>
-          </div>
-        </div>
-        <div class="flex mt-3">
-          <div class="w-1/2  px-3">
-            <label for="rubros">Rubros</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="rubros">Rubros</mat-label>
-              <input matInput id="rubros" name="rubros" formControlName="rubros"
-                type="text"
-                placeholder="Digite el rubros"
-                class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('rubros')">
-              {{ check('rubros') }}
-            </mat-error>
-          </div>
-          <div class="w-1/2  px-3">
-            <label for="estado">Estado</label>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Seleccione</mat-label>
-              <mat-select name="estado" id="estado" formControlName="estado" >
-                <mat-option [value]="null">Seleccione</mat-option>
-                <mat-option *ngFor="let item of comboEstados" [value]="item.codigo">{{item.descripcion}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-error *ngIf="validate('estado')">
-              {{ check('estado') }}
             </mat-error>
           </div>
         </div>
