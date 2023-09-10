@@ -6,6 +6,7 @@ import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-l
 import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
 import { CategoriasComponent } from './pages/categorias/categorias.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
+import { ProductosComponent } from './pages/productos/productos.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: "proveedores", component: ProveedoresComponent },
       { path: "categorias", component: CategoriasComponent },
       { path: "clientes", component: ClientesComponent },
+      { path: "productos", component: ProductosComponent },
     ]
   },
 ];

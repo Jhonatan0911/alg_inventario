@@ -8,62 +8,62 @@
   </div>
 
 </div>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 my-5 w-100">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 my-5 w-full">
 
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> Id </th>
-    <td mat-cell *matCellDef="let element"> {{element.id}}</td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado"> {{element.id}} </span></td>
   </ng-container>
 
   <ng-container matColumnDef="nit">
     <th mat-header-cell *matHeaderCellDef> NIT </th>
-    <td mat-cell *matCellDef="let element"> {{element.nit}} </td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado">{{element.nit}}</span> </td>
   </ng-container>
 
   <ng-container matColumnDef="nombre">
     <th mat-header-cell *matHeaderCellDef> Nombre </th>
-    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado">{{element.nombre}}</span></td>
   </ng-container>
 
   <ng-container matColumnDef="encargado">
     <th mat-header-cell *matHeaderCellDef> Encargado</th>
-    <td mat-cell *matCellDef="let element"> {{element.encargado}} </td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado">{{element.encargado}}</span></td>
   </ng-container>
 
   <ng-container matColumnDef="telefono">
     <th mat-header-cell *matHeaderCellDef> Telefono </th>
-    <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado">{{element.telefono}}</span></td>
   </ng-container>
 
   <ng-container matColumnDef="correo">
     <th mat-header-cell *matHeaderCellDef> Correo </th>
-    <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado">{{element.correo}}</span> </td>
   </ng-container>
 
   <ng-container matColumnDef="direccion">
     <th mat-header-cell *matHeaderCellDef> direccion </th>
-    <td mat-cell *matCellDef="let element"> {{element.direccion}} </td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado">{{element.direccion}}</span>  </td>
   </ng-container>
 
   <ng-container matColumnDef="departamento">
     <th mat-header-cell *matHeaderCellDef> Departamento </th>
-    <td mat-cell *matCellDef="let element"> {{element.departamento}} </td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado">{{element.departamento}}</span> </td>
   </ng-container>
 
   <ng-container matColumnDef="municipio">
     <th mat-header-cell *matHeaderCellDef> Municipio </th>
-    <td mat-cell *matCellDef="let element"> {{element.municipio}} </td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado">{{element.municipio}}</span>  </td>
   </ng-container>
 
   <ng-container matColumnDef="rubros">
     <th mat-header-cell *matHeaderCellDef> Rubros </th>
-    <td mat-cell *matCellDef="let element"> {{element.rubros}} </td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado">{{element.rubros}}</span> </td>
   </ng-container>
 
 
   <ng-container matColumnDef="estado">
     <th mat-header-cell *matHeaderCellDef> Estado </th>
-    <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+    <td mat-cell *matCellDef="let element"> <span class="truncado"> {{element.estado}} </span></td>
   </ng-container>
 
   <ng-container matColumnDef="act">

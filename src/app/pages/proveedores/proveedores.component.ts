@@ -60,6 +60,7 @@ export class ProveedoresComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(ModalProveedoresComponent, {
       disableClose: true,
       width: '60%',
+      height: '90%',
       position: {top:'2%'},
       data: {
         proveedor: data,

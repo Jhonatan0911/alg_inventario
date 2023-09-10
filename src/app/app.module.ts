@@ -24,6 +24,11 @@ import { ModalClientesComponent } from './components/modal-clientes/modal-client
 import { ClientesComponent } from './pages/clientes/clientes.component';
 import { ProductosComponent } from './pages/productos/productos.component';
 import { ModalProductosComponent } from './components/modal-productos/modal-productos.component';
+import { ProductCardComponent } from './pages/productos/product-card/product-card.component';
+import { ServiciosComponent } from './pages/servicios/servicios.component';
+import { FacturasComponent } from './pages/facturas/facturas.component';
+import { HistorialComponent } from './pages/historial/historial.component';
+import { CotizacionesComponent } from './pages/cotizaciones/cotizaciones.component';
 
 
 
@@ -40,7 +45,12 @@ import { ModalProductosComponent } from './components/modal-productos/modal-prod
     ModalClientesComponent,
     ClientesComponent,
     ProductosComponent,
-    ModalProductosComponent
+    ModalProductosComponent,
+    ProductCardComponent,
+    ServiciosComponent,
+    FacturasComponent,
+    HistorialComponent,
+    CotizacionesComponent
   ],
   imports: [
     BrowserModule,
