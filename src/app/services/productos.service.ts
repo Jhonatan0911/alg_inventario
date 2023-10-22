@@ -32,6 +32,20 @@ export class ProductosService extends BaseService {
     );
   }
 
+  getByCategoria(catgeoria: any): Observable<any> {
+    return this.http
+    .get<Response<any>>(this._baseUrl + this.path + "ObtenerProductoByCategoriaId?CategoriaId="+catgeoria)
+    .pipe(
+      map((response) => response.data),
+      tap((a) => {
+        this.logs('obtener producto por catgeoria');
+        this.logs(a);
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+
   getAll(): Observable<any[]> {
     return this.http
     .get<any[]>(this._baseUrl + this.path + "ObtenerListadoProductos?Estado=ACT")
@@ -47,7 +61,7 @@ export class ProductosService extends BaseService {
 
   create(producto: any): Observable<any> {
     return this.http
-    .post<Response<any>>(this._baseUrl + this.path + "CrearProducto?ProductoId="+this.usuarioId, producto)
+    .post<Response<any>>(this._baseUrl + this.path + "CrearProducto?UsuarioId="+1, producto)
     .pipe(
       map((response) => response),
       tap((a) => {

@@ -70,4 +70,45 @@ export class ParametrizacionService extends BaseService {
       catchError(this.errorMgmt)
     );
   }
+
+  parametrizacionProductos(): Observable<any> {
+    return this.http
+    .get<Response<any[]>>(this._baseUrl + "ParProducto/" + "ObtenerListadoParParoductos?Estado=ACT")
+    .pipe(
+      map((response) => response),
+      tap((a) => {
+        this.logs('Combo parametrizacines de los prodcutos');
+        this.logs(a);
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+  obtenerParametrosByProducto(producto:any): Observable<any> {
+    return this.http
+    .get<Response<any[]>>(this._baseUrl + "ParProducto/" + "ObtenerParProducto?IdParProducto="+producto)
+    .pipe(
+      map((response) => response),
+      tap((a) => {
+        this.logs('Combo parametros de un prodcutos');
+        this.logs(a);
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+  formulasExcel(): Observable<any> {
+    return this.http
+    .get<Response<Departamento[]>>(this._baseUrl + this.path + "ObtenerFormulasExcel")
+    .pipe(
+      map((response) => response),
+      tap((a) => {
+        this.logs('formulas rapidas de excel');
+        this.logs(a);
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+
 }

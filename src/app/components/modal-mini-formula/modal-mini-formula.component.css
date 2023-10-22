@@ -1,0 +1,8 @@
+
+.btn-teclado{
+  border: 1px solid #979797;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}

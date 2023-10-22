@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MainService } from 'src/app/services/main.service';
 import Swal from 'sweetalert2';
-import { Response } from 'src/app/models/response/response';
 
 
 @Component({
@@ -18,18 +17,18 @@ export class ModalProductosComponent implements OnInit {
   categorias: any = [];
 
   parametros: any = [];
+  comboParametros: any = [];
 
-  parametroValor: string  = "";
+  parametroValor!: string;
   formula: string  = "";
 
   teclado: any = ["CE","C","%","÷","7","8","9","x","4","5","6","-","1","2","3","+","(",0,")","."];
 
   form = new FormGroup({
-    imagen: new FormControl('', [Validators.required]),
-    nombre: new FormControl('', [Validators.required]),
-    categoria: new FormControl('', [Validators.required]),
+    imagen: new FormControl(''),
     descripcion: new FormControl('', [Validators.required]),
-    codigo: new FormControl('', [Validators.required]),
+    categoriaId: new FormControl('', [Validators.required]),
+    observacion: new FormControl('', [Validators.required]),
   })
 
   constructor(
@@ -40,6 +39,7 @@ export class ModalProductosComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargaCategorias()
+    this.cargaParametros()
   }
 
   cargaCategorias(){
@@ -47,6 +47,27 @@ export class ModalProductosComponent implements OnInit {
     this.MainService.CategoriasService.getAll().subscribe({
       next: (req:any) => {
         this.categorias = req.data
+      },
+      error: (err: any) => {
+        console.log(err)
+        Swal.fire({
+          icon: 'error',
+          title: 'Error...',
+          text: err,
+        })
+        this.isLoading = false
+      },
+      complete: () => {
+        this.isLoading = false
+      }
+    })
+  }
+
+  cargaParametros(){
+    this.isLoading = true;
+    this.MainService.ParametrizacionService.parametrizacionProductos().subscribe({
+      next: (req:any) => {
+        this.comboParametros = req.data
       },
       error: (err: any) => {
         console.log(err)
@@ -87,9 +108,7 @@ export class ModalProductosComponent implements OnInit {
 
   add(): void {
     if(this.parametroValor != null && this.parametroValor != undefined && this.parametroValor != "") {
-      this.parametros.push({
-        parametro: this.parametroValor
-      })
+      this.parametros.push(this.parametroValor)
       this.parametroValor = "";
     }else{
       Swal.fire({
@@ -100,6 +119,52 @@ export class ModalProductosComponent implements OnInit {
     }
   }
 
+  crear(){
+    if(this.form.valid){
+      this.isLoading = true;
+
+      let object: any = null;
+      object = this.form.value;
+
+      object.parametros = this.parametros.map((par:any) => par.id );
+
+      console.log(object)
+
+      this.MainService.ProductosService.create(object).subscribe({
+        next: (req:any) => {
+          if(req.isSuccess){
+            Swal.fire({
+              icon: 'success',
+              title: 'Exito!',
+              text: 'Se ha guardado correctamente',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.onClose(true);
+              }
+            })
+          }else{
+            Swal.fire({
+              icon: 'error',
+              title: 'Error...',
+              text: req.mensaje,
+            })
+          }
+        },
+        error: (err: any) => {
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Error...',
+            text: 'Ha ocurrido un error',
+          })
+          this.isLoading = false
+        },
+        complete: () => {
+          this.isLoading = false
+        }
+      })
+    }
+  }
 
   addFormula(item:any){
     this.formula = this.formula + item

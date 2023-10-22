@@ -44,6 +44,7 @@ export class ModalClientesComponent implements OnInit {
     this.cargaDepartamentos();
     this.cargaEstados();
     this.cargaTiposDocumento();
+    console.log(this.dataTransfer)
     if(this.dataTransfer.editMode) {
       this.get();
     }

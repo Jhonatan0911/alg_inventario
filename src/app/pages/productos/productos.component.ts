@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ModalMiniFormulaComponent } from 'src/app/components/modal-mini-formula/modal-mini-formula.component';
 import { ModalProductosComponent } from 'src/app/components/modal-productos/modal-productos.component';
 import { IProductCard } from 'src/app/models/crud/productos';
 import { MainService } from 'src/app/services/main.service';
@@ -30,6 +31,26 @@ export class ProductosComponent implements OnInit {
     if(event){
       alert(element);
     }
+  }
+
+
+  formula(event?: any, data?: any){
+    const dialogRef = this.dialog.open(ModalMiniFormulaComponent, {
+      disableClose: true,
+      width: '60%',
+      height: '90%',
+      position: {top:'2%'},
+      data: {
+        producto: data,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((response:any) => {
+      if(response || response != null && response != false){
+        this.reload();
+      }
+    });
+
   }
 
   openModal(event?: any, data?: any){

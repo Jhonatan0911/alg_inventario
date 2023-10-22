@@ -28,7 +28,8 @@ import { ProductCardComponent } from './pages/productos/product-card/product-car
 import { ServiciosComponent } from './pages/servicios/servicios.component';
 import { FacturasComponent } from './pages/facturas/facturas.component';
 import { HistorialComponent } from './pages/historial/historial.component';
-import { CotizacionesComponent } from './pages/cotizaciones/cotizaciones.component';
+import { ModalMiniFormulaComponent } from './components/modal-mini-formula/modal-mini-formula.component';
+import { ModalEspecificacionesComponent } from './components/modal-productos/modal-especificaciones/modal-especificaciones.component';
 
 
 
@@ -50,7 +51,8 @@ import { CotizacionesComponent } from './pages/cotizaciones/cotizaciones.compone
     ServiciosComponent,
     FacturasComponent,
     HistorialComponent,
-    CotizacionesComponent
+    ModalMiniFormulaComponent,
+    ModalEspecificacionesComponent
   ],
   imports: [
     BrowserModule,
