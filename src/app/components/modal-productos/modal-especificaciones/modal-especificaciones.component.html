@@ -22,9 +22,10 @@
   <div class="overflow-auto" style="height: 90%;">
     <header class="bg-white">
       <div class="mx-auto max-w-7xl px-4 pb-3 pt-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Selecciona parametros</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Selecciona parametros para {{this.dataTransfer.producto.descripcion}}</h1>
       </div>
     </header>
+    <mat-progress-bar class="my-2" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
     <main>
       <div class="mx-auto max-w-7xl pb-6 sm:px-6 lg:px-8" *ngFor="let par of parametros">
         <div class="flex mt-2" *ngIf="par.swIsEtiqueta == false">
@@ -44,9 +45,9 @@
             <label for="categoria">{{par.descripcion}}</label>
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Seleccione</mat-label>
-              <mat-select name="categoria" id="categoria" formControlName="categoria">
+              <mat-select name="categoria" id="categoria" [(ngModel)]="par.value">
                 <mat-option [value]="null">Seleccione</mat-option>
-                <mat-option *ngFor="let item of par.opciones" [value]="item.id">{{item.descripcion}}</mat-option>
+                <mat-option *ngFor="let item of par.etiqueta" [value]="item">{{item}}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

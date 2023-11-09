@@ -1,11 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { ModalClientesComponent } from 'src/app/components/modal-clientes/modal-clientes.component';
 import { ModalMiniFormulaComponent } from 'src/app/components/modal-mini-formula/modal-mini-formula.component';
 import { ModalEspecificacionesComponent } from 'src/app/components/modal-productos/modal-especificaciones/modal-especificaciones.component';
 import { IProductCard } from 'src/app/models/crud/productos';
-import { factura } from 'src/app/models/factura/factura';
+import { FacturaDetalleProducto, factura } from 'src/app/models/factura/factura';
 import { Departamento, municipio } from 'src/app/models/parametrizacion/parametrizacion';
 import { Response } from 'src/app/models/response/response';
 import { MainService } from 'src/app/services/main.service';
@@ -34,13 +35,16 @@ export class FacturasComponent implements OnInit {
   categoriaSelect: any;
   productosSelect: any = [];
 
+  displayedColumns: string[] = ['descripcion', 'cantidad', 'del'];
+  dataSource = new MatTableDataSource();
+
 
   form = new FormGroup({
     clienteId: new FormControl<number>(0, [Validators.required]),
     direccion: new FormControl('', [Validators.required]),
     descripcion: new FormControl('', [Validators.required]),
-    codDepartamento: new FormControl<number>(0,[Validators.required]),
-    codMunicipio: new FormControl<number>(0, [Validators.required]),
+    codDepartamento: new FormControl<number | null>(null,[Validators.required]),
+    codMunicipio: new FormControl<number | null>(null, [Validators.required]),
     facturaDetalles: new FormControl<any>( [Validators.required]),
   })
 
@@ -83,6 +87,10 @@ export class FacturasComponent implements OnInit {
         this.loading = false
       }
     })
+  }
+
+  eliminar(data: any){
+
   }
 
   cargaMunicipio(){
@@ -149,18 +157,29 @@ export class FacturasComponent implements OnInit {
     dialogRef.afterClosed().subscribe((response:any) => {
       if(response || response != null && response != false){
         console.log(response);
-        this.productosSelect = response;
-        this.form.controls['facturaDetalles'].setValue(
-          {
-            ancho: this.productosSelect.find((a:any) => a.descripcion == 'ANCHO')?.value,
-            cantidad: this.productosSelect.find((a:any) => a.descripcion == 'CANTIDAD')?.value,
-            clase:  this.productosSelect.find((a:any) => a.descripcion == 'CLASE')?.value,
-            diametro: 152.40,
-            espesor:  this.productosSelect.find((a:any) => a.descripcion == 'ESPESOR')?.value,
-            material:  this.productosSelect.find((a:any) => a.descripcion == 'MATERIAL')?.value,
-            precio: 7100
-          }
-        )
+
+        let facturaDetalles : FacturaDetalleProducto = {
+          idProducto: response.id,
+          clase: response.parametros.find((a:any) => a.descripcion == 'CLASE')?.value,
+          precio: response.parametros.find((a:any) => a.descripcion == 'PRECIO')?.value,
+          cantidad: response.parametros.find((a:any) => a.descripcion == 'CANTIDAD')?.value,
+          diametro: response.parametros.find((a:any) => a.descripcion == 'DIAMETRO')?.value,
+          material: response.parametros.find((a:any) => a.descripcion == 'MATERIAL')?.value,
+          espesor: response.parametros.find((a:any) => a.descripcion == 'ESPESOR')?.value,
+          ancho: response.parametros.find((a:any) => a.descripcion == 'ANCHO')?.value,
+          diametro_A: response.parametros.find((a:any) => a.descripcion == 'DIAMETRO_A')?.value,
+          diametro_B: response.parametros.find((a:any) => a.descripcion == 'DIAMETRO_B')?.value,
+          alto: response.parametros.find((a:any) => a.descripcion == 'ALTO')?.value,
+          union: response.parametros.find((a:any) => a.descripcion == 'UNION')?.value,
+          cierre: response.parametros.find((a:any) => a.descripcion == 'CIERRE')?.value
+        }
+
+
+        this.productosSelect.push(response);
+
+        this.form.controls['facturaDetalles'].setValue(this.form.controls['facturaDetalles'].value.push(facturaDetalles))
+
+        this.dataSource = new MatTableDataSource(this.productosSelect);
         console.log(this.productosSelect);
         console.log(this.form.value);
       }
@@ -261,7 +280,7 @@ export class FacturasComponent implements OnInit {
 
 
   submit(){
-    if(this.form.valid){
+    if(this.form.valid && this.productosSelect.length >= 1){
       this.loading = true;
 
       let factura: factura ={
@@ -270,7 +289,8 @@ export class FacturasComponent implements OnInit {
         codDepartamento: this.form.value.codDepartamento,
         codMunicipio: this.form.value.codMunicipio,
         descripcion: this.form.value.descripcion,
-        facturaDetalles: [this.form.value.facturaDetalles]
+        tipo: 'FACTURA',
+        facturaDetalles: this.form.value.facturaDetalles
       }
 
       this.MainService.FacturaService.GenerarFactura(factura).subscribe({
@@ -303,6 +323,12 @@ export class FacturasComponent implements OnInit {
         complete: () => {
           this.loading = false
         }
+      })
+    }else{
+      Swal.fire({
+        icon: 'warning',
+        title: 'Error...',
+        text: 'Por favor llena todos los campos y asegurate de tener al menos un producto seleccionado',
       })
     }
   }

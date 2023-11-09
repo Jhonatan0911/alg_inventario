@@ -32,4 +32,30 @@ export class FacturaService  extends BaseService {
       catchError(this.errorMgmt)
     );
   }
+
+  get(tipo: string): Observable<any> {
+    return this.http
+    .get<Response<any>>(this._baseUrl + this.path + "ObtenerListadoFacturasPorTipo?Tipo="+tipo)
+    .pipe(
+      map((response) => response),
+      tap((a) => {
+        this.logs('obtener por tipo facturas o presupuestos');
+        this.logs(a);
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
+  getById(id: any): Observable<any> {
+    return this.http
+    .get<Response<any>>(this._baseUrl + this.path + "ObtenerDetalleFactura?FacturaId="+id)
+    .pipe(
+      map((response) => response),
+      tap((a) => {
+        this.logs('Obtener factura por id');
+        this.logs(a);
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
 }

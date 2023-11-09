@@ -40,6 +40,39 @@ export class ModalProductosComponent implements OnInit {
   ngOnInit(): void {
     this.cargaCategorias()
     this.cargaParametros()
+
+    if(this.dataTransfer.editMode) {
+      this.get();
+    }
+  }
+
+  get(){
+    this.MainService.ProductosService.get(this.dataTransfer.producto.id).subscribe({
+      next: (req:any) => {
+        this.form.disable();
+        this.form.patchValue({
+          descripcion: req.descripcion,
+          categoriaId: req.categoriaId,
+          imagen: req.imagen,
+          observacion: "Observacion de prueba"
+        });
+        this.form.enable();
+
+        this.parametros = req.parametros;
+      },
+      error: (err: any) => {
+        console.log(err)
+        Swal.fire({
+          icon: 'error',
+          title: 'Error...',
+          text: 'Ha ocurrido un error',
+        })
+        this.isLoading = false
+      },
+      complete: () => {
+        this.isLoading = false
+      }
+    })
   }
 
   cargaCategorias(){
@@ -131,6 +164,53 @@ export class ModalProductosComponent implements OnInit {
       console.log(object)
 
       this.MainService.ProductosService.create(object).subscribe({
+        next: (req:any) => {
+          if(req.isSuccess){
+            Swal.fire({
+              icon: 'success',
+              title: 'Exito!',
+              text: 'Se ha guardado correctamente',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.onClose(true);
+              }
+            })
+          }else{
+            Swal.fire({
+              icon: 'error',
+              title: 'Error...',
+              text: req.mensaje,
+            })
+          }
+        },
+        error: (err: any) => {
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Error...',
+            text: 'Ha ocurrido un error',
+          })
+          this.isLoading = false
+        },
+        complete: () => {
+          this.isLoading = false
+        }
+      })
+    }
+  }
+
+  editar(){
+    if(this.form.valid){
+      this.isLoading = true;
+
+      let object: any = null;
+      object = this.form.value;
+
+      object.parametros = this.parametros.map((par:any) => par.id );
+      object.id = this.dataTransfer.producto.id;
+      console.log(object)
+
+      this.MainService.ProductosService.edit(object).subscribe({
         next: (req:any) => {
           if(req.isSuccess){
             Swal.fire({

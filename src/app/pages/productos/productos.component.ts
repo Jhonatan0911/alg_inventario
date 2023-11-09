@@ -62,7 +62,7 @@ export class ProductosComponent implements OnInit {
       height: '90%',
       position: {top:'2%'},
       data: {
-        cliente: data,
+        producto: data,
         editMode: editMode,
         label: editMode ? "Editar" : "Crear",
       }

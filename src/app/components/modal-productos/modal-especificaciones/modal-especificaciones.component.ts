@@ -11,88 +11,7 @@ import Swal from 'sweetalert2';
 export class ModalEspecificacionesComponent implements OnInit {
 
   loading: boolean = false;
-  parametros: any[] = [
-    {
-      "descripcion": "ANCHO",
-      "prefijo": null,
-      "swIsEtiqueta": false,
-      "id": 5,
-      "type": "number",
-      "estado": "Activo"
-    },
-    {
-      "descripcion": "DIAMETRO",
-      "prefijo": null,
-      "swIsEtiqueta": false,
-      "id": 5,
-      "type": "number",
-      "estado": "Activo"
-    },
-    {
-      "descripcion": "ALTO",
-      "prefijo": null,
-      "swIsEtiqueta": false,
-      "id": 5,
-      "type": "number",
-      "estado": "Activo"
-    },
-    {
-      "descripcion": "LARGO",
-      "prefijo": null,
-      "swIsEtiqueta": false,
-      "id": 5,
-      "type": "number",
-      "estado": "Activo"
-    },
-    {
-      "descripcion": "CLASE",
-      "prefijo": null,
-      "swIsEtiqueta": false,
-      "id": 5,
-      "type": "number",
-      "estado": "Activo"
-    },
-    {
-      "descripcion": "MATERIAL",
-      "prefijo": null,
-      "swIsEtiqueta": false,
-      "id": 5,
-      "type": "string",
-      "estado": "Activo"
-    },
-    {
-      "descripcion": "ESPESOR",
-      "prefijo": null,
-      "swIsEtiqueta": false,
-      "id": 5,
-      "type": "number",
-      "estado": "Activo"
-    },
-    {
-      "descripcion": "UNION",
-      "prefijo": null,
-      "swIsEtiqueta": false,
-      "id": 5,
-      "type": "number",
-      "estado": "Activo"
-    },
-    {
-      "descripcion": "CANTIDAD",
-      "prefijo": null,
-      "swIsEtiqueta": false,
-      "id": 5,
-      "type": "number",
-      "estado": "Activo"
-    },
-    {
-      "descripcion": "PRECIO",
-      "prefijo": null,
-      "swIsEtiqueta": false,
-      "id": 5,
-      "type": "number",
-      "estado": "Activo"
-    }
-  ];
+  parametros: any[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<ModalEspecificacionesComponent>,
@@ -102,7 +21,7 @@ export class ModalEspecificacionesComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.dataTransfer)
-    // this.cargaParametros();
+    this.cargaParametros();
   }
 
   onClose(type: Boolean): void {
@@ -111,16 +30,16 @@ export class ModalEspecificacionesComponent implements OnInit {
 
   cargaParametros(){
     this.loading = true;
-    this.MainService.ParametrizacionService.obtenerParametrosByProducto(this.dataTransfer.producto.id).subscribe({
+    this.MainService.ProductosService.get(this.dataTransfer.producto.id).subscribe({
       next: (req:any) => {
-        this.parametros = req.data;
+        this.parametros = req.parametros;
       },
       error: (err: any) => {
         console.log(err)
         Swal.fire({
           icon: 'error',
           title: 'Error...',
-          text: err,
+          text: 'Ha ocurrido un error',
         })
         this.loading = false
       },
@@ -130,8 +49,10 @@ export class ModalEspecificacionesComponent implements OnInit {
     })
   }
 
+
   submit(){
-    this.dialogRef.close(this.parametros);
+    this.dataTransfer.producto.parametros = this.parametros;
+    this.dialogRef.close(this.dataTransfer.producto);
   }
 
 }
