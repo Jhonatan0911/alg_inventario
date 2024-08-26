@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalMiniFormulaComponent } from 'src/app/components/modal-mini-formula/modal-mini-formula.component';
 import { ModalProductosComponent } from 'src/app/components/modal-productos/modal-productos.component';
@@ -17,6 +18,12 @@ export class ProductosComponent implements OnInit {
   loading: boolean = false;
 
   products: IProductCard[] = [];
+
+  form = new FormGroup({
+    estado: new FormControl('ACT', [Validators.required]),
+    filtro: new FormControl(''),
+  })
+
 
   constructor(
     private MainService: MainService,
@@ -76,25 +83,33 @@ export class ProductosComponent implements OnInit {
 
   }
 
-  cargaProductos(){
-    this.loading = true;
-    this.MainService.ProductosService.getAll().subscribe({
-      next: (req:any) => {
-        this.products = req.data;
-      },
-      error: (err: any) => {
-        console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
-        this.loading = false
-      },
-      complete: () => {
-        this.loading = false
-      }
-    })
+  cargaProductos(event?: any){
+
+    let inputValue: string = "";
+
+    if(event){
+      inputValue = event.target.value;
+    }
+    if ((event && inputValue.length >= 3) || !event) {
+      this.loading = true;
+      this.MainService.ProductosService.getAll(this.form.value.estado, this.form.value.filtro).subscribe({
+        next: (req:any) => {
+          this.products = req.data;
+        },
+        error: (err: any) => {
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Error...',
+            text: err,
+          })
+          this.loading = false
+        },
+        complete: () => {
+          this.loading = false
+        }
+      })
+    }
   }
 
   reload(){

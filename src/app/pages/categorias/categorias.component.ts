@@ -5,6 +5,7 @@ import { MainService } from 'src/app/services/main.service';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ModalCategoriasComponent } from 'src/app/components/modal-categorias/modal-categorias.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-categorias',
@@ -20,39 +21,55 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
 
   loading: boolean = false;
 
+  form = new FormGroup({
+    estado: new FormControl('ACT', [Validators.required]),
+    filtro: new FormControl(''),
+  })
+
   constructor(
     private MainService: MainService,
     private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-    this.cargaCategorias();
+    this.getCategorias();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  cargaCategorias(){
-    this.loading = true;
-    this.MainService.CategoriasService.getAll().subscribe({
-      next: (req:any) => {
-        this.dataSource = new MatTableDataSource(req.data);
-        this.dataSource.paginator = this.paginator;
-      },
-      error: (err: any) => {
-        console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
-        this.loading = false
-      },
-      complete: () => {
-        this.loading = false
-      }
-    })
+  getCategorias(event?: any){
+
+    let inputValue: string = "";
+
+    if(event){
+      inputValue = event.target.value;
+    }
+
+    if ((event && inputValue.length >= 3) || !event) {
+      this.loading = true;
+
+      this.MainService.CategoriasService.getAll(this.form.value.estado, this.form.value.filtro).subscribe({
+        next: (req:any) => {
+          this.dataSource = new MatTableDataSource(req.data);
+          this.dataSource.paginator = this.paginator;
+        },
+        error: (err: any) => {
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Error...',
+            text: err,
+          })
+          this.loading = false
+        },
+        complete: () => {
+          this.loading = false
+        }
+      })
+
+    }
   }
 
   openModal(data?: any){
@@ -77,7 +94,7 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
 
 
   reload(){
-    this.cargaCategorias();
+    this.getCategorias();
   }
 
   eliminar(element: any) {

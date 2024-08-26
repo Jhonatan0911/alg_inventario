@@ -22,7 +22,7 @@ const routes: Routes = [
       { path: "categorias", component: CategoriasComponent },
       { path: "clientes", component: ClientesComponent },
       { path: "productos", component: ProductosComponent },
-      { path: "factura", component: FacturasComponent },
+      { path: "generar/:tipo", component: FacturasComponent },
       { path: "historial", component: HistorialComponent },
     ]
   },

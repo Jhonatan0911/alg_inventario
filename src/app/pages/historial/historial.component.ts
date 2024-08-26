@@ -5,6 +5,7 @@ import { MainService } from 'src/app/services/main.service';
 import Swal from 'sweetalert2';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
@@ -22,21 +23,27 @@ export class HistorialComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
 
+  form = new FormGroup({
+    tipo: new FormControl('FACTURA', [Validators.required]),
+    start: new FormControl(''),
+    end: new FormControl(''),
+  })
+
   constructor(
     public MainService: MainService
   ) { }
 
   ngOnInit(): void {
-    this.carga('FACTURA');
+    this.carga();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  carga(tipo: string){
+  carga(){
     this.loading = true;
-    this.MainService.FacturaService.get(tipo).subscribe({
+    this.MainService.FacturaService.get(this.form.value.tipo).subscribe({
       next: (req:any) => {
         this.dataSource = new MatTableDataSource(req.data);
         this.dataSource.paginator = this.paginator;
@@ -60,83 +67,150 @@ export class HistorialComponent implements OnInit, AfterViewInit {
     console.log(element);
     this.loading = true;
     this.MainService.FacturaService.getById(element.id).subscribe({
-      next: (res:any) => {
+      next: async (res:any) => {
         console.log(res);
         if(res.isSuccess){
 
           const docDefinition = {
             content: [
               {
-                text: res.data.descripcion,
+                image: await this.getBase64ImageFromURL(
+                  '../../assets/images/image_fac.jpg'
+                ),
+                width: 500,
+                alignment: 'center',
+              },
+              {
+                image: await this.getBase64ImageFromURL(
+                  '../../assets/images/image_info.jpg'
+                ),
+                width: 500,
+                alignment: 'center',
+                margin: [0, 0, 0, 15]
+              },
+              {
+                text: '',
+                pageBreak: 'after',
+              },
+              {
+                text: res.data.tipo + " " + res.data.descripcion,
                 style: 'header',
+              },
+              {
+                margin: [0, 8, 0, 0],
+                columns: [
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'NIT: ', fontSize: 10, bold: true },
+                      { text: '900980561-9', fontSize: 10 }
+                    ]
+                  },
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'cod. cliente: ', fontSize: 10, bold: true},
+                      { text: res.data.clienteId, fontSize: 10 }
+                    ]
+                  },
+                  {
+                    width: '*',
+                    text: [
+                      { text: res.data.tipo, fontSize: 10, bold: true},
+                      { text: res.data.precioTotal, fontSize: 10 }
+                    ]
+                  }
+                ]
+              },
+              {
+                margin: [0, 8, 0, 0],
+                columns: [
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'Nombre: ', fontSize: 10, bold: true},
+                      { text: res.data.nombre, fontSize: 10 }
+                    ]
+                  },
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'Empresa: ', fontSize: 10, bold: true },
+                      { text: res.data.empresa, fontSize: 10 }
+                    ]
+                  },
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'Dirección: ', fontSize: 10, bold: true},
+                      { text: res.data.direccion, fontSize: 10 }
+                    ]
+                  }
+                ]
+              },
+              {
+                margin: [0, 8, 0, 0],
+                columns: [
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'Email: ', fontSize: 10, bold: true},
+                      { text: res.data.correo, fontSize: 10 }
+                    ]
+                  },
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'Teléfono: ', fontSize: 10, bold: true },
+                      { text: res.data.telefono, fontSize: 10 }
+                    ]
+                  },
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'Atención Sr: ', fontSize: 10, bold: true},
+                      { text: res.data.nombre, fontSize: 10 }
+                    ]
+                  }
+                ]
+              },
+              {
+                margin: [0, 8, 0, 0],
+                columns: [
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'Departamento: ', fontSize: 10, bold: true},
+                      { text: res.data.departamento, fontSize: 10 }
+                    ]
+                  },
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'Municipio: ', fontSize: 10, bold: true },
+                      { text: res.data.municipio, fontSize: 10 }
+                    ]
+                  },
+                  {
+                    width: '*',
+                    text: [
+                      { text: 'Vendedor: ', fontSize: 10, bold: true},
+                      { text: 'WILLIAM VENDE BONICE', fontSize: 10 }
+                    ]
+                  }
+                ]
               },
               {
                 style: 'tableExample',
                 table: {
                   headerRows: 1,
-                  widths: ['*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
-                  heights: 27,
+                  widths: [30, 30, 35, 35, 35, 35, 35, 35, 35, 35, 33, 33],
+                  heights: 26,
                   body: [
-                    [
-                      { text: 'NIT: ', colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      { text: '900980561-9', colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      { text: 'cod. cliente', colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      { text: res.data.clienteId, colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      { text: res.data.tipo, colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      { text: res.data.precioTotal, colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                    ],
-                    [
-                      { text: 'Empresa: ', colSpan: 3, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      {},
-                      { text: res.data.empresa, colSpan: 3, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      {},
-                      { text: 'Atención Sr.', colSpan: 3, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      {},
-                      { text: res.data.nombre, colSpan: 3, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      {},
-                    ],
-                    [
-                      { text: 'Dirección: ', colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      { text: res.data.clienteId, colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      { text: 'Email: ', colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      { text: res.data.clienteId, colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      { text: 'Vendedor: ', colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      { text: res.data.clienteId, colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                    ],
-                    [
-                      { text: 'Dep. ', colSpan: 3, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      {},
-                      { text: res.data.empresa, colSpan: 3, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      {},
-                      { text: 'Municipio: ', colSpan: 3, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      {},
-                      { text: res.data.nombre, colSpan: 3, fontSize: 10, margin: [0, 6, 0, 0] },
-                      {},
-                      {},
-                    ],
                     [
                       { text: 'Condiciones de pago: ', colSpan: 2, fontSize: 10, margin: [0, 6, 0, 0] },
                       {},
-                      { text: '70 % INICIAL SALDO A LA ENTREGA', fontSize: 10, margin: [0, 6, 0, 0] , colSpan: 8 },
+                      { text: '70 % INICIAL SALDO A LA ENTREGA', fontSize: 12, margin: [0, 7, 0, 0], alignment: 'center', colSpan: 8,  bold: true },
                       {},
                       {},
                       {},
@@ -148,9 +222,9 @@ export class HistorialComponent implements OnInit, AfterViewInit {
                       {},
                     ],
                     [
-                      { text: 'COD', alignment: 'center', fontSize: 10, margin: [0, 6, 0, 0] },
-                      { text: 'CANT', alignment: 'center', fontSize: 10, margin: [0, 6, 0, 0] },
-                      { text: 'DESCRIPCION', alignment: 'center', fontSize: 10, margin: [0, 6, 0, 0], colSpan: 8 },
+                      { text: 'COD', alignment: 'center', fontSize: 10, margin: [0, 7, 0, 0] },
+                      { text: 'CANT', alignment: 'center', fontSize: 10, margin: [0, 7, 0, 0] },
+                      { text: 'DESCRIPCION', alignment: 'center', fontSize: 10, margin: [0, 7, 0, 0], colSpan: 8, bold: true },
                       {},
                       {},
                       {},
@@ -158,9 +232,23 @@ export class HistorialComponent implements OnInit, AfterViewInit {
                       {},
                       {},
                       {},
-                      { text: 'UNI', alignment: 'center', fontSize: 10, margin: [0, 6, 0, 0] },
-                      { text: 'TOTAL', alignment: 'center', fontSize: 10, margin: [0, 6, 0, 0] },
+                      { text: 'UNI', alignment: 'center', fontSize: 10, margin: [0, 7, 0, 0] },
+                      { text: 'TOTAL', alignment: 'center', fontSize: 10, margin: [0, 7, 0, 0] },
                     ],
+                    ...res.data.detallefacturas.map((detalle:any) => [
+                      { text: detalle.id.toString(), alignment: 'center', fontSize: 10, margin: [0, 7, 0, 0] },
+                      { text: detalle.cantidad.toString(), alignment: 'center', fontSize: 10, margin: [0, 7, 0, 0] },
+                      { text: detalle.etiqueta, colSpan: 8, fontSize: 10, margin: [0, 7, 0, 0] },
+                      {},
+                      {},
+                      {},
+                      {},
+                      {},
+                      {},
+                      {},
+                      { text: detalle.precio_UNITARIO.toString(), alignment: 'center', fontSize: 10, margin: [0, 7, 0, 0] },
+                      { text: detalle.precio_UNITARIO.toString(), alignment: 'center', fontSize: 10, margin: [0, 7, 0, 0] },
+                    ]),
                     [
                       { text: '' },
                       { text: '' },
@@ -220,7 +308,7 @@ export class HistorialComponent implements OnInit, AfterViewInit {
                     [
                       { text: '' },
                       { text: '' },
-                      { text: 'Fabricación y garantia propia', fontSize: 10, margin: [0, 6, 0, 0], colSpan: 8 },
+                      { text: 'Fabricación y garantia propia \n\n NO INCLUYE EL ENVIO \n\n Validez de la oferta : 15 dias Hábiles \n\n A Nombre de : Aire Limpio Global S.A.S RIF \n\n Banco DE BOGOTA  CTA CORRIENTE 151 52855 1' , fontSize: 9, margin: [0, 7, 0, 7], colSpan: 8 },
                       {},
                       {},
                       {},
@@ -231,74 +319,74 @@ export class HistorialComponent implements OnInit, AfterViewInit {
                       { text: '' },
                       { text: '' },
                     ],
+                    // [
+                    //   { text: '' },
+                    //   { text: '' },
+                    //   { text: 'NO INCLUYE EL ENVIO', fontSize: 10, margin: [0, 7, 0, 0] , colSpan: 8 },
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   { text: '' },
+                    //   { text: '' },
+                    // ],
+                    // [
+                    //   { text: '' },
+                    //   { text: '' },
+                    //   { text: 'Validez de la oferta : 15 dias Hábiles', fontSize: 10, margin: [0, 7, 0, 0], colSpan: 8 },
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   { text: '' },
+                    //   { text: '' },
+                    // ],
+                    // [
+                    //   { text: '' },
+                    //   { text: '' },
+                    //   { text: 'A Nombre de : Aire Limpio Global S.A.S RIF', fontSize: 10, margin: [0, 7, 0, 0], colSpan: 8 },
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   { text: '' },
+                    //   { text: '' },
+                    // ],
+                    // [
+                    //   { text: '' },
+                    //   { text: '' },
+                    //   { text: 'Banco DE BOGOTA  CTA CORRIENTE 151 52855 1', fontSize: 10, margin: [0, 7, 0, 0] , colSpan: 8 },
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   {},
+                    //   { text: '' },
+                    //   { text: '' },
+                    // ],
                     [
-                      { text: '' },
-                      { text: '' },
-                      { text: 'NO INCLUYE EL ENVIO', fontSize: 10, margin: [0, 6, 0, 0] , colSpan: 8 },
+                      { text: 'Atentamente: Ing. Edgar Silva', fontSize: 10, margin: [0, 6, 0, 0] , colSpan: 4},
+                      {},
+                      {},
+                      {},
+                      { text: '', colSpan: 6 },
                       {},
                       {},
                       {},
                       {},
                       {},
-                      {},
-                      {},
-                      { text: '' },
-                      { text: '' },
-                    ],
-                    [
-                      { text: '' },
-                      { text: '' },
-                      { text: 'Validez de la oferta : 15 dias Hábiles', fontSize: 10, margin: [0, 6, 0, 0], colSpan: 8 },
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      { text: '' },
-                      { text: '' },
-                    ],
-                    [
-                      { text: '' },
-                      { text: '' },
-                      { text: 'A Nombre de : Aire Limpio Global S.A.S RIF', fontSize: 10, margin: [0, 6, 0, 0], colSpan: 8 },
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      { text: '' },
-                      { text: '' },
-                    ],
-                    [
-                      { text: '' },
-                      { text: '' },
-                      { text: 'Banco DE BOGOTA  CTA CORRIENTE 151 52855 1', fontSize: 10, margin: [0, 6, 0, 0] , colSpan: 8 },
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      { text: '' },
-                      { text: '' },
-                    ],
-                    [
-                      { text: 'Atentamente: Ing. Edgar Silva', fontSize: 10, margin: [0, 6, 0, 0] , colSpan: 2},
-                      {},
-                      { text: '', colSpan: 8 },
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      {},
-                      { text: 'IVA 19 %', fontSize: 10, margin: [0, 6, 0, 0] },
+                      { text: 'IVA 19%', fontSize: 9, margin: [0, 6, 0, 0] },
                       { text: res.data.precioTotal, fontSize: 10, margin: [0, 6, 0, 0] },
                     ]
                   ]
@@ -350,7 +438,8 @@ export class HistorialComponent implements OnInit, AfterViewInit {
               }
             } as any,
             defaultStyle: {
-              fontSize: 12
+              fontSize: 12,
+              columnGap: 20
             }
           };
 
@@ -377,5 +466,32 @@ export class HistorialComponent implements OnInit, AfterViewInit {
         this.loading = false
       }
     })
+  }
+
+
+  getBase64ImageFromURL(url: string) {
+    return new Promise((resolve, reject) => {
+      var img = new Image();
+      img.setAttribute('crossOrigin', 'anonymous');
+
+      img.onload = () => {
+        var canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        var ctx = canvas.getContext('2d');
+        ctx!.drawImage(img, 0, 0);
+
+        var dataURL = canvas.toDataURL('image/png');
+
+        resolve(dataURL);
+      };
+
+      img.onerror = (error) => {
+        reject(error);
+      };
+
+      img.src = url;
+    });
   }
 }

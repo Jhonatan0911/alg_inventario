@@ -5,6 +5,7 @@ import { MainService } from 'src/app/services/main.service';
 import { ModalProveedoresComponent } from 'src/app/components/modal-proveedores/modal-proveedores.component';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-proveedores',
@@ -20,6 +21,12 @@ export class ProveedoresComponent implements OnInit, AfterViewInit {
 
   loading: boolean = false;
 
+  form = new FormGroup({
+    estado: new FormControl('ACT', [Validators.required]),
+    filtro: new FormControl(''),
+  })
+
+
   constructor(
     private MainService: MainService,
     private dialog: MatDialog
@@ -33,27 +40,35 @@ export class ProveedoresComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  cargaProovedores(){
-    this.loading = true;
-    this.MainService.ProovedoresService.getAll().subscribe({
-      next: (req:any) => {
+  cargaProovedores(event?: any){
 
-        this.dataSource = new MatTableDataSource(req.data);
-        this.dataSource.paginator = this.paginator;
-      },
-      error: (err: any) => {
-        console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
-        this.loading = false
-      },
-      complete: () => {
-        this.loading = false
-      }
-    })
+    let inputValue: string = "";
+
+    if(event){
+      inputValue = event.target.value;
+    }
+    if ((event && inputValue.length >= 3) || !event) {
+      this.loading = true;
+      this.MainService.ProovedoresService.getAll(this.form.value.estado, this.form.value.filtro).subscribe({
+        next: (req:any) => {
+
+          this.dataSource = new MatTableDataSource(req.data);
+          this.dataSource.paginator = this.paginator;
+        },
+        error: (err: any) => {
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Error...',
+            text: err,
+          })
+          this.loading = false
+        },
+        complete: () => {
+          this.loading = false
+        }
+      })
+    }
   }
   openModal(data?: any){
     let editMode = data ? true : false;

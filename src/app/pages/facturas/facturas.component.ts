@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalClientesComponent } from 'src/app/components/modal-clientes/modal-clientes.component';
 import { ModalMiniFormulaComponent } from 'src/app/components/modal-mini-formula/modal-mini-formula.component';
 import { ModalEspecificacionesComponent } from 'src/app/components/modal-productos/modal-especificaciones/modal-especificaciones.component';
@@ -34,6 +35,7 @@ export class FacturasComponent implements OnInit {
   clienteSelect: any;
   categoriaSelect: any;
   productosSelect: any = [];
+  productosEnviar: any = [];
 
   displayedColumns: string[] = ['descripcion', 'cantidad', 'del'];
   dataSource = new MatTableDataSource();
@@ -51,10 +53,16 @@ export class FacturasComponent implements OnInit {
 
   constructor(
     private MainService: MainService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private ruta: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    if(this.ruta.snapshot.params['tipo']){
+      this.tipo = this.ruta.snapshot.params['tipo'];
+    }
+    alert(this.tipo)
+
     this.cargaClientes();
     this.cargaCategorias();
     this.cargaDepartamentos();
@@ -174,10 +182,11 @@ export class FacturasComponent implements OnInit {
           cierre: response.parametros.find((a:any) => a.descripcion == 'CIERRE')?.value
         }
 
+        this.productosEnviar.push(facturaDetalles)
 
         this.productosSelect.push(response);
 
-        this.form.controls['facturaDetalles'].setValue(this.form.controls['facturaDetalles'].value.push(facturaDetalles))
+        this.form.controls['facturaDetalles'].setValue(this.productosEnviar)
 
         this.dataSource = new MatTableDataSource(this.productosSelect);
         console.log(this.productosSelect);
@@ -289,7 +298,7 @@ export class FacturasComponent implements OnInit {
         codDepartamento: this.form.value.codDepartamento,
         codMunicipio: this.form.value.codMunicipio,
         descripcion: this.form.value.descripcion,
-        tipo: 'FACTURA',
+        tipo: this.tipo,
         facturaDetalles: this.form.value.facturaDetalles
       }
 
@@ -300,7 +309,7 @@ export class FacturasComponent implements OnInit {
             Swal.fire({
               icon: 'success',
               title: 'Exito!',
-              text: 'Factura generada exitosamente',
+              text: 'Creado exitosamente',
             })
           }else{
             Swal.fire({
@@ -321,6 +330,8 @@ export class FacturasComponent implements OnInit {
           this.loading = false
         },
         complete: () => {
+          this.productosEnviar = [];
+          this.productosSelect = [];
           this.loading = false
         }
       })

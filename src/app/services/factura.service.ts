@@ -33,7 +33,7 @@ export class FacturaService  extends BaseService {
     );
   }
 
-  get(tipo: string): Observable<any> {
+  get(tipo: any): Observable<any> {
     return this.http
     .get<Response<any>>(this._baseUrl + this.path + "ObtenerListadoFacturasPorTipo?Tipo="+tipo)
     .pipe(

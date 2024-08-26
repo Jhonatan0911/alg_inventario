@@ -46,9 +46,12 @@ export class ProductosService extends BaseService {
   }
 
 
-  getAll(): Observable<any[]> {
+  getAll(estado?:any, filtro?: any): Observable<any[]> {
+    let filtroEstado = estado ? estado : "ACT";
+    let filtroKey = filtro ? filtro : "";
+
     return this.http
-    .get<any[]>(this._baseUrl + this.path + "ObtenerListadoProductos?Estado=ACT")
+    .get<any[]>(this._baseUrl + this.path + "ObtenerListadoProductos?Estado="+filtroEstado+"&Filtro="+filtroKey)
     .pipe(
       map((response) => response),
       tap((a) => {

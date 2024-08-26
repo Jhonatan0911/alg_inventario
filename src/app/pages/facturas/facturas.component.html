@@ -1,7 +1,7 @@
 <div *ngIf="loading" class="loader"></div>
 <div class="flex mb-3">
   <div class="w-4/5">
-    <h1 class="third text-2xl">Generar factura</h1>
+    <h1 class="third text-2xl">Generar {{tipo}}</h1>
   </div>
   <div class="w-1/5">
   </div>
@@ -201,7 +201,7 @@
   <div class="flex mt-3" *ngIf="this.productosSelect.length >= 1">
     <div class="w-5/6"></div>
     <div class="w-1/6">
-      <button class="btn btn-third w-100"  type="submit" [disabled]="!this.form.valid || this.loading"> Generar Factura</button>
+      <button class="btn btn-third w-100"  type="submit" [disabled]="!this.form.valid || this.loading"> Generar {{tipo}}</button>
     </div>
   </div>
 

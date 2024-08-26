@@ -8,6 +8,35 @@
   </div>
 
 </div>
+
+<form [formGroup]="form" (ngSubmit)="cargaClientes()">
+  <div class="flex my-3">
+    <div class="w-2/5 px-2">
+      <label for="filtro">Filtro</label>
+      <mat-form-field appearance="outline" class="w-100" >
+        <mat-label>Digite</mat-label>
+        <input matInput id="filtro" name="filtro" formControlName="filtro" type="text" placeholder="Digite la categoría" class="form-control" (input)="cargaClientes($event)"/>
+        <mat-hint>Busca apartir del 3 carácter</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="w-2/5 px-2">
+      <label for="estado">Estado</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Seleccione</mat-label>
+        <mat-select name="estado" id="estado" formControlName="estado">
+          <mat-option [value]="null">Seleccione</mat-option>
+          <mat-option value="ACT">Activo</mat-option>
+          <mat-option value="INA">Desactivo</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="w-1/5" style="align-self: center;">
+      <button class="btn btn-primary w-100" type="submit">Buscar</button>
+    </div>
+  </div>
+</form>
+<mat-progress-bar class="my-2" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 my-5 w-100">
 
   <ng-container matColumnDef="id">

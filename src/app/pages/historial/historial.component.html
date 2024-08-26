@@ -4,6 +4,40 @@
     <h1 class="bold">Historial</h1>
   </div>
 </div>
+
+<form [formGroup]="form" (ngSubmit)="carga()">
+  <div class="flex my-3">
+    <div class="w-2/5 px-2">
+      <label for="fecha">Rango de fecha</label>
+      <mat-form-field appearance="outline">
+        <mat-label>Selecciona un rango de fecha</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate formControlName="start" placeholder="Inicio">
+          <input matEndDate formControlName="end" placeholder="Fin">
+        </mat-date-range-input>
+        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+    <div class="w-2/5 px-2">
+      <label for="tipo">Tipo</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Seleccione</mat-label>
+        <mat-select name="tipo" id="tipo" formControlName="tipo">
+          <mat-option [value]="null">Seleccione</mat-option>
+          <mat-option value="FACTURA">FACTURA</mat-option>
+          <mat-option value="PRESUPUESTO">PRESUPUESTO</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="w-1/5" style="align-self: center;">
+      <button class="btn btn-primary w-100" type="submit">Buscar</button>
+    </div>
+  </div>
+</form>
+
+
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 my-5 w-100">
 
   <ng-container matColumnDef="fecha">
