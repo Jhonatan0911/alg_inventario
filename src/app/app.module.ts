@@ -30,6 +30,7 @@ import { FacturasComponent } from './pages/facturas/facturas.component';
 import { HistorialComponent } from './pages/historial/historial.component';
 import { ModalMiniFormulaComponent } from './components/modal-mini-formula/modal-mini-formula.component';
 import { ModalEspecificacionesComponent } from './components/modal-productos/modal-especificaciones/modal-especificaciones.component';
+import { ListadoGestionComponent } from './pages/listado-gestion/listado-gestion.component';
 
 
 
@@ -52,7 +53,8 @@ import { ModalEspecificacionesComponent } from './components/modal-productos/mod
     FacturasComponent,
     HistorialComponent,
     ModalMiniFormulaComponent,
-    ModalEspecificacionesComponent
+    ModalEspecificacionesComponent,
+    ListadoGestionComponent
   ],
   imports: [
     BrowserModule,
