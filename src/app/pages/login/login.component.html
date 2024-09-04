@@ -1,24 +1,32 @@
-<div class="flex flex-col lg:flex-row h-screen">
-  <div class="w-full lg:w-1/2 bg-primary flex items-center justify-center p-8">
-    <img src="..//src/assets/images/logo.png" alt="Logo pequeño" class="absolute top-0 left-0 max-w-full max-h-full p-4">
-    <img src="..//src/assets/images/login.svg" alt="Imagen" class="max-w-full max-h-full">
+<div class="flex flex-column lg:flex-row h-screen">
+  <!-- Sección Izquierda -->
+  <div class="w-full lg:w-6 bg-primary flex align-items-center justify-content-center p-3">
+    <img src="assets/images/logo.png" alt="Logo pequeño" class="absolute top-0 left-0 w-full h-full p-2">
+    <img src="assets/images/login.svg" alt="Imagen" class="w-full h-full">
   </div>
-  <div class="w-full lg:w-1/2 bg-secondary flex items-center justify-center p-8">
-    <form class="w-full max-w-md p-4">
-      <h2 class="text-5xl mb-8 text-white text-center">Iniciar Sesión</h2>
-      <div class="mb-4">
-        <mat-form-field appearance="fill" class="w-100" >
-          <mat-label>Nombre de usuario</mat-label>
-          <input matInput type="text"/>
-        </mat-form-field>
+
+  <!-- Sección Derecha -->
+  <div class="w-full lg:w-6 bg-secondary flex align-items-center justify-content-center p-3">
+    <form class="w-full max-w-30rem p-4">
+      <h2 class="text-5xl mb-3 text-white text-center">Iniciar Sesión</h2>
+
+      <!-- Campo de Nombre de Usuario -->
+      <div class="mb-2">
+        <p-panel header="Nombre de usuario" class="w-full">
+          <input pInputText type="text" class="w-full">
+        </p-panel>
       </div>
-      <div class="mb-4">
-        <mat-form-field appearance="fill" class="w-100">
-          <mat-label>Contraseña</mat-label>
-          <input matInput type="text"/>
-        </mat-form-field>
+
+      <!-- Campo de Contraseña -->
+      <div class="mb-2">
+        <p-panel header="Contraseña" class="w-full">
+          <input pInputText type="password" class="w-full">
+        </p-panel>
       </div>
-      <button type="submit" class="w-60 m-auto flex justify-center py-2 px-4 bg-third text-white rounded-m text-2xl" >Iniciar Sesión</button>
+
+      <!-- Botón de Enviar -->
+      <button pButton type="submit" label="Iniciar Sesión" class="w-10 m-auto flex justify-content-center py-2 px-4 bg-third text-white text-2xl"></button>
     </form>
   </div>
 </div>
+

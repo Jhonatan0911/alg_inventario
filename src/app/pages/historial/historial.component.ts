@@ -75,14 +75,14 @@ export class HistorialComponent implements OnInit, AfterViewInit {
             content: [
               {
                 image: await this.getBase64ImageFromURL(
-                  '../../assets/images/image_fac.jpg'
+                  'assets/images/image_fac.jpg'
                 ),
                 width: 500,
                 alignment: 'center',
               },
               {
                 image: await this.getBase64ImageFromURL(
-                  '../../assets/images/image_info.jpg'
+                  '.assets/images/image_info.jpg'
                 ),
                 width: 500,
                 alignment: 'center',

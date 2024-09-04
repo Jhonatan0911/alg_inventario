@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 import { MainService } from 'src/app/services/main.service';
 import { ModalProveedoresComponent } from 'src/app/components/modal-proveedores/modal-proveedores.component';
-import { MatDialog } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-proveedores',
@@ -15,9 +12,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class ProveedoresComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['id', 'nit', 'nombre', 'encargado', 'telefono', 'correo', 'direccion', 'departamento', 'municipio', 'rubros', 'estado', 'act', 'del'];
-  dataSource = new MatTableDataSource();
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
+  dataSource: any;
+  paginator: any;
 
   loading: boolean = false;
 
@@ -29,7 +25,7 @@ export class ProveedoresComponent implements OnInit, AfterViewInit {
 
   constructor(
     private MainService: MainService,
-    private dialog: MatDialog
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -52,16 +48,11 @@ export class ProveedoresComponent implements OnInit, AfterViewInit {
       this.MainService.ProovedoresService.getAll(this.form.value.estado, this.form.value.filtro).subscribe({
         next: (req:any) => {
 
-          this.dataSource = new MatTableDataSource(req.data);
           this.dataSource.paginator = this.paginator;
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: err,
-          })
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error cargando información', icon: 'ri-close-circle-line text-2xl' });
           this.loading = false
         },
         complete: () => {
@@ -72,23 +63,23 @@ export class ProveedoresComponent implements OnInit, AfterViewInit {
   }
   openModal(data?: any){
     let editMode = data ? true : false;
-    const dialogRef = this.dialog.open(ModalProveedoresComponent, {
-      disableClose: true,
-      width: '60%',
-      height: '90%',
-      position: {top:'2%'},
-      data: {
-        proveedor: data,
-        editMode: editMode,
-        label: editMode ? "Editar" : "Crear",
-      }
-    });
+    // const dialogRef = this.dialog.open(ModalProveedoresComponent, {
+    //   disableClose: true,
+    //   width: '60%',
+    //   height: '90%',
+    //   position: {top:'2%'},
+    //   data: {
+    //     proveedor: data,
+    //     editMode: editMode,
+    //     label: editMode ? "Editar" : "Crear",
+    //   }
+    // });
 
-    dialogRef.afterClosed().subscribe((response:any) => {
-      if(response || response != null && response != false){
-        this.reload();
-      }
-    });
+    // dialogRef.afterClosed().subscribe((response:any) => {
+    //   if(response || response != null && response != false){
+    //     this.reload();
+    //   }
+    // });
   }
 
   reload(){

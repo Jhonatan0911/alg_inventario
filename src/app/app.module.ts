@@ -7,9 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 
-// Material
-import { MaterialModule } from './material/material.module';
-
 // Layouts
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
@@ -31,6 +28,7 @@ import { HistorialComponent } from './pages/historial/historial.component';
 import { ModalMiniFormulaComponent } from './components/modal-mini-formula/modal-mini-formula.component';
 import { ModalEspecificacionesComponent } from './components/modal-productos/modal-especificaciones/modal-especificaciones.component';
 import { ListadoGestionComponent } from './pages/listado-gestion/listado-gestion.component';
+import { PrimengModule } from './prime/primeng.module';
 
 
 
@@ -60,7 +58,7 @@ import { ListadoGestionComponent } from './pages/listado-gestion/listado-gestion
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule,
+    PrimengModule,
     HttpClientModule,
     CommonModule,
     FormsModule,

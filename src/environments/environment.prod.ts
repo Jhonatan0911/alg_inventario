@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://apigestionpresupuestal.azurewebsites.net',
+  apiUrl: 'https://algapi-e5cve7ambcftgbdr.eastus-01.azurewebsites.net',
 };

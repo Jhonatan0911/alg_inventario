@@ -1,0 +1,55 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+// Modules
+import { ToastModule } from 'primeng/toast';
+import { TableModule } from 'primeng/table';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
+import { MenuModule } from 'primeng/menu';
+import { FileUploadModule } from 'primeng/fileupload';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { PanelModule } from 'primeng/panel';
+
+// Services
+import { MessageService } from 'primeng/api';
+
+@NgModule({
+  declarations: [],
+  providers: [ MessageService ],
+  imports: [
+    CommonModule,
+    ToastModule,
+    TableModule,
+    CardModule,
+    ButtonModule,
+    CalendarModule,
+    DropdownModule,
+    InputTextModule,
+    CheckboxModule,
+    MenuModule,
+    FileUploadModule,
+    RadioButtonModule,
+    PanelModule
+
+  ],
+  exports:[
+    ToastModule,
+    TableModule,
+    CardModule,
+    ButtonModule,
+    CalendarModule,
+    DropdownModule,
+    InputTextModule,
+    CheckboxModule,
+    MenuModule,
+    FileUploadModule,
+    RadioButtonModule,
+    PanelModule
+  ]
+})
+export class PrimengModule { }

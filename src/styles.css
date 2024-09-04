@@ -1,16 +1,26 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import 'noty/lib/noty.css';
 @import 'noty/lib/themes/nest.css';
 
-*{
-font-family: 'Signika Negative', sans-serif !important;
-}
+/* PrimeNG */
+@import "primeng/resources/primeng.css";
+@import "/node_modules/primeflex/primeflex.css";
+@import "primeicons/primeicons.css";
 
-.material-icons {
-  font-family: 'Material Icons' !important;
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+
+/* Font */
+@import url(https://fonts.bunny.net/css?family=inter:400,500,600,700);
+
+/* Others */
+@import "remixicon/fonts/remixicon.css";
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font: inherit;
+  font-family: "Inter", sans-serif;
+  /* color: var(--slate-700); */
 }
 
 a {
