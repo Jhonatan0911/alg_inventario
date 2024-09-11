@@ -77,6 +77,12 @@ export class ClientesComponent implements OnInit {
       visible: true,
     },
     {
+      field: 'correo',
+      header: 'Correo',
+      width: '180px',
+      visible: true,
+    },
+    {
       field: 'estado',
       header: 'Estado',
       width: '180px',

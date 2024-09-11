@@ -12,7 +12,7 @@
             <button type="button" class="relative rounded-full" (click)="onClose(false)">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">View notifications</span>
-              <mat-icon class="text-gray-300 text-2xl inline-block">closed</mat-icon>
+              <i class="text-gray-300 text-2xl inline-block">closed</i>
             </button>
           </div>
         </div>
@@ -27,135 +27,67 @@
   </header>
   <main>
     <div class="mx-auto max-w-7xl pb-6 sm:px-6 lg:px-8">
-      <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-      <form (ngSubmit)="dataTransfer.editMode ? editar(): crear()" [formGroup]="form">
+      <form (ngSubmit)="dataTransfer.editMode ? editar() : crear()" [formGroup]="form">
         <div class="flex mt-3">
           <div class="w-1/2 px-3">
             <label for="tipoDocumento">Tipo documento</label>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Seleccione</mat-label>
-              <mat-select name="tipoDocumento" id="tipoDocumento" formControlName="tipoDocumento">
-                <mat-option [value]="null">Seleccione</mat-option>
-                <mat-option *ngFor="let item of comboTipoDocumento" [value]="item.codigo">{{item.descripcion}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-error *ngIf="validate('tipoDocumento')">
-              {{ check('tipoDocumento') }}
-            </mat-error>
+            <p-dropdown [options]="comboTipoDocumento" formControlName="tipoDocumento" optionLabel="descripcion" optionValue="codigo" [autoDisplayFirst]="false" [showClear]="true" styleClass="w-full p-inputtext-sm"></p-dropdown>
+            <small *ngIf="validate('tipoDocumento')" class="p-error">{{ check('tipoDocumento') }}</small>
           </div>
-          <div class="w-1/2  px-3">
-            <label for="municipio">Documento</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label>documento</mat-label>
-              <input matInput id="documento" name="documento" formControlName="documento" type="text" placeholder="Digite el documento" class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('documento')">
-              {{ check('documento') }}
-            </mat-error>
+          <div class="w-1/2 px-3">
+            <label for="documento">Documento</label>
+            <input pInputText id="documento" formControlName="documento" type="text" placeholder="Digite el documento" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('documento')" class="p-error">{{ check('documento') }}</small>
           </div>
         </div>
         <div class="flex mt-3">
-          <div class="w-full  px-3">
+          <div class="w-full px-3">
             <label for="nombre">Nombre Completo</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label>Nombre</mat-label>
-              <input matInput id="nombre" name="nombre" formControlName="nombre" type="text" placeholder="Digite el nombre" class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('nombre')">
-              {{ check('nombre') }}
-            </mat-error>
+            <input pInputText id="nombre" formControlName="nombre" type="text" placeholder="Digite el nombre" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('nombre')" class="p-error">{{ check('nombre') }}</small>
           </div>
         </div>
         <div class="flex mt-3">
-          <div class="w-1/2  px-3">
+          <div class="w-1/2 px-3">
             <label for="empresa">Empresa</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="empresa">Empresa</mat-label>
-              <input matInput id="empresa" name="empresa" formControlName="empresa"
-              type="text"
-              placeholder="Digite la empresa"
-              class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('empresa')">
-              {{ check('empresa') }}
-            </mat-error>
+            <input pInputText id="empresa" formControlName="empresa" type="text" placeholder="Digite la empresa" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('empresa')" class="p-error">{{ check('empresa') }}</small>
           </div>
-          <div class="w-1/2  px-3">
+          <div class="w-1/2 px-3">
             <label for="telefono">Telefono</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="telefono">Telefono</mat-label>
-              <input matInput id="telefono" name="telefono" formControlName="telefono"
-              type="text"
-              placeholder="Digite el telefono"
-              class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('telefono')">
-              {{ check('telefono') }}
-            </mat-error>
+            <input pInputText id="telefono" formControlName="telefono" type="text" placeholder="Digite el telefono" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('telefono')" class="p-error">{{ check('telefono') }}</small>
           </div>
         </div>
         <div class="flex mt-3">
-          <div class="w-1/2  px-3">
+          <div class="w-1/2 px-3">
             <label for="correo">Correo</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="correo">Correo</mat-label>
-              <input matInput id="correo" name="correo" formControlName="correo"
-                type="text"
-                placeholder="Digite el correo"
-                class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('correo')">
-              {{ check('correo') }}
-            </mat-error>
+            <input pInputText id="correo" formControlName="correo" type="text" placeholder="Digite el correo" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('correo')" class="p-error">{{ check('correo') }}</small>
           </div>
-          <div class="w-1/2  px-3">
+          <div class="w-1/2 px-3">
             <label for="direccion">Direccion</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="direccion">Direccion</mat-label>
-              <input matInput id="direccion" name="direccion" formControlName="direccion"
-                type="text"
-                placeholder="Digite la direccion"
-                class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('direccion')">
-              {{ check('direccion') }}
-            </mat-error>
+            <input pInputText id="direccion" formControlName="direccion" type="text" placeholder="Digite la direccion" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('direccion')" class="p-error">{{ check('direccion') }}</small>
           </div>
         </div>
         <div class="flex mt-3">
-          <div class="w-1/2  px-3">
+          <div class="w-1/2 px-3">
             <label for="departamento">Departamento</label>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Seleccione</mat-label>
-              <mat-select name="departamento" id="departamento" formControlName="departamento" (selectionChange)="cargaMunicipio()">
-                <mat-option [value]="null">Seleccione</mat-option>
-                <mat-option *ngFor="let item of comboDepartamento" [value]="item.codigo">{{item.descripcion}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-error *ngIf="validate('departamento')">
-              {{ check('departamento') }}
-            </mat-error>
+            <p-dropdown [options]="comboDepartamento" formControlName="departamento" optionLabel="descripcion" optionValue="codigo" (onChange)="cargaMunicipio()" styleClass="w-full p-inputtext-sm" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
+            <small *ngIf="validate('departamento')" class="p-error">{{ check('departamento') }}</small>
           </div>
-          <div class="w-1/2  px-3">
+          <div class="w-1/2 px-3">
             <label for="municipio">Municipio</label>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Seleccione</mat-label>
-              <mat-select name="municipio" id="municipio" formControlName="municipio" >
-                <mat-option [value]="null">Seleccione</mat-option>
-                <mat-option *ngFor="let item of comboMunicipio" [value]="item.codigo">{{item.descripcion}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-error *ngIf="validate('municipio')">
-              {{ check('municipio') }}
-            </mat-error>
+            <p-dropdown [options]="comboMunicipio" formControlName="municipio" optionLabel="descripcion" optionValue="codigo" styleClass="w-full p-inputtext-sm" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
+            <small *ngIf="validate('municipio')" class="p-error">{{ check('municipio') }}</small>
           </div>
         </div>
         <div class="flex mt-3">
           <div class="w-5/6"></div>
           <div class="w-1/6">
-            <button class="btn btn-primary w-100"  type="submit" [disabled]="!this.form.valid || this.isLoading"> {{dataTransfer.label}}</button>
+            <button pButton type="submit" label="{{dataTransfer.label}}" [disabled]="!form.valid || isLoading" icon="pi pi-save" class="w-full"></button>
           </div>
-
         </div>
       </form>
     </div>

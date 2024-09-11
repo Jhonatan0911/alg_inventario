@@ -1,42 +1,45 @@
-<div class="flex flex-col lg:flex-row h-screen bg-primary">
-  <div class="w-full lg:w-1/5 bg-secondary p-4 flex flex-col justify-between">
-    <div class="bg-white p-4 text-white text-2xl mb-6 border-l-8 border-orange-600">
-      <h1 class="font-bold dark">Menú</h1>
+<div class="flex flex-col lg:flex-row bg-primary">
+  <div class="w-full lg:w-2 bg-secondary p-4 flex flex-column justify-content-between">
+    <div>
+      <div class="bg-white px-4 py-3 mb-6 border-left-3 border-orange-600">
+        <h1 class="font-bold dark m-0">Menú</h1>
+      </div>
+
+      <ul class="flex-grow">
+        <li><a routerLink="productos" class="text-1xl block p-2 text-white hover:bg-secondary">
+          <i class="ri-shopping-cart-line"></i> Productos</a></li>
+        <li><a routerLink="categorias" class="text-1xl block p-2 text-white hover:bg-secondary">
+          <i class="ri-layout-grid-fill"></i> Categorias</a></li>
+        <li><a routerLink="servicios" class="text-1xl block p-2 text-white hover:bg-secondary">
+          <i class="ri-hand-coin-line"></i> Servicios</a></li>
+        <li><a routerLink="clientes" class="text-1xl block p-2 text-white hover:bg-secondary">
+          <i class="ri-group-line"></i> Clientes</a></li>
+        <li><a routerLink="proveedores" class="text-1xl block p-2 text-white hover:bg-secondary">
+          <i class="ri-store-3-line"></i> Proveedores</a></li>
+      </ul>
     </div>
 
-    <ul class="space-y-2 flex-grow">
-      <li><a routerLink="productos" class="text-2xl block p-2 text-white hover:bg-secondary">
-        <mat-icon class="text-gray-300 text-2xl inline-block mr-2">shopping_cart</mat-icon> Productos</a></li>
-      <li><a routerLink="categorias" class="text-2xl block p-2 text-white hover:bg-secondary">
-        <mat-icon class="text-gray-300 text-2xl inline-block mr-2">category</mat-icon> Categorias</a></li>
-      <li><a routerLink="servicios" class="text-2xl block p-2 text-white hover:bg-secondary">
-        <mat-icon class="text-gray-300 text-2xl inline-block mr-2">settings</mat-icon> Servicios</a></li>
-      <li><a routerLink="clientes" class="text-2xl block p-2 text-white hover:bg-secondary">
-        <mat-icon class="text-gray-300 text-2xl inline-block mr-2">person</mat-icon> Clientes</a></li>
-      <li><a routerLink="proveedores" class="text-2xl block p-2 text-white hover:bg-secondary">
-        <mat-icon class="text-gray-300 text-2xl inline-block mr-2">local_shipping</mat-icon> Proveedores</a></li>
-  </ul>
-    <img src="assets/images/logo.png" alt="Logo pequeño" class="w-1/2 mx-auto mb-4">
+    <img src="assets/images/logo.png" alt="Logo pequeño" class="mx-auto">
   </div>
-  <div class="w-full lg:w-4/5 p-4">
-    <div class="bg-white p-4 flex justify-between items-center shadow-lg rounded-md">
-      <h1 class="text-dark text-2xl">Dashboard</h1>
-      <div class="flex items-center space-x-4">
-        <a routerLink="generar/FACTURA" class="text-gray-950 hover:text-gray-500 flex items-center">
-          <mat-icon class="text-gray-300 text-2xl mr-2 self-center center-flex">receipt</mat-icon> Facturas
+  <div class="w-full lg:w-10 p-4">
+    <div class="bg-white py-0 px-4 flex justify-content-between items-center shadow-lg border-round-md">
+      <h1 class="dark">Dashboard</h1>
+      <div class="flex items-center gap-3">
+        <a routerLink="generar/FACTURA" class="text-gray-500 hover:text-gray-500 flex align-items-center gap-1">
+          <i class="ri-bill-line text-2xl center-flex"></i> Facturas
         </a>
-        <a routerLink="generar/PRESUPUESTO" class="text-gray-950 hover:text-gray-500 flex items-center">
-          <mat-icon class="text-gray-300 text-2xl mr-2 self-center center-flex">description</mat-icon> Presupuesto
+        <a routerLink="generar/PRESUPUESTO" class="text-gray-500 hover:text-gray-500 flex align-items-center gap-1">
+          <i class="ri-money-dollar-circle-line text-2xl center-flex"></i> Presupuesto
         </a>
-        <a routerLink="historial" class="text-gray-950 hover:text-gray-500 flex items-center">
-          <mat-icon class="text-gray-300 text-2xl mr-2 self-center center-flex">history</mat-icon> Historial
+        <a routerLink="historial" class="text-gray-500 hover:text-gray-500 flex align-items-center gap-1">
+          <i class="ri-time-line  text-2xl center-flex"></i> Historial
         </a>
-        <a href="#" class="text-gray-950 hover:text-gray-500 flex items-center">
-          <mat-icon class="primary text-3xl mr-2 ml-14 self-center center-flex">exit_to_app</mat-icon>
+        <a href="#" class="text-gray-950 hover:text-gray-500 flex align-items-center">
+          <i class="ri-logout-box-r-line primary text-2xl center-flex"></i>
         </a>
       </div>
     </div>
-    <div class="mt-4 p-4 bg-white rounded-lg shadow-md overflow-auto" style="height: 90vh;">
+    <div class="mt-4 p-4 overflow-auto" style="height: 90vh;">
       <router-outlet></router-outlet>
     </div>
   </div>

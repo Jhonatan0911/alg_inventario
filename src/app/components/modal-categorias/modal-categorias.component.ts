@@ -11,7 +11,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class ModalCategoriasComponent implements OnInit {
 
-  isLoading: Boolean = false;
+  isLoading: boolean = false;
 
   form = new FormGroup({
     descripcion: new FormControl('', [Validators.required]),

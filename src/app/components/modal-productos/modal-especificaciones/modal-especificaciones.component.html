@@ -12,7 +12,7 @@
             <button type="button" class="relative rounded-full" (click)="onClose(false)">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">View notifications</span>
-              <mat-icon class="text-gray-300 text-2xl inline-block">closed</mat-icon>
+              <i class="text-gray-300 text-2xl inline-block">closed</i>
             </button>
           </div>
         </div>
@@ -22,34 +22,25 @@
   <div class="overflow-auto" style="height: 90%;">
     <header class="bg-white">
       <div class="mx-auto max-w-7xl px-4 pb-3 pt-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Selecciona parametros para {{this.dataTransfer.producto.descripcion}}</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Selecciona parámetros para {{this.dataTransfer.producto.descripcion}}</h1>
       </div>
     </header>
-    <mat-progress-bar class="my-2" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    <p-progressBar mode="indeterminate" *ngIf="loading" class="my-2"></p-progressBar>
     <main>
       <div class="mx-auto max-w-7xl pb-6 sm:px-6 lg:px-8" *ngFor="let par of parametros">
         <div class="flex mt-2" *ngIf="par.swIsEtiqueta == false">
           <div class="w-full px-3">
             <label for="nombre">{{par.descripcion}}</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="nombre">{{par.descripcion}}</mat-label>
-              <input matInput id="nombre" name="nombre" [(ngModel)]="par.value"
-              type="{{par.type}}"
-              placeholder="Digite"
-              class="form-control"/>
-            </mat-form-field>
+            <span class="p-float-label">
+              <input pInputText id="nombre" name="nombre" [(ngModel)]="par.value" type="{{par.type}}" placeholder="Digite" class="w-full p-inputtext-sm" />
+              <label for="nombre">{{par.descripcion}}</label>
+            </span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="par.swIsEtiqueta == true">
           <div class="w-full px-3">
             <label for="categoria">{{par.descripcion}}</label>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Seleccione</mat-label>
-              <mat-select name="categoria" id="categoria" [(ngModel)]="par.value">
-                <mat-option [value]="null">Seleccione</mat-option>
-                <mat-option *ngFor="let item of par.etiqueta" [value]="item">{{item}}</mat-option>
-              </mat-select>
-            </mat-form-field>
+            <p-dropdown [options]="par.etiqueta" [(ngModel)]="par.value" placeholder="Seleccione" class="w-full"></p-dropdown>
           </div>
         </div>
       </div>
@@ -57,10 +48,9 @@
       <div class="flex mt-3">
         <div class="w-5/6"></div>
         <div class="w-1/6">
-          <button class="btn btn-third w-100"  type="button"  (click)="submit()"> Agregar</button>
+          <button pButton label="Agregar" class="btn btn-third w-full" type="button" (click)="submit()"></button>
         </div>
       </div>
     </main>
   </div>
 </div>
-

@@ -12,7 +12,7 @@
             <button type="button" class="relative rounded-full" (click)="onClose(false)">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">View notifications</span>
-              <mat-icon class="text-gray-300 text-2xl inline-block">closed</mat-icon>
+              <i class="text-gray-300 text-2xl inline-block">closed</i>
             </button>
           </div>
         </div>
@@ -25,150 +25,87 @@
       <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{dataTransfer.label + " proveedor"}}</h1>
     </div>
   </header>
+
   <main>
     <div class="mx-auto max-w-7xl pb-6 sm:px-6 lg:px-8">
-      <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+      <p-progressBar mode="indeterminate" *ngIf="isLoading"></p-progressBar>
       <form (ngSubmit)="dataTransfer.editMode ? editar(): crear()" [formGroup]="form">
-        <div class="flex mt-3">
-          <div class="w-1/2  px-3">
-            <label for="nit">NIT</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label>NIT</mat-label>
-              <input matInput id="nit" name="nit" formControlName="nit"type="text" placeholder="Digite el nit" class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('nit')">
-              {{ check('nit') }}
-            </mat-error>
-          </div>
-          <div class="w-1/2  px-3">
-            <label for="nombre">Nombre</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label>Nombre</mat-label>
-              <input matInput id="nombre" name="nombre" formControlName="nombre" type="text" placeholder="Digite el nombre" class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('nombre')">
-              {{ check('nombre') }}
-            </mat-error>
-          </div>
-        </div>
-        <div class="flex mt-3">
-          <div class="w-1/2  px-3">
-            <label for="encargado">Encargado</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="encargado">Encargado</mat-label>
-              <input matInput id="encargado" name="encargado" formControlName="encargado"
-              type="text"
-              placeholder="Digite el encargado"
-              class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('encargado')">
-              {{ check('encargado') }}
-            </mat-error>
-          </div>
-          <div class="w-1/2  px-3">
-            <label for="telefono">Telefono</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="telefono">Telefono</mat-label>
-              <input matInput id="telefono" name="telefono" formControlName="telefono"
-              type="text"
-              placeholder="Digite el telefono"
-              class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('telefono')">
-              {{ check('telefono') }}
-            </mat-error>
-          </div>
-        </div>
-        <div class="flex mt-3">
-          <div class="w-1/2  px-3">
-            <label for="correo">Correo</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="correo">Correo</mat-label>
-              <input matInput id="correo" name="correo" formControlName="correo"
-                type="text"
-                placeholder="Digite el correo"
-                class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('correo')">
-              {{ check('correo') }}
-            </mat-error>
-          </div>
-          <div class="w-1/2  px-3">
-            <label for="direccion">Direccion</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="direccion">Direccion</mat-label>
-              <input matInput id="direccion" name="direccion" formControlName="direccion"
-                type="text"
-                placeholder="Digite la direccion"
-                class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('direccion')">
-              {{ check('direccion') }}
-            </mat-error>
-          </div>
-        </div>
-        <div class="flex mt-3">
-          <div class="w-1/2  px-3">
-            <label for="departamento">Departamento</label>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Seleccione</mat-label>
-              <mat-select name="departamento" id="departamento" formControlName="departamento" (selectionChange)="cargaMunicipio()">
-                <mat-option [value]="null">Seleccione</mat-option>
-                <mat-option *ngFor="let item of comboDepartamento" [value]="item.codigo">{{item.descripcion}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-error *ngIf="validate('departamento')">
-              {{ check('departamento') }}
-            </mat-error>
-          </div>
-          <div class="w-1/2  px-3">
-            <label for="municipio">Municipio</label>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Seleccione</mat-label>
-              <mat-select name="municipio" id="municipio" formControlName="municipio" >
-                <mat-option [value]="null">Seleccione</mat-option>
-                <mat-option *ngFor="let item of comboMunicipio" [value]="item.codigo">{{item.descripcion}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-error *ngIf="validate('municipio')">
-              {{ check('municipio') }}
-            </mat-error>
-          </div>
-        </div>
-        <div class="flex mt-3">
-          <div class="w-1/2  px-3">
-            <label for="rubros">Rubros</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="rubros">Rubros</mat-label>
-              <input matInput id="rubros" name="rubros" formControlName="rubros"
-                type="text"
-                placeholder="Digite el rubros"
-                class="form-control"/>
-            </mat-form-field>
-            <mat-error *ngIf="validate('rubros')">
-              {{ check('rubros') }}
-            </mat-error>
-          </div>
-          <div class="w-1/2  px-3">
-            <label for="estado">Estado</label>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Seleccione</mat-label>
-              <mat-select name="estado" id="estado" formControlName="estado" >
-                <mat-option [value]="null">Seleccione</mat-option>
-                <mat-option *ngFor="let item of comboEstados" [value]="item.codigo">{{item.descripcion}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-error *ngIf="validate('estado')">
-              {{ check('estado') }}
-            </mat-error>
-          </div>
-        </div>
-        <div class="flex mt-3">
-          <div class="w-5/6"></div>
-          <div class="w-1/6">
-            <button class="btn btn-primary w-100"  type="submit" [disabled]="!this.form.valid || this.isLoading"> {{dataTransfer.label}}</button>
+
+        <div class="formgrid grid mt-3">
+          <div class="field col-12 md:col-6">
+            <label for="nit" class="font-medium">NIT</label>
+            <input id="nit" type="text" pInputText formControlName="nit" placeholder="Digite el NIT" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('nit')" class="p-error">{{ check('nit') }}</small>
           </div>
 
+          <div class="field col-12 md:col-6">
+            <label for="nombre" class="font-medium">Nombre</label>
+            <input id="nombre" type="text" pInputText formControlName="nombre" placeholder="Digite el nombre" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('nombre')" class="p-error">{{ check('nombre') }}</small>
+          </div>
+        </div>
+
+        <div class="formgrid grid mt-3">
+          <div class="field col-12 md:col-6">
+            <label for="encargado" class="font-medium">Encargado</label>
+            <input id="encargado" type="text" pInputText formControlName="encargado" placeholder="Digite el encargado" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('encargado')" class="p-error">{{ check('encargado') }}</small>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="telefono" class="font-medium">Teléfono</label>
+            <input id="telefono" type="text" pInputText formControlName="telefono" placeholder="Digite el teléfono" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('telefono')" class="p-error">{{ check('telefono') }}</small>
+          </div>
+        </div>
+
+        <div class="formgrid grid mt-3">
+          <div class="field col-12 md:col-6">
+            <label for="correo" class="font-medium">Correo</label>
+            <input id="correo" type="text" pInputText formControlName="correo" placeholder="Digite el correo" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('correo')" class="p-error">{{ check('correo') }}</small>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="direccion" class="font-medium">Dirección</label>
+            <input id="direccion" type="text" pInputText formControlName="direccion" placeholder="Digite la dirección" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('direccion')" class="p-error">{{ check('direccion') }}</small>
+          </div>
+        </div>
+
+        <div class="formgrid grid mt-3">
+          <div class="field col-12 md:col-6">
+            <label for="departamento" class="font-medium">Departamento</label>
+            <p-dropdown [options]="comboDepartamento" formControlName="departamento" placeholder="Seleccione" class="w-full p-inputtext-sm" (onChange)="cargaMunicipio()"></p-dropdown>
+            <small *ngIf="validate('departamento')" class="p-error">{{ check('departamento') }}</small>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="municipio" class="font-medium">Municipio</label>
+            <p-dropdown [options]="comboMunicipio" formControlName="municipio" placeholder="Seleccione" class="w-full p-inputtext-sm"></p-dropdown>
+            <small *ngIf="validate('municipio')" class="p-error">{{ check('municipio') }}</small>
+          </div>
+        </div>
+
+        <div class="formgrid grid mt-3">
+          <div class="field col-12 md:col-6">
+            <label for="rubros" class="font-medium">Rubros</label>
+            <input id="rubros" type="text" pInputText formControlName="rubros" placeholder="Digite los rubros" class="w-full p-inputtext-sm" />
+            <small *ngIf="validate('rubros')" class="p-error">{{ check('rubros') }}</small>
+          </div>
+
+          <div class="field col-12 md:col-6">
+            <label for="estado" class="font-medium">Estado</label>
+            <p-dropdown [options]="comboEstados" formControlName="estado" placeholder="Seleccione" class="w-full p-inputtext-sm"></p-dropdown>
+            <small *ngIf="validate('estado')" class="p-error">{{ check('estado') }}</small>
+          </div>
+        </div>
+
+        <div class="formgrid grid mt-3">
+          <div class="col-12 md:col-10"></div>
+          <div class="col-12 md:col-2">
+            <button pButton type="submit" label="{{dataTransfer.label}}" [disabled]="!this.form.valid || this.isLoading" class="w-full p-button-primary"></button>
+          </div>
         </div>
       </form>
     </div>

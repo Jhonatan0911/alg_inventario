@@ -12,7 +12,7 @@
             <button type="button" class="relative rounded-full" (click)="onClose(false)">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">View notifications</span>
-              <mat-icon class="text-gray-300 text-2xl inline-block">closed</mat-icon>
+              <i class="text-gray-300 text-2xl inline-block">closed</i>
             </button>
           </div>
         </div>
@@ -27,124 +27,174 @@
     </header>
     <main>
       <div class="mx-auto max-w-7xl pb-6 sm:px-6 lg:px-8">
-        <mat-progress-bar class="my-2" mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-        <form (ngSubmit)="dataTransfer.editMode ? editar(): crear()" [formGroup]="form">
+        <p-progressBar class="my-2" mode="indeterminate" *ngIf="isLoading"></p-progressBar>
+        <form (ngSubmit)="dataTransfer.editMode ? editar() : crear()" [formGroup]="form">
           <div>
             <label for="file-upload" class="custom-file-upload dropzone w-full">
-              <mat-icon>cloud_upload</mat-icon>Click o Arrastra tus imagenes aquí
+              <i>cloud_upload</i>Click o Arrastra tus imágenes aquí
             </label>
-            <input id="file-upload" multiple #myInput fileLimit="10" class="custom-file-input dropzone w-full" type="file" accept=".jpg" name="filetoupload"
-            placeholder="archivo" (change)="onFileSelect($event)" />
+            <input
+              id="file-upload"
+              multiple
+              #myInput
+              class="custom-file-input dropzone w-full"
+              type="file"
+              accept=".jpg"
+              name="filetoupload"
+              placeholder="archivo"
+              (change)="onFileSelect($event)"
+            />
           </div>
           <div *ngIf="archivos.length >= 10">
-            <h2>Ya alcanzó el limite de archivos</h2>
+            <h2>Ya alcanzó el límite de archivos</h2>
           </div>
-          <br>
-          <div [ngClass]="{'overflow-cards': archivos.length != 0}">
-            <div class="card my-3 p-3 justify-between flex-row single-file" *ngFor="let item of archivos">
-              <div class="flex items-center">
-                {{item.name}}
-              </div>
+          <br />
+          <div [ngClass]="{ 'overflow-cards': archivos.length != 0 }">
+            <div
+              class="card my-3 p-3 justify-between flex-row single-file"
+              *ngFor="let item of archivos"
+            >
+              <div class="flex items-center">{{ item.name }}</div>
               <div>
                 <button
-                type="button"
-                class="btn btn-eliminar"
-                aria-label="Close"
-                (click)="remove(item)">
-                <mat-icon class="text-white">close</mat-icon>
-              </button>
+                  type="button"
+                  class="btn btn-eliminar"
+                  aria-label="Close"
+                  (click)="remove(item)"
+                >
+                  <i class="text-white">close</i>
+                </button>
               </div>
             </div>
           </div>
           <div class="flex mt-3">
-            <div class="w-full  px-3">
+            <div class="w-full px-3">
               <label for="descripcion">Nombre del producto</label>
-              <mat-form-field appearance="outline" class="w-100" >
-                <mat-label for="descripcion">Producto</mat-label>
-                <input matInput id="descripcion" name="descripcion" formControlName="descripcion"
-                type="text"
-                placeholder="Digite el nombre"
-                class="form-control"/>
-              </mat-form-field>
-              <mat-error *ngIf="validate('descripcion')">
-                {{ check('descripcion') }}
-              </mat-error>
+              <span class="p-float-label">
+                <input
+                  pInputText
+                  id="descripcion"
+                  name="descripcion"
+                  formControlName="descripcion"
+                  type="text"
+                  placeholder="Digite el nombre"
+                  class="w-full p-inputtext-sm"
+                />
+                <label for="descripcion">Producto</label>
+              </span>
+              <small
+                severity="error"
+                *ngIf="validate('descripcion')"
+              >
+              {{ check('descripcion') }}
+            </small>
             </div>
           </div>
           <div class="flex mt-2">
             <div class="w-full px-3">
-              <label for="categoriaId">Categoria</label>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Seleccione</mat-label>
-                <mat-select name="categoriaId" id="categoriaId" formControlName="categoriaId">
-                  <mat-option [value]="null">Seleccione</mat-option>
-                  <mat-option *ngFor="let item of categorias" [value]="item.id">{{item.descripcion}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-error *ngIf="validate('categoriaId')">
-                {{ check('categoriaId') }}
-              </mat-error>
+              <label for="categoriaId">Categoría</label>
+              <p-dropdown
+                [options]="categorias"
+                formControlName="categoriaId"
+                placeholder="Seleccione"
+                optionLabel="descripcion"
+                optionValue="id"
+                class="w-full"
+              ></p-dropdown>
+              <small
+              >
+              {{ check('categoriaId') }}
+            </small>
             </div>
           </div>
           <div class="flex mt-2">
             <div class="w-full px-3">
-              <label for="observacion">Descripcion</label>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Seleccione</mat-label>
-                <textarea matInput id="observacion" name="observacion" formControlName="observacion"
-                type="text"
-                placeholder="Digite la descripcion"
-                class="form-control"></textarea>
-              </mat-form-field>
-              <mat-error *ngIf="validate('observacion')">
-                {{ check('observacion') }}
-              </mat-error>
+              <label for="observacion">Descripción</label>
+              <span class="p-float-label">
+                <textarea
+                  pInputTextarea
+                  id="observacion"
+                  name="observacion"
+                  formControlName="observacion"
+                  placeholder="Digite la descripción"
+                  class="w-full p-inputtext-sm"
+                ></textarea>
+                <label for="observacion">Descripción</label>
+              </span>
+              <small
+                severity="error"
+                *ngIf="validate('observacion')"
+              >
+              {{ check('observacion') }}</small>
             </div>
           </div>
 
-          <h1 class="third text-2xl">Asignar parametros</h1>
+          <h1 class="third text-2xl">Asignar parámetros</h1>
           <div class="flex mt-3">
             <div class="w-full px-3">
-              <label for="parametro">Parametro</label>
-              <mat-form-field appearance="outline" class="w-100" >
-                <mat-label for="parametro">Parametro</mat-label>
-                <mat-select name="parametro" id="parametro" [(ngModel)]="this.parametroValor" [ngModelOptions]="{standalone: true}">
-                  <mat-option [value]="null">Seleccione</mat-option>
-                  <mat-option *ngFor="let item of comboParametros" [value]="item">{{item.descripcion}}</mat-option>
-                </mat-select>
-              </mat-form-field>
+              <label for="parametro">Parámetro</label>
+              <p-dropdown
+                [options]="comboParametros"
+                [(ngModel)]="parametroValor"
+                placeholder="Seleccione"
+                optionLabel="descripcion"
+                [ngModelOptions]="{ standalone: true }"
+                class="w-full"
+              ></p-dropdown>
             </div>
           </div>
 
           <div class="flex mt-3">
             <div class="w-5/6"></div>
             <div class="w-1/6">
-              <button class="btn btn-third w-100"  type="button" *ngIf="parametroValor != null && parametroValor != undefined" [disabled]="parametroValor == null || parametroValor == undefined" (click)="add()"> Agregar</button>
+              <button
+                pButton
+                label="Agregar"
+                class="btn btn-third w-full"
+                type="button"
+                (click)="add()"
+                [disabled]="!parametroValor"
+              ></button>
             </div>
           </div>
 
           <div class="flex mt-3" *ngFor="let par of parametros">
-            <div class="w-5/6  px-3">
-              <label for="nombre">Parametro</label>
-              <mat-form-field appearance="outline" class="w-100" >
-                <mat-label for="nombre">Parametro</mat-label>
-                <input matInput id="nombre" name="nombre"
-                type="text"
-                [ngModelOptions]="{standalone: true}"
-                [(ngModel)]="par.descripcion"
-                class="form-control"/>
-              </mat-form-field>
+            <div class="w-5/6 px-3">
+              <label for="nombre">Parámetro</label>
+              <span class="p-float-label">
+                <input
+                  pInputText
+                  id="nombre"
+                  name="nombre"
+                  [(ngModel)]="par.descripcion"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="w-full p-inputtext-sm"
+                />
+                <label for="nombre">Parámetro</label>
+              </span>
             </div>
             <div class="w-1/6 px-3 flex items-center">
-              <button class="btn btn-danger w-100"  type="button" (click)="deleteParametro(par)"> <mat-icon class="text-gray-300 text-2xl inline-block">delete_outline</mat-icon> </button>
+              <button
+                pButton
+                icon="pi pi-trash"
+                class="btn btn-danger w-full"
+                type="button"
+                (click)="deleteParametro(par)"
+              ></button>
             </div>
-            <hr class="border-dashed">
+            <hr class="border-dashed" />
           </div>
 
           <div class="flex mt-3">
             <div class="w-5/6"></div>
             <div class="w-1/6">
-              <button class="btn btn-third w-100"  type="submit" [disabled]="!this.form.valid || this.isLoading"> {{dataTransfer.label}}</button>
+              <button
+                pButton
+                label="{{ dataTransfer.label }}"
+                class="btn btn-third w-full"
+                type="submit"
+                [disabled]="!form.valid || isLoading"
+              ></button>
             </div>
           </div>
         </form>

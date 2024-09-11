@@ -12,7 +12,7 @@
             <button type="button" class="relative rounded-full" (click)="onClose(false)">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">View notifications</span>
-              <mat-icon class="text-gray-300 text-2xl inline-block">closed</mat-icon>
+              <i class="text-gray-300 text-2xl inline-block">closed</i>
             </button>
           </div>
         </div>
@@ -22,29 +22,28 @@
   <div class="overflow-auto" style="height: 90%;">
     <header class="bg-white">
       <div class="mx-auto max-w-7xl px-4 pb-3 pt-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{"Crear formula"}}</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{"Crear fórmula"}}</h1>
       </div>
     </header>
     <main>
       <div class="mx-auto max-w-7xl pb-6 sm:px-6 lg:px-8">
         <div class="flex mt-3">
           <div class="w-2/6">
-            <mat-chip-list aria-label="Fish selection">
-              <mat-chip class="cursor-pointer" *ngFor="let item of parametros" (click)="addFormula(item.parametro)">{{item.parametro}}</mat-chip>
-            </mat-chip-list>
+            <p-chips [(ngModel)]="formula" (onAdd)="addFormula($event)" ariaLabel="Fish selection">
+              <ng-template pTemplate="item" let-item>
+                <div class="p-chip cursor-pointer">{{ item }}</div>
+              </ng-template>
+            </p-chips>
           </div>
           <div class="w-2/3 px-3">
-            <label for="formula">Digite una formula para calcular un precio final</label>
-            <mat-form-field appearance="outline" class="w-100" >
-              <mat-label for="formula">Formula</mat-label>
-              <input matInput id="formula" name="formula"
-              type="text"
-              [(ngModel)]="formula"
-              class="form-control"/>
-            </mat-form-field>
-            <div class="flex flex-row flex-wrap">
+            <label for="formula">Digite una fórmula para calcular un precio final</label>
+            <span class="p-float-label">
+              <input pInputText id="formula" name="formula" [(ngModel)]="formula" type="text" class="w-full p-inputtext-sm" />
+              <label for="formula">Fórmula</label>
+            </span>
+            <div class="flex flex-row flex-wrap mt-3">
               <div class="basis-1/4" *ngFor="let item of teclado">
-                <div class="btn-teclado py-3 px-3" (click)="addFormula(item)">{{item}}</div>
+                <button pButton type="button" label="{{ item }}" class="p-button-outlined w-full py-2" (click)="addFormula(item)"></button>
               </div>
             </div>
           </div>
@@ -53,6 +52,3 @@
     </main>
   </div>
 </div>
-
-
-

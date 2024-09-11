@@ -1,26 +1,28 @@
 <div *ngIf="loading" class="loader"></div>
-<div class="flex justify-content-between mb-5">
-  <h1 class="bold">Clientes</h1>
-  <button pButton label="Nuevo" (click)="openModal()"></button>
+<div class="flex justify-content-between mb-3 align-items-center">
+  <h2 class="dark bold">Clientes</h2>
+  <p-button label="Nuevo cliente" (click)="openModal()"></p-button>
 </div>
 
+<p-card>
+  <form [formGroup]="form" (ngSubmit)="getClientes()">
+    <div class="formgrid grid">
+      <div class="field col-12 md:col-4">
+        <label htmlFor="filtro">Filtro</label>
+        <input pInputText id="filtro" name="filtro" class="w-full p-inputtext-sm"  formControlName="filtro" placeholder="Digite la categoría" (input)="getClientes($event)"/>
+        <small id="filtro-help">Busca apartir del 3 carácter.</small>
+      </div>
+      <div class="field col-12 md:col-4">
+        <label for="estado">Estado</label>
+        <p-dropdown formControlName="estado" [options]="estadosSelect" optionLabel="descripcion" styleClass="w-full p-inputtext-sm" placeholder="Seleccione"></p-dropdown>
+      </div>
+      <div style="align-self: center;">
+        <p-button class="w-100" type="submit" label="Buscar"></p-button>
+      </div>
+    </div>
+  </form>
+</p-card>
 
-<form [formGroup]="form" (ngSubmit)="getClientes()">
-  <div class="grid my-3">
-    <div class="col-12 md:col-4 flex flex-column gap-2">
-      <label htmlFor="filtro">Filtro</label>
-      <input pInputText id="filtro" name="filtro" formControlName="filtro" placeholder="Digite la categoría" (input)="getClientes($event)"/>
-      <small id="filtro-help">Busca apartir del 3 carácter.</small>
-    </div>
-    <div class="col-12 md:col-4 flex flex-column gap-2">
-      <label for="estado">Estado</label>
-      <p-dropdown formControlName="estado" [options]="estadosSelect" optionLabel="descripcion" styleClass="w-full p-inputtext-sm" placeholder="Seleccione"></p-dropdown>
-    </div>
-    <div class="w-4" style="align-self: center;">
-      <button class="btn btn-primary w-100" type="submit">Buscar</button>
-    </div>
-  </div>
-</form>
 
 <p-card header="Listado de clientes" styleClass="mt-3">
   <p-table
@@ -40,9 +42,8 @@
     <ng-template pTemplate="header">
       <tr>
         <th *ngFor="let col of columnsTable" [pSortableColumn]="col.field" >
-          {{ col.header }} <p-sortIcon [field]="col.field"></p-sortIcon>
+          {{ col.header }}
         </th>
-        <th></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-cliente>
@@ -79,7 +80,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="6">
+        <td colspan="14">
           <div class="flex flex-column gap-3 align-items-center justify-content-center py-4">
             <i class="ri-error-warning-line text-4xl"></i>
             <span class="text-lg font-semibold">No hay información para mostrar</span>

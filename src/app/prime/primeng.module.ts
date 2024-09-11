@@ -20,10 +20,11 @@ import { SkeletonModule } from 'primeng/skeleton';
 
 // Services
 import { MessageService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @NgModule({
   declarations: [],
-  providers: [ MessageService ],
+  providers: [ MessageService, DialogService ],
   imports: [
     CommonModule,
     ToastModule,
