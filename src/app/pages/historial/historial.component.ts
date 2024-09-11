@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 import { MainService } from 'src/app/services/main.service';
-import Swal from 'sweetalert2';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Column } from 'src/app/models/table';
 
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
@@ -14,19 +12,67 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './historial.component.html',
   styleUrls: ['./historial.component.css']
 })
-export class HistorialComponent implements OnInit, AfterViewInit {
+export class HistorialComponent implements OnInit {
 
   loading: boolean = false;
 
-  displayedColumns: string[] = ['fecha', 'cliente', 'empresa', 'descripcion', 'precioTotal', 'act'];
-  dataSource = new MatTableDataSource();
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
+  columnsTable: Column[] = [
+    {
+      field: 'fecha',
+      header: 'Fecha',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'cliente',
+      header: 'Cliente',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'empresa',
+      header: 'Empresa',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'descripción',
+      header: 'Descripcion',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'precioTotal',
+      header: 'Precio total',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'act',
+      header: 'Descargar',
+      width: '180px',
+      visible: true,
+    }
+  ];
+
+  historial!: any[];
+
+  firstPaginator: number = 0;
+  rowTablePaginator: number = 10;
+  actualPage: number = 0;
+  dataTotalRecords: number = 0;
+  dataTotalPages!: number;
+
+  tipoSelect: any[] = [
+    {value:"FACTURA", descripcion:"FACTURA"},
+    {value:"PRESUPUESTO", descripcion:"PRESUPUESTO"}
+  ]
+
+
 
   form = new FormGroup({
     tipo: new FormControl('FACTURA', [Validators.required]),
-    start: new FormControl(''),
-    end: new FormControl(''),
+    fecha: new FormControl(''),
   })
 
   constructor(
@@ -37,24 +83,16 @@ export class HistorialComponent implements OnInit, AfterViewInit {
     this.carga();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
 
-  carga(){
+  carga(event?: any){
     this.loading = true;
     this.MainService.FacturaService.get(this.form.value.tipo).subscribe({
       next: (req:any) => {
-        this.dataSource = new MatTableDataSource(req.data);
-        this.dataSource.paginator = this.paginator;
+
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
+
         this.loading = false
       },
       complete: () => {
@@ -446,20 +484,11 @@ export class HistorialComponent implements OnInit, AfterViewInit {
 
           pdfMake.createPdf(docDefinition).download(`Factura_${element.nombre}_${element.fechaCreacion}.pdf`);
         }else{
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: res.mensaje,
-          })
+
         }
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.loading = false
       },
       complete: () => {

@@ -1,25 +1,65 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { Component, OnInit } from '@angular/core';
 import { MainService } from 'src/app/services/main.service';
-import { MatDialog } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
 import { ModalCategoriasComponent } from 'src/app/components/modal-categorias/modal-categorias.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Column } from 'src/app/models/table';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.component.html',
   styleUrls: ['./categorias.component.css']
 })
-export class CategoriasComponent implements OnInit, AfterViewInit {
-
-  displayedColumns: string[] = ['id', 'descripcion', 'estado', 'act', 'del'];
-  dataSource = new MatTableDataSource();
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
-
+export class CategoriasComponent implements OnInit {
   loading: boolean = false;
+
+  ref: DynamicDialogRef | undefined;
+
+  columnsTable: Column[] = [
+    {
+      field: 'id',
+      header: 'Id',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'descripcion',
+      header: 'Descripción',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'estado',
+      header: 'Estado',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'act',
+      header: 'Editar',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'del',
+      header: 'Eliminar',
+      width: '180px',
+      visible: true,
+    }
+  ];
+
+  categorias!: any[];
+
+  firstPaginator: number = 0;
+  rowTablePaginator: number = 10;
+  actualPage: number = 0;
+  dataTotalRecords: number = 0;
+  dataTotalPages!: number;
+
+  estadosSelect: any[] = [
+    {value:"ACT", descripcion: "Activo"},
+    {value:"INA", descripcion: "Desactivo"}
+  ]
 
   form = new FormGroup({
     estado: new FormControl('ACT', [Validators.required]),
@@ -28,15 +68,11 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
 
   constructor(
     private MainService: MainService,
-    private dialog: MatDialog
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit(): void {
     this.getCategorias();
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
   }
 
   getCategorias(event?: any){
@@ -49,19 +85,14 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
 
     if ((event && inputValue.length >= 3) || !event) {
       this.loading = true;
-
       this.MainService.CategoriasService.getAll(this.form.value.estado, this.form.value.filtro).subscribe({
-        next: (req:any) => {
-          this.dataSource = new MatTableDataSource(req.data);
-          this.dataSource.paginator = this.paginator;
+        next: (res:any) => {
+          this.categorias = res.data;
+          // this.dataTotalRecords = res.data.totalRecords;
+          // this.dataTotalPages = res.data.totalPages;
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: err,
-          })
           this.loading = false
         },
         complete: () => {
@@ -74,10 +105,10 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
 
   openModal(data?: any){
     let editMode = data ? true : false;
-    const dialogRef = this.dialog.open(ModalCategoriasComponent, {
-      disableClose: true,
-      width: '60%',
-      position: {top:'2%'},
+
+    this.ref = this.dialogService.open(ModalCategoriasComponent, {
+      header: editMode ? "Editar Categoria" : "Crear categoria",
+      width: '40vw',
       data: {
         categoria: data,
         editMode: editMode,
@@ -85,8 +116,8 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe((response:any) => {
-      if(response || response != null && response != false){
+    this.ref.onClose.subscribe((res: boolean) => {
+      if (res) {
         this.reload();
       }
     });
@@ -98,39 +129,19 @@ export class CategoriasComponent implements OnInit, AfterViewInit {
   }
 
   eliminar(element: any) {
-    Swal.fire({
-      title: '¿Estas seguro?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, borrala!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.loading = true;
-        this.MainService.CategoriasService.delete(element.id).subscribe({
-          next: (req:any) => {
-            if(req.success){
-              Swal.fire({
-                icon: 'success',
-                title: 'Eliminada Exitosamente',
-              })
-            }
-          },
-          error: (err: any) => {
-            console.log(err)
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: err,
-            })
-            this.loading = false
-          },
-          complete: () => {
-            this.loading = false
-            this.reload();
-          }
-        })
+    this.loading = true;
+    this.MainService.CategoriasService.delete(element.id).subscribe({
+      next: (req:any) => {
+        if(req.success){
+        }
+      },
+      error: (err: any) => {
+        console.log(err)
+        this.loading = false
+      },
+      complete: () => {
+        this.loading = false
+        this.reload();
       }
     })
   }

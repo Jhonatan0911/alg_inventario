@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MainService } from 'src/app/services/main.service';
-import Swal from 'sweetalert2';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-modal-mini-formula',
@@ -18,11 +16,15 @@ export class ModalMiniFormulaComponent implements OnInit {
   formula: string  = "";
   teclado: any = ["CE","C","%","÷","7","8","9","x","4","5","6","-","1","2","3","+","(",0,")","."];
 
+  dataTransfer: any;
+
   constructor(
     private MainService: MainService,
-    public dialogRef: MatDialogRef<ModalMiniFormulaComponent>,
-    @Inject(MAT_DIALOG_DATA) public dataTransfer: any
-  ) { }
+    public dialogRef: DynamicDialogRef,
+    private config: DynamicDialogConfig,
+  ) {
+    this.dataTransfer =this.config.data;
+  }
 
   ngOnInit(): void {
     this.cargaEtiquetas();
@@ -37,11 +39,6 @@ export class ModalMiniFormulaComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.isLoading = false
       },
       complete: () => {
@@ -58,11 +55,6 @@ export class ModalMiniFormulaComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.isLoading = false
       },
       complete: () => {

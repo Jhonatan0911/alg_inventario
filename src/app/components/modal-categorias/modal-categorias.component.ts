@@ -1,10 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MainService } from 'src/app/services/main.service';
-import Swal from 'sweetalert2';
-import { Response } from 'src/app/models/response/response';
 import { Categoria } from 'src/app/models/crud/categoria';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-modal-categorias',
@@ -18,12 +16,15 @@ export class ModalCategoriasComponent implements OnInit {
   form = new FormGroup({
     descripcion: new FormControl('', [Validators.required]),
   })
+  dataTransfer: any;
 
   constructor(
     private MainService: MainService,
-    public dialogRef: MatDialogRef<ModalCategoriasComponent>,
-    @Inject(MAT_DIALOG_DATA) public dataTransfer: any
-  ) { }
+    public dialogRef: DynamicDialogRef,
+    private config: DynamicDialogConfig,
+  ) {
+    this.dataTransfer = this.config.data;
+  }
 
   ngOnInit(): void {
     if(this.dataTransfer.editMode) {
@@ -42,11 +43,6 @@ export class ModalCategoriasComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: 'Ha ocurrido un error',
-        })
         this.isLoading = false
       },
       complete: () => {
@@ -70,30 +66,12 @@ export class ModalCategoriasComponent implements OnInit {
       this.MainService.CategoriasService.create(object).subscribe({
         next: (req:any) => {
           if(req.isSuccess){
-            Swal.fire({
-              icon: 'success',
-              title: 'Editado!',
-              text: 'Se ha guardado correctamente',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.onClose(true);
-              }
-            })
+            this.onClose(true);
           }else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: 'Ha ocurrido un error',
-            })
           }
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'Ha ocurrido un error',
-          })
           this.isLoading = false
         },
         complete: () => {
@@ -116,31 +94,17 @@ export class ModalCategoriasComponent implements OnInit {
         next: (req:any) => {
 
           if(req.isSuccess){
-            Swal.fire({
-              icon: 'success',
-              title: 'Editado!',
-              text: 'Se ha editado correctamente',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.onClose(true);
-              }
-            })
+
+            this.onClose(true);
+
           }else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: 'Error al editar',
-            })
+
           }
 
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'Error al editar',
-          })
+
           this.isLoading = false
         },
         complete: () => {

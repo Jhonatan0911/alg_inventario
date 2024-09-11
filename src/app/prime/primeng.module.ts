@@ -13,7 +13,10 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MenuModule } from 'primeng/menu';
 import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { PanelModule } from 'primeng/panel';
+import { PasswordModule } from 'primeng/password';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { SkeletonModule } from 'primeng/skeleton';
 
 // Services
 import { MessageService } from 'primeng/api';
@@ -34,8 +37,10 @@ import { MessageService } from 'primeng/api';
     MenuModule,
     FileUploadModule,
     RadioButtonModule,
-    PanelModule
-
+    PasswordModule,
+    MultiSelectModule,
+    InputTextareaModule,
+    SkeletonModule
   ],
   exports:[
     ToastModule,
@@ -49,7 +54,10 @@ import { MessageService } from 'primeng/api';
     MenuModule,
     FileUploadModule,
     RadioButtonModule,
-    PanelModule
+    PasswordModule,
+    MultiSelectModule,
+    InputTextareaModule,
+    SkeletonModule
   ]
 })
 export class PrimengModule { }

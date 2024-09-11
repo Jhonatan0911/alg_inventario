@@ -1,114 +1,93 @@
 <div *ngIf="loading" class="loader"></div>
-<div class="flex mb-3">
-  <div class="w-4/5">
-    <h1 class="bold">Clientes</h1>
-  </div>
-  <div class="w-1/5">
-    <button class="btn btn-primary w-100" (click)="openModal()">Nuevo</button>
-  </div>
-
+<div class="flex justify-content-between mb-5">
+  <h1 class="bold">Clientes</h1>
+  <button pButton label="Nuevo" (click)="openModal()"></button>
 </div>
 
-<form [formGroup]="form" (ngSubmit)="cargaClientes()">
-  <div class="flex my-3">
-    <div class="w-2/5 px-2">
-      <label for="filtro">Filtro</label>
-      <mat-form-field appearance="outline" class="w-100" >
-        <mat-label>Digite</mat-label>
-        <input matInput id="filtro" name="filtro" formControlName="filtro" type="text" placeholder="Digite la categoría" class="form-control" (input)="cargaClientes($event)"/>
-        <mat-hint>Busca apartir del 3 carácter</mat-hint>
-      </mat-form-field>
+
+<form [formGroup]="form" (ngSubmit)="getClientes()">
+  <div class="grid my-3">
+    <div class="col-12 md:col-4 flex flex-column gap-2">
+      <label htmlFor="filtro">Filtro</label>
+      <input pInputText id="filtro" name="filtro" formControlName="filtro" placeholder="Digite la categoría" (input)="getClientes($event)"/>
+      <small id="filtro-help">Busca apartir del 3 carácter.</small>
     </div>
-    <div class="w-2/5 px-2">
+    <div class="col-12 md:col-4 flex flex-column gap-2">
       <label for="estado">Estado</label>
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Seleccione</mat-label>
-        <mat-select name="estado" id="estado" formControlName="estado">
-          <mat-option [value]="null">Seleccione</mat-option>
-          <mat-option value="ACT">Activo</mat-option>
-          <mat-option value="INA">Desactivo</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <p-dropdown formControlName="estado" [options]="estadosSelect" optionLabel="descripcion" styleClass="w-full p-inputtext-sm" placeholder="Seleccione"></p-dropdown>
     </div>
-    <div class="w-1/5" style="align-self: center;">
+    <div class="w-4" style="align-self: center;">
       <button class="btn btn-primary w-100" type="submit">Buscar</button>
     </div>
   </div>
 </form>
-<mat-progress-bar class="my-2" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 my-5 w-100">
+<p-card header="Listado de clientes" styleClass="mt-3">
+  <p-table
+    #dt1
+    [value]="clientes"
+    [scrollable]="true"
+    [rowHover]="true"
+    [paginator]="true"
+    [rows]="rowTablePaginator"
+    [totalRecords]="dataTotalRecords"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [lazy]="true"
+    (onLazyLoad)="getClientes($event)"
+    scrollHeight="600px"
+    scrollWidth="100%"
+    >
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let col of columnsTable" [pSortableColumn]="col.field" >
+          {{ col.header }} <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cliente>
+      <tr>
+        <td>{{ cliente.id }}</td>
+        <td>{{ cliente.tipoDocumento }}</td>
+        <td>{{ cliente.documento }}</td>
+        <td>{{ cliente.nombre }}</td>
+        <td>{{ cliente.empresa }}</td>
+        <td>{{ cliente.direccion }}</td>
+        <td>{{ cliente.telefono }}</td>
+        <td>{{ cliente.correo }}</td>
+        <td>{{ cliente.departamento }}</td>
+        <td>{{ cliente.municipio }}</td>
+        <td>{{ cliente.correo }}</td>
+        <td>
+          <span [class]="'table-badge status-' + cliente.estado ? 'ACT' : 'INA'">
+            <i class="" [ngClass]="{
+              'ri-check-double-fill': cliente.estado == 'ACT',
+              'ri-close-circle-line': cliente.estado == 'INA'
+              }"></i>
+            {{cliente.estado}}
+          </span>
+        </td>
+        <td>
+          <p-button label="Editar" [link]="true" styleClass="button-link-secondary" icon="pi pi-pencil text-1xl"
+          (click)="openModal(cliente)"></p-button>
+        </td>
+        <td>
+          <p-button label="Eliminar" [link]="true" styleClass="button-link-secondary" icon="pi pi-trash text-1xl"
+          (click)="eliminar(cliente)"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6">
+          <div class="flex flex-column gap-3 align-items-center justify-content-center py-4">
+            <i class="ri-error-warning-line text-4xl"></i>
+            <span class="text-lg font-semibold">No hay información para mostrar</span>
+            <span>Verifique los filtros aplicados</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef> Id </th>
-    <td mat-cell *matCellDef="let element"> {{element.id}}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="tipoDocumento">
-    <th mat-header-cell *matHeaderCellDef> Tipo documento </th>
-    <td mat-cell *matCellDef="let element"> {{element.tipoDocumento}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="documento">
-    <th mat-header-cell *matHeaderCellDef> Documento </th>
-    <td mat-cell *matCellDef="let element"> {{element.documento}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="nombre">
-    <th mat-header-cell *matHeaderCellDef> Nombre </th>
-    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="empresa">
-    <th mat-header-cell *matHeaderCellDef> Empresa</th>
-    <td mat-cell *matCellDef="let element"> {{element.empresa}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="direccion">
-    <th mat-header-cell *matHeaderCellDef> dirección </th>
-    <td mat-cell *matCellDef="let element"> {{element.direccion}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="telefono">
-    <th mat-header-cell *matHeaderCellDef> Teléfono </th>
-    <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="correo">
-    <th mat-header-cell *matHeaderCellDef> Correo </th>
-    <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="departamento">
-    <th mat-header-cell *matHeaderCellDef> Departamento </th>
-    <td mat-cell *matCellDef="let element"> {{element.departamento}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="municipio">
-    <th mat-header-cell *matHeaderCellDef> Municipio </th>
-    <td mat-cell *matCellDef="let element"> {{element.municipio}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="estado">
-    <th mat-header-cell *matHeaderCellDef> Estado </th>
-    <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="act">
-    <th mat-header-cell *matHeaderCellDef> Editar </th>
-    <td mat-cell *matCellDef="let element">
-      <button class="btn btn-primary" (click)="openModal(element)"> Editar</button>
-     </td>
-  </ng-container>
-
-  <ng-container matColumnDef="del">
-    <th mat-header-cell *matHeaderCellDef> Eliminar </th>
-    <td mat-cell *matCellDef="let element">
-      <button class="btn btn-danger" (click)="eliminar(element)"> Eliminar</button>
-     </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+</p-card>

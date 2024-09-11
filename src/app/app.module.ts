@@ -62,7 +62,8 @@ import { PrimengModule } from './prime/primeng.module';
     HttpClientModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PrimengModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MainService } from 'src/app/services/main.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modal-especificaciones',
@@ -13,11 +12,15 @@ export class ModalEspecificacionesComponent implements OnInit {
   loading: boolean = false;
   parametros: any[] = [];
 
+  dataTransfer: any;
+
   constructor(
-    public dialogRef: MatDialogRef<ModalEspecificacionesComponent>,
-    @Inject(MAT_DIALOG_DATA) public dataTransfer: any,
-    private MainService: MainService
-  ) { }
+    public dialogRef: DynamicDialogRef,
+    private MainService: MainService,
+    private config: DynamicDialogConfig,
+  ) {
+    this.dataTransfer =this.config.data;
+  }
 
   ngOnInit(): void {
     console.log(this.dataTransfer)
@@ -36,11 +39,6 @@ export class ModalEspecificacionesComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: 'Ha ocurrido un error',
-        })
         this.loading = false
       },
       complete: () => {

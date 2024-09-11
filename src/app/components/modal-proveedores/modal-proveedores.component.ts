@@ -1,11 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MainService } from 'src/app/services/main.service';
 import { Proveedor } from 'src/app/models/crud/proveedor';
-import Swal from 'sweetalert2';
 import { Departamento, Estados, TipoDocumento, municipio } from 'src/app/models/parametrizacion/parametrizacion';
 import { Response } from 'src/app/models/response/response';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-modal-proveedores',
@@ -34,11 +33,15 @@ export class ModalProveedoresComponent implements OnInit {
     estado: new FormControl('', [Validators.required, Validators.maxLength(3)])
   })
 
+  dataTransfer: any;
+
   constructor(
     private MainService: MainService,
-    public dialogRef: MatDialogRef<ModalProveedoresComponent>,
-    @Inject(MAT_DIALOG_DATA) public dataTransfer: any
-  ) { }
+    public dialogRef: DynamicDialogRef,
+    private config: DynamicDialogConfig,
+  ) {
+    this.dataTransfer =this.config.data;
+  }
 
   ngOnInit(): void {
     this.cargaDepartamentos();
@@ -56,20 +59,10 @@ export class ModalProveedoresComponent implements OnInit {
         if(req.isSuccess){
           this.comboTipoDocumento = req.data;
         }else{
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'Ha ocurrido un error cargando los tipos de documento',
-          })
         }
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.isLoading = false
       },
       complete: () => {
@@ -85,20 +78,10 @@ export class ModalProveedoresComponent implements OnInit {
         if(req.isSuccess){
           this.comboEstados = req.data;
         }else{
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'Ha ocurrido un error cargando los estados',
-          })
         }
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.isLoading = false
       },
       complete: () => {
@@ -114,20 +97,10 @@ export class ModalProveedoresComponent implements OnInit {
         if(req.isSuccess){
           this.comboDepartamento = req.data;
         }else{
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'Ha ocurrido un error cargando los departamentos',
-          })
         }
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.isLoading = false
       },
       complete: () => {
@@ -144,20 +117,10 @@ export class ModalProveedoresComponent implements OnInit {
           if(req.isSuccess){
             this.comboMunicipio = req.data;
           }else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: 'Ha ocurrido un error cargando los municipios',
-            })
           }
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: err,
-          })
           this.isLoading = false
         },
         complete: () => {
@@ -191,11 +154,6 @@ export class ModalProveedoresComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: 'Ha ocurrido un error',
-        })
         this.isLoading = false
       },
       complete: () => {
@@ -228,30 +186,13 @@ export class ModalProveedoresComponent implements OnInit {
       this.MainService.ProovedoresService.create(object).subscribe({
         next: (req:any) => {
           if(req.isSuccess){
-            Swal.fire({
-              icon: 'success',
-              title: 'Editado!',
-              text: 'Se ha guardado correctamente',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.onClose(true);
-              }
-            })
-          }else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: 'Ha ocurrido un error',
-            })
+
+            this.onClose(true);
+
           }
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'Ha ocurrido un error',
-          })
           this.isLoading = false
         },
         complete: () => {
@@ -283,31 +224,16 @@ export class ModalProveedoresComponent implements OnInit {
         next: (req:any) => {
 
           if(req.isSuccess){
-            Swal.fire({
-              icon: 'success',
-              title: 'Editado!',
-              text: 'Se ha editado correctamente',
-            }).then((result) => {
-              if (result.isConfirmed) {
+
                 this.onClose(true);
-              }
-            })
+
           }else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: 'Error al editar',
-            })
+
           }
 
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'Error al editar',
-          })
           this.isLoading = false
         },
         complete: () => {

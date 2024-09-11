@@ -1,40 +1,25 @@
 <div *ngIf="loading" class="loader"></div>
-<div class="flex mb-3">
-  <div class="w-4/5">
-    <h1 class="bold">Productos</h1>
-  </div>
-  <div class="w-1/5">
-    <button class="btn btn-primary w-100" (click)="openModal()">Nuevo</button>
-  </div>
+<div class="flex justify-content-between mb-5">
+  <h1 class="bold">Productos</h1>
+  <button pButton label="Nuevo" (click)="openModal()"></button>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="cargaProductos()">
-  <div class="flex my-3">
-    <div class="w-2/5 px-2">
-      <label for="filtro">Filtro</label>
-      <mat-form-field appearance="outline" class="w-100" >
-        <mat-label>Digite</mat-label>
-        <input matInput id="filtro" name="filtro" formControlName="filtro" type="text" placeholder="Digite la categoría" class="form-control" (input)="cargaProductos($event)"/>
-        <mat-hint>Busca apartir del 3 carácter</mat-hint>
-      </mat-form-field>
+  <div class="grid my-3">
+    <div class="col-12 md:col-4 flex flex-column gap-2">
+      <label htmlFor="filtro">Filtro</label>
+      <input pInputText id="filtro" name="filtro" formControlName="filtro" placeholder="Digite la categoría" (input)="cargaProductos($event)"/>
+      <small id="filtro-help">Busca apartir del 3 carácter.</small>
     </div>
-    <div class="w-2/5 px-2">
+    <div class="col-12 md:col-4 flex flex-column gap-2">
       <label for="estado">Estado</label>
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Seleccione</mat-label>
-        <mat-select name="estado" id="estado" formControlName="estado">
-          <mat-option [value]="null">Seleccione</mat-option>
-          <mat-option value="ACT">Activo</mat-option>
-          <mat-option value="INA">Desactivo</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <p-dropdown formControlName="estado" [options]="estadosSelect" optionLabel="descripcion" styleClass="w-full p-inputtext-sm" placeholder="Seleccione"></p-dropdown>
     </div>
     <div class="w-1/5" style="align-self: center;">
       <button class="btn btn-primary w-100" type="submit">Buscar</button>
     </div>
   </div>
 </form>
-<mat-progress-bar class="my-2" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 
 <div class="mt-7 grid grid-cols-5 gap-3" *ngIf="products">
   <ng-container *ngFor="let item of products">
@@ -43,4 +28,3 @@
     </div>
   </ng-container>
 </div>
-<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>

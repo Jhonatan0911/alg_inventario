@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MainService } from 'src/app/services/main.service';
-import Swal from 'sweetalert2';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 
 @Component({
@@ -31,11 +30,15 @@ export class ModalProductosComponent implements OnInit {
     observacion: new FormControl('', [Validators.required]),
   })
 
+  dataTransfer: any;
+
   constructor(
     private MainService: MainService,
-    public dialogRef: MatDialogRef<ModalProductosComponent>,
-    @Inject(MAT_DIALOG_DATA) public dataTransfer: any
-  ) { }
+    public dialogRef: DynamicDialogRef,
+    private config: DynamicDialogConfig,
+  ) {
+    this.dataTransfer =this.config.data;
+  }
 
   ngOnInit(): void {
     this.cargaCategorias()
@@ -62,11 +65,6 @@ export class ModalProductosComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: 'Ha ocurrido un error',
-        })
         this.isLoading = false
       },
       complete: () => {
@@ -83,11 +81,6 @@ export class ModalProductosComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.isLoading = false
       },
       complete: () => {
@@ -104,11 +97,6 @@ export class ModalProductosComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.isLoading = false
       },
       complete: () => {
@@ -129,11 +117,6 @@ export class ModalProductosComponent implements OnInit {
         if(this.archivos.length <= 0){
           this.archivos.push(file)
         }else{
-          Swal.fire({
-            icon: 'warning',
-            title: 'Ha sobrepasado el limite de archivos',
-            text: 'Se selecciono el primer archivo cargado.',
-          })
         }
       });
     }
@@ -144,11 +127,6 @@ export class ModalProductosComponent implements OnInit {
       this.parametros.push(this.parametroValor)
       this.parametroValor = "";
     }else{
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Por favor llene el campo parametro.',
-      })
     }
   }
 
@@ -166,30 +144,15 @@ export class ModalProductosComponent implements OnInit {
       this.MainService.ProductosService.create(object).subscribe({
         next: (req:any) => {
           if(req.isSuccess){
-            Swal.fire({
-              icon: 'success',
-              title: 'Exito!',
-              text: 'Se ha guardado correctamente',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.onClose(true);
-              }
-            })
+
+            this.onClose(true);
+
           }else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: req.mensaje,
-            })
           }
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'Ha ocurrido un error',
-          })
+
           this.isLoading = false
         },
         complete: () => {
@@ -213,30 +176,12 @@ export class ModalProductosComponent implements OnInit {
       this.MainService.ProductosService.edit(object).subscribe({
         next: (req:any) => {
           if(req.isSuccess){
-            Swal.fire({
-              icon: 'success',
-              title: 'Exito!',
-              text: 'Se ha guardado correctamente',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.onClose(true);
-              }
-            })
-          }else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: req.mensaje,
-            })
+
+            this.onClose(true);
           }
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'Ha ocurrido un error',
-          })
           this.isLoading = false
         },
         complete: () => {

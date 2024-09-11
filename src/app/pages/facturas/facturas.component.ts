@@ -1,17 +1,15 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ModalClientesComponent } from 'src/app/components/modal-clientes/modal-clientes.component';
-import { ModalMiniFormulaComponent } from 'src/app/components/modal-mini-formula/modal-mini-formula.component';
 import { ModalEspecificacionesComponent } from 'src/app/components/modal-productos/modal-especificaciones/modal-especificaciones.component';
 import { IProductCard } from 'src/app/models/crud/productos';
 import { FacturaDetalleProducto, factura } from 'src/app/models/factura/factura';
 import { Departamento, municipio } from 'src/app/models/parametrizacion/parametrizacion';
 import { Response } from 'src/app/models/response/response';
+import { Column } from 'src/app/models/table';
 import { MainService } from 'src/app/services/main.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-facturas',
@@ -23,6 +21,8 @@ export class FacturasComponent implements OnInit {
   comboDepartamento: Departamento[] = [];
   comboMunicipio: municipio[] = [];
 
+  ref: DynamicDialogRef | undefined;
+
   loading: boolean = false;
   clientes: any = [];
   products: IProductCard[] = [];
@@ -31,14 +31,40 @@ export class FacturasComponent implements OnInit {
     'Productos',
     'Servicios',
   ];
+
   cliente: any;
   clienteSelect: any;
   categoriaSelect: any;
+  tipoSelect: any;
   productosSelect: any = [];
   productosEnviar: any = [];
 
-  displayedColumns: string[] = ['descripcion', 'cantidad', 'del'];
-  dataSource = new MatTableDataSource();
+  firstPaginator: number = 0;
+  rowTablePaginator: number = 10;
+  actualPage: number = 0;
+  dataTotalRecords: number = 0;
+  dataTotalPages!: number
+
+  columnsTable: Column[] = [
+    {
+      field: 'descripcion',
+      header: 'Producto',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'cantidad',
+      header: 'Cantidad',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'del',
+      header: 'Eliminar',
+      width: '180px',
+      visible: true,
+    }
+  ];
 
 
   form = new FormGroup({
@@ -53,8 +79,8 @@ export class FacturasComponent implements OnInit {
 
   constructor(
     private MainService: MainService,
-    private dialog: MatDialog,
     private ruta: ActivatedRoute,
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit(): void {
@@ -75,20 +101,10 @@ export class FacturasComponent implements OnInit {
         if(req.isSuccess){
           this.comboDepartamento = req.data;
         }else{
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'Ha ocurrido un error cargando los departamentos',
-          })
         }
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.loading = false
       },
       complete: () => {
@@ -109,20 +125,10 @@ export class FacturasComponent implements OnInit {
           if(req.isSuccess){
             this.comboMunicipio = req.data;
           }else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: 'Ha ocurrido un error cargando los municipios',
-            })
           }
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: err,
-          })
           this.loading = false
         },
         complete: () => {
@@ -133,10 +139,9 @@ export class FacturasComponent implements OnInit {
   }
 
   openModalCliente(){
-    const dialogRef = this.dialog.open(ModalClientesComponent, {
-      disableClose: true,
-      width: '60%',
-      position: {top:'2%'},
+    this.ref = this.dialogService.open(ModalClientesComponent, {
+      header: "Cliente",
+      width: '40vw',
       data: {
         cliente: this.cliente,
         editMode: true,
@@ -144,26 +149,25 @@ export class FacturasComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe((response:any) => {
-      if(response || response != null && response != false){
+    this.ref.onClose.subscribe((res: boolean) => {
+      if (res) {
         this.cargaCliente();
       }
-    });
+    })
   }
 
   agregar(event: any, producto: any){
-    const dialogRef = this.dialog.open(ModalEspecificacionesComponent, {
-      disableClose: true,
-      width: '60%',
-      height: '90%',
-      position: {top:'2%'},
+
+    this.ref = this.dialogService.open(ModalEspecificacionesComponent, {
+      header: "Producto",
+      width: '40vw',
       data: {
         producto: producto,
       }
     });
 
-    dialogRef.afterClosed().subscribe((response:any) => {
-      if(response || response != null && response != false){
+    this.ref.onClose.subscribe((response: any) => {
+      if (response) {
         console.log(response);
 
         let facturaDetalles : FacturaDetalleProducto = {
@@ -187,12 +191,10 @@ export class FacturasComponent implements OnInit {
         this.productosSelect.push(response);
 
         this.form.controls['facturaDetalles'].setValue(this.productosEnviar)
-
-        this.dataSource = new MatTableDataSource(this.productosSelect);
         console.log(this.productosSelect);
         console.log(this.form.value);
       }
-    });
+    })
   }
 
 
@@ -208,11 +210,6 @@ export class FacturasComponent implements OnInit {
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: err,
-          })
           this.loading = false
         },
         complete: () => {
@@ -230,11 +227,6 @@ export class FacturasComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.loading = false
       },
       complete: () => {
@@ -252,11 +244,6 @@ export class FacturasComponent implements OnInit {
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: err,
-          })
           this.loading = false
         },
         complete: () => {
@@ -274,11 +261,6 @@ export class FacturasComponent implements OnInit {
       },
       error: (err: any) => {
         console.log(err)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error...',
-          text: err,
-        })
         this.loading = false
       },
       complete: () => {
@@ -306,27 +288,12 @@ export class FacturasComponent implements OnInit {
         next: (req:any) => {
           console.log(req);
           if(req.isSuccess){
-            Swal.fire({
-              icon: 'success',
-              title: 'Exito!',
-              text: 'Creado exitosamente',
-            })
           }else{
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: req.mensaje,
-            })
           }
 
         },
         error: (err: any) => {
           console.log(err)
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: err,
-          })
           this.loading = false
         },
         complete: () => {
@@ -336,11 +303,6 @@ export class FacturasComponent implements OnInit {
         }
       })
     }else{
-      Swal.fire({
-        icon: 'warning',
-        title: 'Error...',
-        text: 'Por favor llena todos los campos y asegurate de tener al menos un producto seleccionado',
-      })
     }
   }
 
