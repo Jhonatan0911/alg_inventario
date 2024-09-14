@@ -1,204 +1,152 @@
-<div class="h-full">
-  <nav class="bg-secondary">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <div class="flex items-center">
-          <div class="flex-shrink-0">
-            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
-          </div>
-        </div>
-        <div class="hidden md:block">
-          <div class="ml-4 flex items-center md:ml-6">
-            <button type="button" class="relative rounded-full" (click)="onClose(false)">
-              <span class="absolute -inset-1.5"></span>
-              <span class="sr-only">View notifications</span>
-              <i class="text-gray-300 text-2xl inline-block">closed</i>
+<div class="overflow-auto">
+  <div class="mx-auto max-w-7xl sm:px-4 lg:px-6">
+    <p-progressBar class="my-2" mode="indeterminate" *ngIf="isLoading"></p-progressBar>
+    <form (ngSubmit)="dataTransfer.editMode ? editar() : crear()" [formGroup]="form">
+      <div>
+        <label for="file-upload" class="custom-file-upload dropzone w-full">
+          <i class="pi pi-upload"></i>Click o Arrastra tus imágenes aquí
+        </label>
+        <input
+          id="file-upload"
+          multiple
+          #myInput
+          class="custom-file-input dropzone w-full"
+          type="file"
+          accept=".jpg"
+          name="filetoupload"
+          placeholder="archivo"
+          (change)="onFileSelect($event)"
+        />
+      </div>
+      <div *ngIf="archivos.length >= 10">
+        <h2>Ya alcanzó el límite de archivos</h2>
+      </div>
+      <br />
+      <div [ngClass]="{ 'overflow-cards': archivos.length != 0 }">
+        <div
+          class="card my-3 p-3 justify-between flex-row single-file"
+          *ngFor="let item of archivos"
+        >
+          <div class="flex items-center">{{ item.name }}</div>
+          <div>
+            <button
+              type="button"
+              class="btn btn-eliminar"
+              aria-label="Close"
+              (click)="remove(item)"
+            >
+              <i class="text-white">close</i>
             </button>
           </div>
         </div>
       </div>
-    </div>
-  </nav>
-  <div class="overflow-auto" style="height: 90%;">
-    <header class="bg-white">
-      <div class="mx-auto max-w-7xl px-4 pb-3 pt-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{dataTransfer.label + " producto"}}</h1>
+      <div class="grid formgrid mt-3">
+        <div class="col-12 field">
+          <label for="descripcion">Nombre del producto</label>
+          <input
+            pInputText
+            id="descripcion"
+            name="descripcion"
+            formControlName="descripcion"
+            type="text"
+            placeholder="Digite el nombre"
+            class="w-full p-inputtext-sm"
+          />
+          <small severity="error" *ngIf="validate('descripcion')">
+            {{ check('descripcion') }}
+          </small>
+        </div>
+        <div class="col-12 field">
+          <label for="categoriaId">Categoría</label>
+          <p-dropdown
+            [options]="categorias"
+            formControlName="categoriaId"
+            placeholder="Seleccione"
+            optionLabel="descripcion"
+            optionValue="id"
+            styleClass="w-full"
+          ></p-dropdown>
+          <small>
+            {{ check('categoriaId') }}
+          </small>
+        </div>
+        <div class="col-12 field">
+          <label for="observacion">Descripción</label>
+          <span class="p-float-label">
+            <textarea
+              pInputTextarea
+              id="observacion"
+              rows="5"
+              cols="30"
+              name="observacion"
+              formControlName="observacion"
+              placeholder="Digite la descripción"
+              class="w-full p-inputtext-sm"
+            ></textarea>
+            <label for="observacion">Descripción</label>
+          </span>
+          <small severity="error" *ngIf="validate('observacion')">
+            {{ check('observacion') }}
+          </small>
+        </div>
       </div>
-    </header>
-    <main>
-      <div class="mx-auto max-w-7xl pb-6 sm:px-6 lg:px-8">
-        <p-progressBar class="my-2" mode="indeterminate" *ngIf="isLoading"></p-progressBar>
-        <form (ngSubmit)="dataTransfer.editMode ? editar() : crear()" [formGroup]="form">
-          <div>
-            <label for="file-upload" class="custom-file-upload dropzone w-full">
-              <i>cloud_upload</i>Click o Arrastra tus imágenes aquí
-            </label>
-            <input
-              id="file-upload"
-              multiple
-              #myInput
-              class="custom-file-input dropzone w-full"
-              type="file"
-              accept=".jpg"
-              name="filetoupload"
-              placeholder="archivo"
-              (change)="onFileSelect($event)"
-            />
-          </div>
-          <div *ngIf="archivos.length >= 10">
-            <h2>Ya alcanzó el límite de archivos</h2>
-          </div>
-          <br />
-          <div [ngClass]="{ 'overflow-cards': archivos.length != 0 }">
-            <div
-              class="card my-3 p-3 justify-between flex-row single-file"
-              *ngFor="let item of archivos"
-            >
-              <div class="flex items-center">{{ item.name }}</div>
-              <div>
-                <button
-                  type="button"
-                  class="btn btn-eliminar"
-                  aria-label="Close"
-                  (click)="remove(item)"
-                >
-                  <i class="text-white">close</i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="flex mt-3">
-            <div class="w-full px-3">
-              <label for="descripcion">Nombre del producto</label>
-              <span class="p-float-label">
-                <input
-                  pInputText
-                  id="descripcion"
-                  name="descripcion"
-                  formControlName="descripcion"
-                  type="text"
-                  placeholder="Digite el nombre"
-                  class="w-full p-inputtext-sm"
-                />
-                <label for="descripcion">Producto</label>
-              </span>
-              <small
-                severity="error"
-                *ngIf="validate('descripcion')"
-              >
-              {{ check('descripcion') }}
-            </small>
-            </div>
-          </div>
-          <div class="flex mt-2">
-            <div class="w-full px-3">
-              <label for="categoriaId">Categoría</label>
-              <p-dropdown
-                [options]="categorias"
-                formControlName="categoriaId"
-                placeholder="Seleccione"
-                optionLabel="descripcion"
-                optionValue="id"
-                class="w-full"
-              ></p-dropdown>
-              <small
-              >
-              {{ check('categoriaId') }}
-            </small>
-            </div>
-          </div>
-          <div class="flex mt-2">
-            <div class="w-full px-3">
-              <label for="observacion">Descripción</label>
-              <span class="p-float-label">
-                <textarea
-                  pInputTextarea
-                  id="observacion"
-                  name="observacion"
-                  formControlName="observacion"
-                  placeholder="Digite la descripción"
-                  class="w-full p-inputtext-sm"
-                ></textarea>
-                <label for="observacion">Descripción</label>
-              </span>
-              <small
-                severity="error"
-                *ngIf="validate('observacion')"
-              >
-              {{ check('observacion') }}</small>
-            </div>
-          </div>
 
-          <h1 class="third text-2xl">Asignar parámetros</h1>
-          <div class="flex mt-3">
-            <div class="w-full px-3">
-              <label for="parametro">Parámetro</label>
-              <p-dropdown
-                [options]="comboParametros"
-                [(ngModel)]="parametroValor"
-                placeholder="Seleccione"
-                optionLabel="descripcion"
-                [ngModelOptions]="{ standalone: true }"
-                class="w-full"
-              ></p-dropdown>
-            </div>
-          </div>
-
-          <div class="flex mt-3">
-            <div class="w-5/6"></div>
-            <div class="w-1/6">
-              <button
-                pButton
-                label="Agregar"
-                class="btn btn-third w-full"
-                type="button"
-                (click)="add()"
-                [disabled]="!parametroValor"
-              ></button>
-            </div>
-          </div>
-
-          <div class="flex mt-3" *ngFor="let par of parametros">
-            <div class="w-5/6 px-3">
-              <label for="nombre">Parámetro</label>
-              <span class="p-float-label">
-                <input
-                  pInputText
-                  id="nombre"
-                  name="nombre"
-                  [(ngModel)]="par.descripcion"
-                  [ngModelOptions]="{ standalone: true }"
-                  class="w-full p-inputtext-sm"
-                />
-                <label for="nombre">Parámetro</label>
-              </span>
-            </div>
-            <div class="w-1/6 px-3 flex items-center">
-              <button
-                pButton
-                icon="pi pi-trash"
-                class="btn btn-danger w-full"
-                type="button"
-                (click)="deleteParametro(par)"
-              ></button>
-            </div>
-            <hr class="border-dashed" />
-          </div>
-
-          <div class="flex mt-3">
-            <div class="w-5/6"></div>
-            <div class="w-1/6">
-              <button
-                pButton
-                label="{{ dataTransfer.label }}"
-                class="btn btn-third w-full"
-                type="submit"
-                [disabled]="!form.valid || isLoading"
-              ></button>
-            </div>
-          </div>
-        </form>
+      <h1 class="third text-2xl">Asignar parámetros</h1>
+      <div class="grid formgrid">
+        <div class="col-10 field">
+          <label for="parametro">Parámetro</label>
+          <p-dropdown
+            [options]="comboParametros"
+            [(ngModel)]="parametroValor"
+            placeholder="Seleccione"
+            optionLabel="descripcion"
+            [ngModelOptions]="{ standalone: true }"
+            styleClass="w-full"
+          ></p-dropdown>
+        </div>
+        <div class="col-2 align-content-center">
+          <button
+            pButton
+            icon="pi pi-plus"
+            type="button"
+            (click)="add()"
+            [disabled]="!parametroValor"
+          ></button>
+        </div>
       </div>
-    </main>
+
+      <div class="grid formgrid" *ngFor="let par of parametros">
+        <div class="col-10 field">
+          <label for="nombre">Parámetro</label>
+          <input
+            pInputText
+            id="nombre"
+            name="nombre"
+            [(ngModel)]="par.descripcion"
+            [ngModelOptions]="{ standalone: true }"
+            class="w-full p-inputtext-sm"
+          />
+        </div>
+        <div class="col-2 align-content-center">
+          <button
+            pButton
+            icon="pi pi-trash"
+            type="button"
+            (click)="deleteParametro(par)"
+          ></button>
+        </div>
+        <hr class="border-dashed" />
+      </div>
+
+      <div class="flex justify-content-end">
+        <button
+          pButton
+          label="{{ dataTransfer.label }}"
+          type="submit"
+          [disabled]="!form.valid || isLoading"
+        ></button>
+      </div>
+    </form>
   </div>
 </div>
+

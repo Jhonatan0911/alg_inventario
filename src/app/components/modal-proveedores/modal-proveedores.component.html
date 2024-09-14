@@ -1,113 +1,74 @@
-<div class="min-h-full">
-  <nav class="bg-secondary">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <div class="flex items-center">
-          <div class="flex-shrink-0">
-            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
-          </div>
+<div class="overflow-auto">
+  <div class="mx-auto max-w-7xl sm:px-4 lg:px-6">
+    <p-progressBar mode="indeterminate" *ngIf="isLoading"></p-progressBar>
+    <form (ngSubmit)="dataTransfer.editMode ? editar(): crear()" [formGroup]="form">
+
+      <div class="formgrid grid mt-3">
+        <div class="field col-12 md:col-6">
+          <label for="nit" class="font-medium">NIT</label>
+          <input id="nit" type="text" pInputText formControlName="nit" placeholder="Digite el NIT" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('nit')" class="p-error">{{ check('nit') }}</small>
         </div>
-        <div class="hidden md:block">
-          <div class="ml-4 flex items-center md:ml-6">
-            <button type="button" class="relative rounded-full" (click)="onClose(false)">
-              <span class="absolute -inset-1.5"></span>
-              <span class="sr-only">View notifications</span>
-              <i class="text-gray-300 text-2xl inline-block">closed</i>
-            </button>
-          </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="nombre" class="font-medium">Nombre</label>
+          <input id="nombre" type="text" pInputText formControlName="nombre" placeholder="Digite el nombre" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('nombre')" class="p-error">{{ check('nombre') }}</small>
         </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="encargado" class="font-medium">Encargado</label>
+          <input id="encargado" type="text" pInputText formControlName="encargado" placeholder="Digite el encargado" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('encargado')" class="p-error">{{ check('encargado') }}</small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="telefono" class="font-medium">Teléfono</label>
+          <input id="telefono" type="text" pInputText formControlName="telefono" placeholder="Digite el teléfono" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('telefono')" class="p-error">{{ check('telefono') }}</small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="correo" class="font-medium">Correo</label>
+          <input id="correo" type="text" pInputText formControlName="correo" placeholder="Digite el correo" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('correo')" class="p-error">{{ check('correo') }}</small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="direccion" class="font-medium">Dirección</label>
+          <input id="direccion" type="text" pInputText formControlName="direccion" placeholder="Digite la dirección" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('direccion')" class="p-error">{{ check('direccion') }}</small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="departamento" class="font-medium">Departamento</label>
+          <p-dropdown [options]="comboDepartamento" formControlName="departamento" placeholder="Seleccione" styleClass="w-full p-inputtext-sm" (onChange)="cargaMunicipio()"></p-dropdown>
+          <small *ngIf="validate('departamento')" class="p-error">{{ check('departamento') }}</small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="municipio" class="font-medium">Municipio</label>
+          <p-dropdown [options]="comboMunicipio" formControlName="municipio" placeholder="Seleccione" styleClass="w-full p-inputtext-sm"></p-dropdown>
+          <small *ngIf="validate('municipio')" class="p-error">{{ check('municipio') }}</small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="rubros" class="font-medium">Rubros</label>
+          <input id="rubros" type="text" pInputText formControlName="rubros" placeholder="Digite los rubros" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('rubros')" class="p-error">{{ check('rubros') }}</small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="estado" class="font-medium">Estado</label>
+          <p-dropdown [options]="comboEstados" formControlName="estado" placeholder="Seleccione" styleClass="w-full p-inputtext-sm"></p-dropdown>
+          <small *ngIf="validate('estado')" class="p-error">{{ check('estado') }}</small>
+        </div>
+
       </div>
-    </div>
-  </nav>
 
-  <header class="bg-white">
-    <div class="mx-auto max-w-7xl px-4 pb-3 pt-6 sm:px-6 lg:px-8">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{dataTransfer.label + " proveedor"}}</h1>
-    </div>
-  </header>
-
-  <main>
-    <div class="mx-auto max-w-7xl pb-6 sm:px-6 lg:px-8">
-      <p-progressBar mode="indeterminate" *ngIf="isLoading"></p-progressBar>
-      <form (ngSubmit)="dataTransfer.editMode ? editar(): crear()" [formGroup]="form">
-
-        <div class="formgrid grid mt-3">
-          <div class="field col-12 md:col-6">
-            <label for="nit" class="font-medium">NIT</label>
-            <input id="nit" type="text" pInputText formControlName="nit" placeholder="Digite el NIT" class="w-full p-inputtext-sm" />
-            <small *ngIf="validate('nit')" class="p-error">{{ check('nit') }}</small>
-          </div>
-
-          <div class="field col-12 md:col-6">
-            <label for="nombre" class="font-medium">Nombre</label>
-            <input id="nombre" type="text" pInputText formControlName="nombre" placeholder="Digite el nombre" class="w-full p-inputtext-sm" />
-            <small *ngIf="validate('nombre')" class="p-error">{{ check('nombre') }}</small>
-          </div>
-        </div>
-
-        <div class="formgrid grid mt-3">
-          <div class="field col-12 md:col-6">
-            <label for="encargado" class="font-medium">Encargado</label>
-            <input id="encargado" type="text" pInputText formControlName="encargado" placeholder="Digite el encargado" class="w-full p-inputtext-sm" />
-            <small *ngIf="validate('encargado')" class="p-error">{{ check('encargado') }}</small>
-          </div>
-
-          <div class="field col-12 md:col-6">
-            <label for="telefono" class="font-medium">Teléfono</label>
-            <input id="telefono" type="text" pInputText formControlName="telefono" placeholder="Digite el teléfono" class="w-full p-inputtext-sm" />
-            <small *ngIf="validate('telefono')" class="p-error">{{ check('telefono') }}</small>
-          </div>
-        </div>
-
-        <div class="formgrid grid mt-3">
-          <div class="field col-12 md:col-6">
-            <label for="correo" class="font-medium">Correo</label>
-            <input id="correo" type="text" pInputText formControlName="correo" placeholder="Digite el correo" class="w-full p-inputtext-sm" />
-            <small *ngIf="validate('correo')" class="p-error">{{ check('correo') }}</small>
-          </div>
-
-          <div class="field col-12 md:col-6">
-            <label for="direccion" class="font-medium">Dirección</label>
-            <input id="direccion" type="text" pInputText formControlName="direccion" placeholder="Digite la dirección" class="w-full p-inputtext-sm" />
-            <small *ngIf="validate('direccion')" class="p-error">{{ check('direccion') }}</small>
-          </div>
-        </div>
-
-        <div class="formgrid grid mt-3">
-          <div class="field col-12 md:col-6">
-            <label for="departamento" class="font-medium">Departamento</label>
-            <p-dropdown [options]="comboDepartamento" formControlName="departamento" placeholder="Seleccione" class="w-full p-inputtext-sm" (onChange)="cargaMunicipio()"></p-dropdown>
-            <small *ngIf="validate('departamento')" class="p-error">{{ check('departamento') }}</small>
-          </div>
-
-          <div class="field col-12 md:col-6">
-            <label for="municipio" class="font-medium">Municipio</label>
-            <p-dropdown [options]="comboMunicipio" formControlName="municipio" placeholder="Seleccione" class="w-full p-inputtext-sm"></p-dropdown>
-            <small *ngIf="validate('municipio')" class="p-error">{{ check('municipio') }}</small>
-          </div>
-        </div>
-
-        <div class="formgrid grid mt-3">
-          <div class="field col-12 md:col-6">
-            <label for="rubros" class="font-medium">Rubros</label>
-            <input id="rubros" type="text" pInputText formControlName="rubros" placeholder="Digite los rubros" class="w-full p-inputtext-sm" />
-            <small *ngIf="validate('rubros')" class="p-error">{{ check('rubros') }}</small>
-          </div>
-
-          <div class="field col-12 md:col-6">
-            <label for="estado" class="font-medium">Estado</label>
-            <p-dropdown [options]="comboEstados" formControlName="estado" placeholder="Seleccione" class="w-full p-inputtext-sm"></p-dropdown>
-            <small *ngIf="validate('estado')" class="p-error">{{ check('estado') }}</small>
-          </div>
-        </div>
-
-        <div class="formgrid grid mt-3">
-          <div class="col-12 md:col-10"></div>
-          <div class="col-12 md:col-2">
-            <button pButton type="submit" label="{{dataTransfer.label}}" [disabled]="!this.form.valid || this.isLoading" class="w-full p-button-primary"></button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </main>
+      <div class="flex justify-content-end">
+        <button pButton type="submit" label="{{dataTransfer.label}}" [disabled]="!this.form.valid || this.isLoading" icon="pi pi-save"></button>
+      </div>
+    </form>
+  </div>
 </div>

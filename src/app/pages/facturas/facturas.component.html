@@ -1,72 +1,66 @@
 <div *ngIf="loading" class="loader"></div>
-<div class="flex mb-3">
-  <div class="col-12">
-    <h1 class="third text-2xl">Generar {{tipo}}</h1>
-  </div>
-</div>
 <form (ngSubmit)="submit()" [formGroup]="form">
-  <div class="formgrid grid mt-2">
-    <div class="col-12 md:col-4 field">
-      <label for="cliente">Clientes</label>
-      <p-dropdown formControlName="cliente" [options]="clienteSelect" optionLabel="nombre" optionValue="id" styleClass="w-full p-inputtext-sm" placeholder="Seleccione"></p-dropdown>
+  <p-card header="Generar {{tipo}}">
+    <div class="formgrid grid mt-2">
+      <div class="col-12 md:col-4 field">
+        <label for="cliente">Clientes</label>
+        <p-dropdown formControlName="clienteId" [options]="clienteSelect" optionLabel="nombre" optionValue="id" styleClass="w-full p-inputtext-sm" placeholder="Seleccione" (onChange)="cargaCliente()"></p-dropdown>
+      </div>
     </div>
-  </div>
-  <div class="formgrid grid" *ngIf="cliente">
-    <div class="field col-12 md:col-4 lg:col-4">
-      <label htmlFor="nombre">Nombre</label>
-      <input id="nombre" name="nombre" type="string" [(ngModel)]="cliente.nombre" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
-    </div>
-    <div class="field col-12 md:col-4 lg:col-4">
-      <label htmlFor="documento">Documento</label>
-      <input id="documento" name="documento" type="string" [(ngModel)]="cliente.documento" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
-    </div>
-    <div class="field col-12 md:col-4 lg:col-4">
-      <label htmlFor="empresa">Empresa</label>
-      <input id="empresa" name="empresa" type="string" [(ngModel)]="cliente.empresa" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
-    </div>
-  </div>
-  <div class="formgrid grid" *ngIf="cliente">
-    <div class="field col-12 md:col-4 lg:col-4">
-      <label htmlFor="departamento">Departamento</label>
-      <input id="departamento" name="departamento" type="string" [(ngModel)]="cliente.departamento" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
-    </div>
-    <div class="field col-12 md:col-4 lg:col-4">
-      <label htmlFor="telefono">Teléfono</label>
-      <input id="telefono" name="telefono" type="string" [(ngModel)]="cliente.telefono" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
-    </div>
-    <div class="field col-12 md:col-4 lg:col-4">
-      <label htmlFor="correo">Correo</label>
-      <input id="correo" name="correo" type="string" [(ngModel)]="cliente.telefono" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
-    </div>
-  </div>
-  <div class="flex justify-content-end" *ngIf="cliente">
-    <p-button type="button" (click)="openModalCliente()" label="Editar información"></p-button>
-  </div>
-  <hr class="my-5" *ngIf="cliente">
+  </p-card>
 
-  <h1 class="third text-2xl" *ngIf="cliente">Datos de facturación</h1>
-
-  <div class="formgrid grid" *ngIf="cliente">
-    <div class="field col-12 md:col-4 lg:col-4">
-      <label htmlFor="codDepartamento">Departamento</label>
-      <p-dropdown placeholder="Seleccione" [options]="comboDepartamento" styleClass="w-full p-inputtext-sm" formControlName="codDepartamento" optionLabel="descripcion" optionValue="codigo" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
+  <p-card header="Información del cliente" styleClass="mt-3" *ngIf="cliente">
+    <div class="formgrid grid" >
+      <div class="field col-12 md:col-4">
+        <label htmlFor="nombre">Nombre</label>
+        <input id="nombre" name="nombre" type="string" [(ngModel)]="cliente.nombre" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
+      </div>
+      <div class="field col-12 md:col-4">
+        <label htmlFor="documento">Documento</label>
+        <input id="documento" name="documento" type="string" [(ngModel)]="cliente.documento" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
+      </div>
+      <div class="field col-12 md:col-4">
+        <label htmlFor="empresa">Empresa</label>
+        <input id="empresa" name="empresa" type="string" [(ngModel)]="cliente.empresa" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
+      </div>
+      <div class="field col-12 md:col-4 lg:col-4">
+        <label htmlFor="departamento">Departamento</label>
+        <input id="departamento" name="departamento" type="string" [(ngModel)]="cliente.departamento" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
+      </div>
+      <div class="field col-12 md:col-4 lg:col-4">
+        <label htmlFor="telefono">Teléfono</label>
+        <input id="telefono" name="telefono" type="string" [(ngModel)]="cliente.telefono" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
+      </div>
+      <div class="field col-12 md:col-4 lg:col-4">
+        <label htmlFor="correo">Correo</label>
+        <input id="correo" name="correo" type="string" [(ngModel)]="cliente.telefono" [ngModelOptions]="{standalone: true}" [disabled]="true" class="max-w-full p-inputtext-sm w-full" pInputText/>
+      </div>
     </div>
-
-    <div class="field col-12 md:col-4 lg:col-4">
-      <label htmlFor="codMunicipio">Municipio</label>
-      <p-dropdown placeholder="Seleccione" [options]="comboMunicipio" styleClass="w-full p-inputtext-sm" formControlName="codMunicipio" optionLabel="descripcion" optionValue="codigo" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
+    <div class="flex justify-content-end">
+      <p-button type="button" (click)="openModalCliente()" label="Editar información"></p-button>
     </div>
+  </p-card>
 
-    <div class="field col-12 md:col-12 lg:col-12">
-      <label htmlFor="descripcion">Descripcion</label>
-      <textarea rows="5" cols="30" pInputTextarea formControlName="descripcion" styleClass="w-full p-inputtext-sm" ></textarea>
+  <p-card header="Datos de facturación" styleClass="mt-3" *ngIf="cliente">
+    <div class="formgrid grid" >
+      <div class="field col-12 md:col-4 lg:col-4">
+        <label htmlFor="codDepartamento">Departamento</label>
+        <p-dropdown placeholder="Seleccione" [options]="comboDepartamento" styleClass="w-full p-inputtext-sm" formControlName="codDepartamento" optionLabel="descripcion" optionValue="codigo" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
+      </div>
+
+      <div class="field col-12 md:col-4 lg:col-4">
+        <label htmlFor="codMunicipio">Municipio</label>
+        <p-dropdown placeholder="Seleccione" [options]="comboMunicipio" styleClass="w-full p-inputtext-sm" formControlName="codMunicipio" optionLabel="descripcion" optionValue="codigo" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
+      </div>
+
+      <div class="field col-12 md:col-12 lg:col-12">
+        <label htmlFor="descripcion">Descripcion</label>
+        <textarea rows="5" cols="30" pInputTextarea formControlName="descripcion" class="w-full p-inputtext-sm" ></textarea>
+      </div>
     </div>
-  </div>
-  <hr class="my-5" *ngIf="cliente">
+  </p-card>
 
-  <h1 class="third text-2xl" *ngIf="cliente">Selecciona los productos</h1>
-
-  <div class="grid formgrid" *ngIf="cliente">
+  <p-card header="Selecciona los productos" styleClass="mt-3" *ngIf="cliente">
     <div class="field col-12 md:col-8">
       <label htmlFor="categoria">Categoria</label>
       <p-dropdown placeholder="Seleccione" [options]="categorias"  [(ngModel)]="categoriaSelect" styleClass="w-full p-inputtext-sm"  [(ngModel)]="categoriaSelect" optionLabel="descripcion" optionValue="id" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
@@ -75,15 +69,17 @@
       <label  htmlFor="tipo">Tipo</label>
       <p-dropdown placeholder="Seleccione" [options]="tipo" [(ngModel)]="tipoSelect" styleClass="w-full p-inputtext-sm" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
     </div>
-  </div>
 
-  <div class="mt-7 grid grid-cols-5 gap-3" *ngIf="products">
-    <ng-container *ngFor="let item of products">
-      <div class="col-span-1">
-        <app-product-card [product]="item" (agregarEmit)="agregar($event, item)"></app-product-card>
-      </div>
-    </ng-container>
-  </div>
+
+    <div class="mt-3 grid grid-cols-5 gap-3" *ngIf="products">
+      <ng-container *ngFor="let item of products">
+        <div class="col-span-1">
+          <app-product-card [product]="item" (agregarEmit)="agregar($event, item)"></app-product-card>
+        </div>
+      </ng-container>
+    </div>
+  </p-card>
+
 
   <p-card header="Listado de productos seleccionados" styleClass="mt-3" *ngIf="this.productosSelect.length >= 1">
     <p-table

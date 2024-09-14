@@ -24,7 +24,6 @@ export class FacturasComponent implements OnInit {
   ref: DynamicDialogRef | undefined;
 
   loading: boolean = false;
-  clientes: any = [];
   products: IProductCard[] = [];
   categorias: any = [];
   tipo: any = [
@@ -87,7 +86,6 @@ export class FacturasComponent implements OnInit {
     if(this.ruta.snapshot.params['tipo']){
       this.tipo = this.ruta.snapshot.params['tipo'];
     }
-    alert(this.tipo)
 
     this.cargaClientes();
     this.cargaCategorias();
@@ -199,11 +197,10 @@ export class FacturasComponent implements OnInit {
 
 
   cargaCliente(){
-    console.log(this.clienteSelect);
-    this.form.controls['clienteId'].setValue(this.clienteSelect);
-    if(this.clienteSelect != null || this.clienteSelect != undefined){
+    let idCliente = this.form.controls['clienteId'].value;
+    if(idCliente != null || idCliente != undefined){
       this.loading = true;
-      this.MainService.ClientesService.get(this.clienteSelect).subscribe({
+      this.MainService.ClientesService.get(idCliente).subscribe({
         next: (req:any) => {
           this.cliente = req
           this.form.controls['direccion'].setValue(this.cliente.direccion);
@@ -257,7 +254,7 @@ export class FacturasComponent implements OnInit {
     this.loading = true;
     this.MainService.ClientesService.getAll().subscribe({
       next: (req:any) => {
-        this.clientes =req.data;
+        this.clienteSelect =req.data;
       },
       error: (err: any) => {
         console.log(err)
