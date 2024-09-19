@@ -19,6 +19,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TimelineModule } from 'primeng/timeline';
 import { DialogModule } from 'primeng/dialog';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 // Services
 import { MessageService } from 'primeng/api';
@@ -45,7 +46,8 @@ import { DialogService } from 'primeng/dynamicdialog';
     InputTextareaModule,
     SkeletonModule,
     TimelineModule,
-    DialogModule
+    DialogModule,
+    InputSwitchModule
   ],
   exports:[
     ToastModule,
@@ -64,7 +66,8 @@ import { DialogService } from 'primeng/dynamicdialog';
     InputTextareaModule,
     SkeletonModule,
     TimelineModule,
-    DialogModule
+    DialogModule,
+    InputSwitchModule
   ]
 })
 export class PrimengModule { }

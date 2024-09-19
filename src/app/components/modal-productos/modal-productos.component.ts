@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MainService } from 'src/app/services/main.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Producto } from 'src/app/models/crud/productos';
 
 
 @Component({
@@ -25,8 +26,9 @@ export class ModalProductosComponent implements OnInit {
 
   form = new FormGroup({
     imagen: new FormControl(''),
+    modelo: new FormControl<boolean>(false, [Validators.required]),
     descripcion: new FormControl('', [Validators.required]),
-    categoriaId: new FormControl('', [Validators.required]),
+    categoriaId: new FormControl<number | null>(null,[Validators.required]),
     observacion: new FormControl('', [Validators.required]),
   })
 
@@ -134,10 +136,13 @@ export class ModalProductosComponent implements OnInit {
     if(this.form.valid){
       this.isLoading = true;
 
-      let object: any = null;
-      object = this.form.value;
-
-      object.parametros = this.parametros.map((par:any) => par.id );
+      let object: Producto = {
+        descripcion: this.form.value.descripcion!,
+        categoriaId: this.form.value.categoriaId!,
+        imagen: this.form.value.imagen!,
+        swModelo: this.form.value.modelo!,
+        parametros: this.parametros.map((par:any) => par.id )
+      };
 
       console.log(object)
 
