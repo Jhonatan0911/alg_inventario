@@ -9,6 +9,7 @@ import { ClientesComponent } from './pages/clientes/clientes.component';
 import { ProductosComponent } from './pages/productos/productos.component';
 import { FacturasComponent } from './pages/facturas/facturas.component';
 import { HistorialComponent } from './pages/historial/historial.component';
+import { ListadoGestionComponent } from './pages/listado-gestion/listado-gestion.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: "productos", component: ProductosComponent },
       { path: "generar/:tipo", component: FacturasComponent },
       { path: "historial", component: HistorialComponent },
+      { path: "crm", component: ListadoGestionComponent },
     ]
   },
 ];

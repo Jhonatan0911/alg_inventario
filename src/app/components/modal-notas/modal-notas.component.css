@@ -1,0 +1,11 @@
+.custom-marker{
+  border-radius: 50% !important;
+}
+
+.timeline-without-opposite .p-timeline-event .p-timeline-event-opposite {
+  display: none !important;
+}
+
+.timeline-without-opposite .p-timeline-event .p-timeline-event-content {
+  margin-bottom: 2rem !important;
+}

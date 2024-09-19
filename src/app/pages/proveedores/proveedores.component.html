@@ -1,8 +1,12 @@
 <div *ngIf="loading" class="loader"></div>
-<div class="flex justify-content-between align-items-center">
-  <h2 class="dark bold">Proveedores</h2>
+<div class="flex my-3 justify-content-between">
+  <div>
+    <h4 class="title-card"> Proveedores</h4>
+  </div>
+
   <p-button label="Nuevo proveedor" (click)="openModal()"></p-button>
 </div>
+
 
 <p-card>
   <form [formGroup]="form" (ngSubmit)="cargaProovedores()">

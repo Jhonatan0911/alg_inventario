@@ -29,6 +29,8 @@ import { ModalMiniFormulaComponent } from './components/modal-mini-formula/modal
 import { ModalEspecificacionesComponent } from './components/modal-productos/modal-especificaciones/modal-especificaciones.component';
 import { ListadoGestionComponent } from './pages/listado-gestion/listado-gestion.component';
 import { PrimengModule } from './prime/primeng.module';
+import { ModalNuevoRegistroCrmComponent } from './components/modal-nuevo-registro-crm/modal-nuevo-registro-crm.component';
+import { ModalNotasComponent } from './components/modal-notas/modal-notas.component';
 
 
 
@@ -52,7 +54,9 @@ import { PrimengModule } from './prime/primeng.module';
     HistorialComponent,
     ModalMiniFormulaComponent,
     ModalEspecificacionesComponent,
-    ListadoGestionComponent
+    ListadoGestionComponent,
+    ModalNuevoRegistroCrmComponent,
+    ModalNotasComponent
   ],
   imports: [
     BrowserModule,
@@ -62,8 +66,7 @@ import { PrimengModule } from './prime/primeng.module';
     HttpClientModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
-    PrimengModule
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

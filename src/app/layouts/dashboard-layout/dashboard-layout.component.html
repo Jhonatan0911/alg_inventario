@@ -6,24 +6,43 @@
       </div>
 
       <ul class="flex-grow">
-        <li><a routerLink="productos" class="text-1xl block p-2 text-white hover:bg-secondary">
-          <i class="ri-shopping-cart-line"></i> Productos</a></li>
-        <li><a routerLink="categorias" class="text-1xl block p-2 text-white hover:bg-secondary">
-          <i class="ri-layout-grid-fill"></i> Categorias</a></li>
-        <li><a routerLink="servicios" class="text-1xl block p-2 text-white hover:bg-secondary">
-          <i class="ri-hand-coin-line"></i> Servicios</a></li>
-        <li><a routerLink="clientes" class="text-1xl block p-2 text-white hover:bg-secondary">
-          <i class="ri-group-line"></i> Clientes</a></li>
-        <li><a routerLink="proveedores" class="text-1xl block p-2 text-white hover:bg-secondary">
-          <i class="ri-store-3-line"></i> Proveedores</a></li>
+        <li>
+          <a routerLink="productos" class="text-1xl block p-2 text-white hover:bg-secondary">
+            <i class="ri-shopping-cart-line"></i> Productos
+          </a>
+        </li>
+        <li>
+          <a routerLink="categorias" class="text-1xl block p-2 text-white hover:bg-secondary">
+            <i class="ri-layout-grid-fill"></i> Categorias
+          </a>
+        </li>
+        <li>
+          <a routerLink="servicios" class="text-1xl block p-2 text-white hover:bg-secondary">
+            <i class="ri-hand-coin-line"></i> Servicios
+          </a>
+        </li>
+        <li>
+          <a routerLink="clientes" class="text-1xl block p-2 text-white hover:bg-secondary">
+            <i class="ri-group-line"></i> Clientes
+          </a>
+        </li>
+        <li>
+          <a routerLink="proveedores" class="text-1xl block p-2 text-white hover:bg-secondary">
+            <i class="ri-store-3-line"></i> Proveedores
+          </a>
+        </li>
+        <li>
+          <a routerLink="crm" class="text-1xl block p-2 text-white hover:bg-secondary">
+            <i class="ri-list-indefinite"></i> Listado de gestión
+          </a>
+        </li>
       </ul>
     </div>
-
     <img src="assets/images/logo.png" alt="Logo pequeño" class="mx-auto">
   </div>
   <div class="w-full lg:w-10 p-4">
-    <div class="bg-white py-0 px-4 flex justify-content-between items-center shadow-lg border-round-md">
-      <h1 class="dark">Dashboard</h1>
+    <div class="bg-white py-3 px-4 flex justify-content-between items-center shadow-lg border-round-md items-center">
+      <h2 class="m-0">Panel de control</h2>
       <div class="flex items-center gap-3">
         <a routerLink="generar/FACTURA" class="text-gray-500 hover:text-gray-500 flex align-items-center gap-1">
           <i class="ri-bill-line text-2xl center-flex"></i> Facturas
@@ -39,7 +58,7 @@
         </a>
       </div>
     </div>
-    <div class="px-4 py-2 overflow-auto" style="height: 90vh;">
+    <div class="px-4 pt-5 overflow-auto" style="height: 90vh;">
       <router-outlet></router-outlet>
     </div>
   </div>

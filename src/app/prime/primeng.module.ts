@@ -17,6 +17,8 @@ import { PasswordModule } from 'primeng/password';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { SkeletonModule } from 'primeng/skeleton';
+import { TimelineModule } from 'primeng/timeline';
+import { DialogModule } from 'primeng/dialog';
 
 // Services
 import { MessageService } from 'primeng/api';
@@ -41,7 +43,9 @@ import { DialogService } from 'primeng/dynamicdialog';
     PasswordModule,
     MultiSelectModule,
     InputTextareaModule,
-    SkeletonModule
+    SkeletonModule,
+    TimelineModule,
+    DialogModule
   ],
   exports:[
     ToastModule,
@@ -58,7 +62,9 @@ import { DialogService } from 'primeng/dynamicdialog';
     PasswordModule,
     MultiSelectModule,
     InputTextareaModule,
-    SkeletonModule
+    SkeletonModule,
+    TimelineModule,
+    DialogModule
   ]
 })
 export class PrimengModule { }

@@ -1,0 +1,46 @@
+<div class="overflow-auto">
+  <div class="mx-auto max-w-7xl sm:px-4 lg:px-6">
+    <form (ngSubmit)="crear()" [formGroup]="form">
+      <div class="grid formgrid mt-3">
+        <div class="col-12 md:col-4 field">
+          <label for="tipoDocumento">Tipo documento</label>
+          <p-dropdown [options]="comboTipoDocumento" formControlName="tipodocumento" optionLabel="descripcion" optionValue="codigo" [autoDisplayFirst]="false" [showClear]="true" styleClass="w-full p-inputtext-sm"></p-dropdown>
+          <small *ngIf="validate('tipodocumento')" class="p-error">{{ check('tipodocumento') }}</small>
+        </div>
+        <div class="col-12 md:col-8 field">
+          <label for="documento">Documento</label>
+          <input pInputText id="documento" formControlName="documento" type="text" placeholder="Digite el documento" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('documento')" class="p-error">{{ check('documento') }}</small>
+        </div>
+        <div class="col-12 field">
+          <label for="nombre">Nombre Completo</label>
+          <input pInputText id="nombre" formControlName="nombre" type="text" placeholder="Digite el nombre" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('nombre')" class="p-error">{{ check('nombre') }}</small>
+        </div>
+        <div class="col-12 field">
+          <label for="correo">Correo</label>
+          <input pInputText id="correo" formControlName="correo" type="text" placeholder="Digite el correo" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('correo')" class="p-error">{{ check('correo') }}</small>
+        </div>
+        <div class="col-12 md:col-6 field">
+          <label for="telefono">Teléfono</label>
+          <input pInputText id="telefono" formControlName="telefono" type="text" placeholder="Digite el teléfono" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('telefono')" class="p-error">{{ check('telefono') }}</small>
+        </div>
+        <div class="col-12 md:col-6 field">
+          <label for="direccion">Dirección</label>
+          <input pInputText id="direccion" formControlName="direccion" type="text" placeholder="Digite la dirección" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('direccion')" class="p-error">{{ check('direccion') }}</small>
+        </div>
+        <div class="col-12 field">
+          <label for="observacion">Observación</label>
+          <textarea pInputTextarea id="observacion" formControlName="observacion" rows="5" placeholder="Escriba observaciones" class="w-full p-inputtext-sm"></textarea>
+          <small *ngIf="validate('observacion')" class="p-error">{{ check('observacion') }}</small>
+        </div>
+      </div>
+      <div class="flex justify-content-end">
+        <button pButton type="submit" label="Crear" [disabled]="!form.valid || isLoading" icon="pi pi-save"></button>
+      </div>
+    </form>
+  </div>
+</div>

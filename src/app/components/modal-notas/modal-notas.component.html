@@ -1,0 +1,45 @@
+<div class="flex align-items-end justify-content-end">
+  <button pButton (click)="showDialog()" icon="pi pi-external-link" label="Nueva nota"></button>
+</div>
+<p-timeline [value]="events" styleClass="customized-timeline timeline-without-opposite"  align="rigth">
+  <ng-template pTemplate="marker" let-event>
+      <span class="custom-marker shadow-2 p-3" [style.backgroundColor]="event.color">
+        <i class="text-white" [ngClass]="event.icon"></i>
+      </span>
+  </ng-template>
+  <ng-template pTemplate="content" let-event>
+      <p-card [header]="event.status" [subheader]="event.date">
+        <p>
+          <b>Usuario:</b> <span class="ml-2">{{ event.user}}</span>
+        </p>
+        <p>
+          <b>Observación:</b> <span class="ml-2">{{ event.observacion}}</span>
+        </p>
+      </p-card>
+  </ng-template>
+</p-timeline>
+
+<p-dialog header="Agregar nota" [(visible)]="modalAddIsOpen" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false" [resizable]="false" [closable]="false" [closeOnEscape]="false" [dismissableMask]="false">
+  <div class="formgrid grid">
+    <div class="field col-12">
+      <label htmlFor="numeroFactura">Observación</label>
+      <textarea pInputTextarea id="observacion" [(ngModel)]="notaSeguimiento" rows="5" placeholder="Escriba observaciones" class="w-full p-inputtext-sm"></textarea>
+    </div>
+  </div>
+  <div class="flex justify-content-end gap-2">
+    <button
+      pButton
+      label="Cerrar"
+      icon="ri-close-circle-line"
+      severity="secondary"
+      (onClick)="modalAddIsOpen = false"
+    ></button>
+    <button
+      pButton
+      label="Enviar"
+      icon="pi pi-send"
+      (onClick)="addNota()"
+    ></button>
+  </div>
+</p-dialog>
+
