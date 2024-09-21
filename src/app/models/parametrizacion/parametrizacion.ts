@@ -4,6 +4,11 @@ export interface Estados {
   descripcion:string;
 }
 
+export interface EstadosCRM {
+  id:number;
+  descripcion:string;
+}
+
 export interface TipoDocumento {
   id:number;
   codigo: string;

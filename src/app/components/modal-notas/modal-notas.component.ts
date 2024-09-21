@@ -34,10 +34,10 @@ export class ModalNotasComponent {
     private messageService: MessageService,
     private config: DynamicDialogConfig
   ) {
-    this.getNotasByRegistroId();
 
     this.registro = this.config.data;
     this.events = [];
+    this.getNotasByRegistroId();
   }
 
 
@@ -45,13 +45,13 @@ export class ModalNotasComponent {
     this.loading = true;
     this._mainService.CrmService.getSeguimientos(this.registro!.id!).subscribe({
       next: (res) => {
-        if(res.isSuccess){
+        if(res.isSuccess && res.data?.length > 0){
           let timelineNotas: EventItem[] = [];
           res.data.forEach(data => {
             timelineNotas.push(
               {
-                status: data.id?.toString(),
-                date: data.fecha.toDateString(),
+                status: "Seguimiento #"+ data.id?.toString(),
+                date: data.fecha,
                 icon: 'pi pi-clock',
                 color: '#0E1F60',
                 user: data.usuarioCreacionId.toString(),
@@ -79,6 +79,7 @@ export class ModalNotasComponent {
   notaSeguimiento?: string;
 
   addNota(){
+    console.log(this.notaSeguimiento)
     if(this.notaSeguimiento != null && this.notaSeguimiento != undefined && this.notaSeguimiento != ""){
 
       let nota: SeguimientoCRM = {
@@ -88,11 +89,12 @@ export class ModalNotasComponent {
         descripcion: this.notaSeguimiento
       }
 
-      this._mainService.CrmService.createNotaRegistro(nota).subscribe({
+      this._mainService.CrmService.createNotaRegistro(nota, 1).subscribe({
         next: (res) => {
           if(res.isSuccess){
             this.messageService.add({ severity: 'success', summary: 'Exito!', detail: 'Nota creada correctamente' });
           }
+          this.notaSeguimiento = undefined;
           this.modalAddIsOpen = false;
           this.getNotasByRegistroId();
         },

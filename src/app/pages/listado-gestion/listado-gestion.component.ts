@@ -4,6 +4,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ModalNotasComponent } from 'src/app/components/modal-notas/modal-notas.component';
 import { ModalNuevoRegistroCrmComponent } from 'src/app/components/modal-nuevo-registro-crm/modal-nuevo-registro-crm.component';
 import { RegistrosCRM } from 'src/app/models/crm/registros';
+import { EstadosCRM } from 'src/app/models/parametrizacion/parametrizacion';
 import { Column } from 'src/app/models/table';
 import { MainService } from 'src/app/services/main.service';
 
@@ -76,18 +77,33 @@ export class ListadoGestionComponent implements OnInit {
     private dialogService: DialogService,
   ) { }
 
-  estadosSelect: any[] = [
-    {value:"PEN", descripcion: "Pendiente"},
-    {value:"ACT", descripcion: "En Proceso"},
-    {value:"PRO", descripcion: "Finalizado"}
-  ]
+  estadosSelect?: EstadosCRM[];
 
   form = new FormGroup({
+    filtro: new FormControl(''),
     estado: new FormControl(''),
-    rango_fecha: new FormControl(''),
+    rango_fecha: new FormControl<Date[] | null>(null),
   })
 
   ngOnInit(): void {
+    this.getEstados();
+    this.getRegistros();
+  }
+
+  getEstados(){
+    this.loading = true;
+    this.MainService.CrmService.getEstados().subscribe({
+      next: (res) => {
+        this.estadosSelect = res.data;
+      },
+      error: (err: any) => {
+        console.log(err)
+        this.loading = false
+      },
+      complete: () => {
+        this.loading = false
+      }
+    })
   }
 
   getRegistros(event?: any){
@@ -100,7 +116,26 @@ export class ListadoGestionComponent implements OnInit {
 
     if ((event && inputValue.length >= 3) || !event) {
       this.loading = true;
-      this.MainService.CrmService.getAll().subscribe({
+
+      let estado;
+      let start: Date;
+      let end: Date;
+      let filtro;
+
+      if(this.form.value.estado){
+        estado = this.form.value.estado
+      }
+
+      if(this.form.value.rango_fecha){
+        start = this.form.value.rango_fecha[0]
+        end = this.form.value.rango_fecha[1]
+      }
+
+      if(event && inputValue.length >= 3){
+        filtro = inputValue
+      }
+
+      this.MainService.CrmService.getAll(estado,start!,end!,filtro).subscribe({
         next: (res) => {
           this.registros = res.data;
         },

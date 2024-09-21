@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RegistrosCRM } from 'src/app/models/crm/registros';
 import { TipoDocumento } from 'src/app/models/parametrizacion/parametrizacion';
@@ -29,7 +30,8 @@ export class ModalNuevoRegistroCrmComponent {
 
   constructor(
     public dialogRef: DynamicDialogRef,
-    private MainService: MainService
+    private MainService: MainService,
+    private messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
@@ -70,14 +72,18 @@ export class ModalNuevoRegistroCrmComponent {
         observacion: this.form.value.observacion
       }
 
-      this.MainService.CrmService.create(object).subscribe({
-        next: (req:any) => {
+      this.MainService.CrmService.create(object, 1).subscribe({
+        next: (req) => {
           if(req.isSuccess){
+            this.messageService.add({ severity: 'success', summary: 'Exito!', detail: 'Registro creado correctamente' });
             this.onClose(true);
+          }else{
+            this.messageService.add({ severity: 'error', summary: 'Exito!', detail: req.mensaje });
           }
         },
         error: (err: any) => {
           console.log(err)
+          this.messageService.add({ severity: 'error', summary: 'Exito!', detail: err });
           this.isLoading = false
         },
         complete: () => {

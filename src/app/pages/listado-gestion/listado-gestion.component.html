@@ -9,11 +9,16 @@
 <p-card>
   <form [formGroup]="form" (ngSubmit)="getRegistros()">
     <div class="formgrid grid">
-      <div class="field col-12 md:col-4">
+      <div class="field col-12 md:col-3">
+        <label htmlFor="filtro">Filtro</label>
+        <input pInputText id="filtro" name="filtro" class="w-full p-inputtext-sm" formControlName="filtro" placeholder="Digite la categoría" (input)="getRegistros($event)"/>
+        <small id="filtro-help">Busca apartir del 3 carácter.</small>
+      </div>
+      <div class="field col-12 md:col-3">
         <label htmlFor="numero_documento">Rango de fecha</label>
         <p-calendar formControlName="rango_fecha" styleClass="w-full p-inputtext-sm" selectionMode="range"></p-calendar>
       </div>
-      <div class="field col-12 md:col-4">
+      <div class="field col-12 md:col-3">
         <label for="estado">Estado</label>
         <p-dropdown formControlName="estado" [options]="estadosSelect" optionLabel="descripcion" styleClass="w-full p-inputtext-sm" placeholder="Seleccione"></p-dropdown>
       </div>
@@ -35,7 +40,7 @@
     [rows]="rowTablePaginator"
     [totalRecords]="dataTotalRecords"
     [rowsPerPageOptions]="[10, 25, 50]"
-    [lazy]="true"
+    [lazy]="false"
     (onLazyLoad)="getRegistros($event)"
     scrollHeight="600px"
     scrollWidth="100%"
@@ -50,11 +55,14 @@
     <ng-template pTemplate="body" let-r>
       <tr>
         <td>{{ r.id }}</td>
-        <td>{{ r.descripcion }}</td>
+        <td>{{ r.nombre }}</td>
+        <td>{{ r.documento }}</td>
+        <td>{{ r.correo }}</td>
+        <td>{{ r.telefono }}</td>
         <td>
           <span [class]="'table-badge status-' + r.estado ? 'ACT' : 'INA'">
             <i class="" [ngClass]="{
-              'ri-check-double-fill': r.estado == 'ACT',
+              'ri-check-double-fill': r.estado == 'Activo',
               'ri-close-circle-line': r.estado == 'INA'
               }"></i>
             {{r.estado}}

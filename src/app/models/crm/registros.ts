@@ -14,6 +14,6 @@ export interface SeguimientoCRM {
   id?: number;
   clienteId: number;
   usuarioCreacionId: number;
-  fecha: Date;
+  fecha: any;
   descripcion: string;
 }

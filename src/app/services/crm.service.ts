@@ -4,13 +4,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, tap } from 'rxjs';
 import { Response } from '../models/response/response';
 import { RegistrosCRM, SeguimientoCRM } from '../models/crm/registros';
+import { EstadosCRM } from '../models/parametrizacion/parametrizacion';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CrmService  extends BaseService {
 
-  path: string = "CRM/";
+  path: string = "Crm/";
   usuarioId: number = 23;
 
   constructor(
@@ -19,10 +20,10 @@ export class CrmService  extends BaseService {
     super();
   }
 
-  getSeguimientos(registro: number): Observable<Response<SeguimientoCRM[]>> {
+  getEstados(): Observable<Response<EstadosCRM[]>> {
 
     return this.http
-    .get<Response<SeguimientoCRM[]>>(this._baseUrl + this.path + "ObtenerCliente?IdCliente="+registro)
+    .get<Response<EstadosCRM[]>>(this._baseUrl + this.path + "ObtenerEstados")
     .pipe(
       map((response) => response),
       tap((a) => {
@@ -33,16 +34,17 @@ export class CrmService  extends BaseService {
     );
   }
 
-  getAll(estado?:any, start?: Date, end?: Date): Observable<Response<RegistrosCRM[]>> {
+  getAll(estado?:any, start?: Date, end?: Date, filtro?: string): Observable<Response<RegistrosCRM[]>> {
 
     const params = new HttpParams()
-    .set("Estado", estado != null ? estado  : "")
-    .set("Start", start != null ? start?.toDateString()  : "")
-    .set("End", end != null ? end?.toDateString()  : "")
+    .set("estado", estado != null ? estado  : "")
+    .set("start", start != null ? start?.toDateString()  : "")
+    .set("end", end != null ? end?.toDateString()  : "")
+    .set("filtro", filtro != null ? filtro  : "")
 
 
     return this.http
-    .get<Response<RegistrosCRM[]>>(this._baseUrl + this.path + "ObtenerRegistros", {params :params})
+    .get<Response<RegistrosCRM[]>>(this._baseUrl + this.path + "ObtenerListadoClientesCRM", {params :params})
     .pipe(
       map((response) => response),
       tap((a) => {
@@ -53,9 +55,10 @@ export class CrmService  extends BaseService {
     );
   }
 
-  create(registro: RegistrosCRM): Observable<any> {
+  create(registro: RegistrosCRM, usuarioId: number): Observable<any> {
+
     return this.http
-    .post<Response<boolean>>(this._baseUrl + this.path + "CrearRegistro", registro)
+    .post<Response<boolean>>(this._baseUrl + this.path + "CrearClienteCRM?usuarioId="+usuarioId, registro)
     .pipe(
       map((response) => response),
       tap((a) => {
@@ -66,9 +69,9 @@ export class CrmService  extends BaseService {
     );
   }
 
-  createNotaRegistro(seguimiento: SeguimientoCRM): Observable<any> {
+  createNotaRegistro(seguimiento: SeguimientoCRM, usuarioId: number): Observable<any> {
     return this.http
-    .post<Response<boolean>>(this._baseUrl + this.path + "crearSeguimientoRegistro", seguimiento)
+    .post<Response<boolean>>(this._baseUrl + this.path + "CrearSeguimientoCRM?usuarioId="+ usuarioId, seguimiento)
     .pipe(
       map((response) => response),
       tap((a) => {
@@ -78,5 +81,20 @@ export class CrmService  extends BaseService {
       catchError(this.errorMgmt)
     );
   }
+
+  getSeguimientos(registro: number): Observable<Response<SeguimientoCRM[]>> {
+
+    return this.http
+    .get<Response<SeguimientoCRM[]>>(this._baseUrl + this.path + "ObtenerSeguimientoCRMClienteId?clienteId="+registro)
+    .pipe(
+      map((response) => response),
+      tap((a) => {
+        this.logs('obtener seguimientos por registro id');
+        this.logs(a);
+      }),
+      catchError(this.errorMgmt)
+    );
+  }
+
 
 }

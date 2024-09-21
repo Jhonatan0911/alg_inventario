@@ -19,7 +19,7 @@
   </ng-template>
 </p-timeline>
 
-<p-dialog header="Agregar nota" [(visible)]="modalAddIsOpen" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false" [resizable]="false" [closable]="false" [closeOnEscape]="false" [dismissableMask]="false">
+<p-dialog header="Agregar nota" [(visible)]="modalAddIsOpen" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false" [resizable]="false" [closable]="false" [closeOnEscape]="false" [dismissableMask]="false" appendTo="body">
   <div class="formgrid grid">
     <div class="field col-12">
       <label htmlFor="numeroFactura">Observación</label>
@@ -32,13 +32,13 @@
       label="Cerrar"
       icon="ri-close-circle-line"
       severity="secondary"
-      (onClick)="modalAddIsOpen = false"
+      (click)="modalAddIsOpen = false"
     ></button>
     <button
       pButton
       label="Enviar"
       icon="pi pi-send"
-      (onClick)="addNota()"
+      (click)="addNota()"
     ></button>
   </div>
 </p-dialog>
