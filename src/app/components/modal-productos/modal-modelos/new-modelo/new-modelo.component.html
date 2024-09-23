@@ -1,0 +1,71 @@
+<div class="overflow-auto">
+  <div class="mx-auto max-w-7xl sm:px-4 lg:px-6">
+    <form (ngSubmit)="crear()" [formGroup]="form">
+      <div class="grid formgrid mt-3">
+        <div class="col-12 md:col-4 field">
+          <label for="codigoModelo">Código Modelo</label>
+          <input pInputText id="codigoModelo" formControlName="codigoModelo" type="text" placeholder="Digite el código" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('codigoModelo')" class="p-error">{{ check('codigoModelo') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="pcM_Capacidad">Capacidad</label>
+          <input pInputText id="pcM_Capacidad" formControlName="pcM_Capacidad" type="number" placeholder="Capacidad" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('pcM_Capacidad')" class="p-error">{{ check('pcM_Capacidad') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="tamano">Tamaño</label>
+          <input pInputText id="tamano" formControlName="tamano" type="text" placeholder="Tamaño" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('tamano')" class="p-error">{{ check('tamano') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="rpm">RPM</label>
+          <input pInputText id="rpm" formControlName="rpm" type="number" placeholder="RPM" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('rpm')" class="p-error">{{ check('rpm') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="hp">HP</label>
+          <input pInputText id="hp" formControlName="hp" type="number" placeholder="HP" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('hp')" class="p-error">{{ check('hp') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="fases">Fases</label>
+          <input pInputText id="fases" formControlName="fases" type="number" placeholder="Fases" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('fases')" class="p-error">{{ check('fases') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="transmi">Transmisión</label>
+          <input pInputText id="transmi" formControlName="transmi" type="text" placeholder="Transmisión" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('transmi')" class="p-error">{{ check('transmi') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="clase">Clase</label>
+          <input pInputText id="clase" formControlName="clase" type="text" placeholder="Clase" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('clase')" class="p-error">{{ check('clase') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="amp_220">Amperaje 220</label>
+          <input pInputText id="amp_220" formControlName="amp_220" type="number" placeholder="Amperaje 220" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('amp_220')" class="p-error">{{ check('amp_220') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="db">DB</label>
+          <input pInputText id="db" formControlName="db" type="text" placeholder="DB" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('db')" class="p-error">{{ check('db') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="peso">Peso</label>
+          <input pInputText id="peso" formControlName="peso" type="number" placeholder="Peso" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('peso')" class="p-error">{{ check('peso') }}</small>
+        </div>
+        <div class="col-12 md:col-4 field">
+          <label for="precioVenta">Precio Venta</label>
+          <input pInputText id="precioVenta" formControlName="precioVenta" type="number" placeholder="Precio de Venta" class="w-full p-inputtext-sm" />
+          <small *ngIf="validate('precioVenta')" class="p-error">{{ check('precioVenta') }}</small>
+        </div>
+      </div>
+      <div class="flex justify-content-end">
+        <button pButton type="submit" label="Crear" [disabled]="!form.valid || isLoading" icon="pi pi-save"></button>
+      </div>
+    </form>
+  </div>
+</div>

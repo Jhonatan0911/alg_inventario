@@ -72,19 +72,16 @@
         </div>
         <div class="col-12 field">
           <label for="observacion">Descripción</label>
-          <span class="p-float-label">
-            <textarea
-              pInputTextarea
-              id="observacion"
-              rows="5"
-              cols="30"
-              name="observacion"
-              formControlName="observacion"
-              placeholder="Digite la descripción"
-              class="w-full p-inputtext-sm"
-            ></textarea>
-            <label for="observacion">Descripción</label>
-          </span>
+          <textarea
+            pInputTextarea
+            id="observacion"
+            rows="5"
+            cols="30"
+            name="observacion"
+            formControlName="observacion"
+            placeholder="Digite la descripción"
+            class="w-full p-inputtext-sm"
+          ></textarea>
           <small severity="error" *ngIf="validate('observacion')">
             {{ check('observacion') }}
           </small>
@@ -97,52 +94,55 @@
         </div>
       </div>
 
-      <h1 class="third text-2xl">Asignar parámetros</h1>
-      <div class="grid formgrid">
-        <div class="col-10 field">
-          <label for="parametro">Parámetro</label>
-          <p-dropdown
-            [options]="comboParametros"
-            [(ngModel)]="parametroValor"
-            placeholder="Seleccione"
-            optionLabel="descripcion"
-            [ngModelOptions]="{ standalone: true }"
-            styleClass="w-full"
-          ></p-dropdown>
+      <div *ngIf="form.value.modelo == false">
+        <h1 class="third text-2xl">Asignar parámetros</h1>
+        <div class="grid formgrid">
+          <div class="col-10 field">
+            <label for="parametro">Parámetro</label>
+            <p-dropdown
+              [options]="comboParametros"
+              [(ngModel)]="parametroValor"
+              placeholder="Seleccione"
+              optionLabel="descripcion"
+              [ngModelOptions]="{ standalone: true }"
+              styleClass="w-full"
+            ></p-dropdown>
+          </div>
+          <div class="col-2 align-content-center">
+            <button
+              pButton
+              icon="pi pi-plus"
+              type="button"
+              (click)="add()"
+              [disabled]="!parametroValor"
+            ></button>
+          </div>
         </div>
-        <div class="col-2 align-content-center">
-          <button
-            pButton
-            icon="pi pi-plus"
-            type="button"
-            (click)="add()"
-            [disabled]="!parametroValor"
-          ></button>
+
+        <div class="grid formgrid" *ngFor="let par of parametros">
+          <div class="col-10 field">
+            <label for="nombre">Parámetro</label>
+            <input
+              pInputText
+              id="nombre"
+              name="nombre"
+              [(ngModel)]="par.descripcion"
+              [ngModelOptions]="{ standalone: true }"
+              class="w-full p-inputtext-sm"
+            />
+          </div>
+          <div class="col-2 align-content-center">
+            <button
+              pButton
+              icon="pi pi-trash"
+              type="button"
+              (click)="deleteParametro(par)"
+            ></button>
+          </div>
+          <hr class="border-dashed" />
         </div>
       </div>
 
-      <div class="grid formgrid" *ngFor="let par of parametros">
-        <div class="col-10 field">
-          <label for="nombre">Parámetro</label>
-          <input
-            pInputText
-            id="nombre"
-            name="nombre"
-            [(ngModel)]="par.descripcion"
-            [ngModelOptions]="{ standalone: true }"
-            class="w-full p-inputtext-sm"
-          />
-        </div>
-        <div class="col-2 align-content-center">
-          <button
-            pButton
-            icon="pi pi-trash"
-            type="button"
-            (click)="deleteParametro(par)"
-          ></button>
-        </div>
-        <hr class="border-dashed" />
-      </div>
 
       <div class="flex justify-content-end">
         <button

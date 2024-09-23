@@ -1,0 +1,54 @@
+<div class="grid formgrid">
+  <div class="field col-6">
+    <label for="modelo">Modelo</label>
+    <p-dropdown [options]="modelos" [filter]="true" optionLabel="codigoModelo" filterBy="codigoModelo" [(ngModel)]="selectModel" placeholder="Seleccione" styleClass="w-full p-inputtext-sm" appendTo="body"></p-dropdown>
+  </div>
+  <div class="field col-6">
+    <label for="cantidad">Cantidad</label>
+    <input pInputText id="cantidad" name="cantidad" [(ngModel)]="cantidad" type="number" [min]="1" placeholder="" class="w-full p-inputtext-sm" />
+  </div>
+</div>
+<div class="flex justify-content-end">
+  <button pButton type="button" label="Añadir" [disabled]="this.loading" icon="pi pi-plus" (click)="add()"></button>
+</div>
+
+<p-card header="Listado de modelos" styleClass="mt-3" *ngIf="modelosSelected.length > 0">
+  <p-table
+    #dt1
+    [value]="modelosSelected"
+    >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          Modelo
+        </th>
+        <th>
+          Cantidad
+        </th>
+        <th>
+          Eliminar
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-modelo>
+      <tr>
+        <td>
+          {{modelo.modelo.codigoModelo}}
+        </td>
+        <td>
+          {{modelo.cantidad}}
+        </td>
+        <td>
+          <p-button label="Eliminar" [link]="true" styleClass="button-link-secondary" icon="ri-delete-bin-5-line text-1xl" (onClick)="deleteModelo(modelo)" severity="danger">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</p-card>
+
+<div class="flex justify-content-end mt-2" *ngIf="modelosSelected.length > 0">
+  <button pButton type="button" label="Guardar" [disabled]="this.loading" icon="pi pi-save" (click)="send()"></button>
+</div>
+

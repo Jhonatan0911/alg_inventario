@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
+import { registerLocaleData } from '@angular/common';
 
 // Layouts
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
@@ -31,7 +32,14 @@ import { ListadoGestionComponent } from './pages/listado-gestion/listado-gestion
 import { PrimengModule } from './prime/primeng.module';
 import { ModalNuevoRegistroCrmComponent } from './components/modal-nuevo-registro-crm/modal-nuevo-registro-crm.component';
 import { ModalNotasComponent } from './components/modal-notas/modal-notas.component';
+import { ModalModelosComponent } from './components/modal-productos/modal-modelos/modal-modelos.component';
+import { NewModeloComponent } from './components/modal-productos/modal-modelos/new-modelo/new-modelo.component';
+import { ModalSelectModeloComponent } from './components/modal-productos/modal-select-modelo/modal-select-modelo.component';
 
+
+import localeEsCo from '@angular/common/locales/es-CO';
+
+registerLocaleData(localeEsCo);
 
 
 @NgModule({
@@ -56,7 +64,10 @@ import { ModalNotasComponent } from './components/modal-notas/modal-notas.compon
     ModalEspecificacionesComponent,
     ListadoGestionComponent,
     ModalNuevoRegistroCrmComponent,
-    ModalNotasComponent
+    ModalNotasComponent,
+    ModalModelosComponent,
+    NewModeloComponent,
+    ModalSelectModeloComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +79,9 @@ import { ModalNotasComponent } from './components/modal-notas/modal-notas.compon
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es-CO' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

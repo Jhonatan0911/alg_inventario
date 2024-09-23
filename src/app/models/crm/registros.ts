@@ -17,3 +17,20 @@ export interface SeguimientoCRM {
   fecha: any;
   descripcion: string;
 }
+
+
+export interface ObtenerListadoClientesCRMRequest {
+  start?: string
+  end?: string
+  estado?: number
+  filtro?: string
+}
+
+
+export interface FinalizacionSeguimientoCRMRequest{
+  estado: string,
+  clienteId: number,
+  usuarioCreacionId: number,
+  fecha: string,
+  descripcion: string
+}

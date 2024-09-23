@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ModalMiniFormulaComponent } from 'src/app/components/modal-mini-formula/modal-mini-formula.component';
+import { ModalModelosComponent } from 'src/app/components/modal-productos/modal-modelos/modal-modelos.component';
 import { ModalProductosComponent } from 'src/app/components/modal-productos/modal-productos.component';
 import { IProductCard } from 'src/app/models/crud/productos';
+import { ObtenerListadoProductosResult } from 'src/app/models/productos/producto';
 import { MainService } from 'src/app/services/main.service';
 
 @Component({
@@ -17,7 +19,7 @@ export class ProductosComponent implements OnInit {
 
   ref: DynamicDialogRef | undefined;
 
-  products: IProductCard[] = [];
+  products: ObtenerListadoProductosResult[] = [];
 
   estadosSelect: any[] = [
     {value:"ACT", descripcion: "Activo"},
@@ -70,9 +72,26 @@ export class ProductosComponent implements OnInit {
       header: editMode ? "Editar producto" : "Crear producto",
       width: '40vw',
       data: {
-        categoria: data,
+        producto: data,
         editMode: editMode,
         label: editMode ? "Editar" : "Crear",
+      }
+    });
+
+    this.ref.onClose.subscribe((res: boolean) => {
+      if (res) {
+        this.reload();
+      }
+    })
+  }
+
+  openModalModelos(event?: any, data?: any){
+
+    this.ref = this.dialogService.open(ModalModelosComponent, {
+      header:"Modelos - " + data.descripcion,
+      width: '60vw',
+      data: {
+        producto: data,
       }
     });
 
@@ -93,8 +112,10 @@ export class ProductosComponent implements OnInit {
     if ((event && inputValue.length >= 3) || !event) {
       this.loading = true;
       this.MainService.ProductosService.getAll(this.form.value.estado, this.form.value.filtro).subscribe({
-        next: (req:any) => {
-          this.products = req.data;
+        next: (req) => {
+          if(req.isSuccess){
+            this.products = req.data;
+          }
         },
         error: (err: any) => {
           console.log(err)

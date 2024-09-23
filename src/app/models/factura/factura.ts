@@ -20,16 +20,17 @@ export interface factura {
 
 export interface FacturaDetalleProducto {
   idProducto: number,
-  clase: number,
+  clase?: number,
   precio: number,
   cantidad: number,
-  diametro: number,
-  material: string,
-  espesor: number,
-  ancho: number,
-  diametro_A: number,
-  diametro_B: number,
-  alto: number,
-  union: string,
-  cierre: string
+  diametro?: number,
+  material?: string,
+  espesor?: number,
+  ancho?: number,
+  diametro_A?: number,
+  diametro_B?: number,
+  alto?: number,
+  union?: string,
+  cierre?: string,
+  modelo?: string,
 }

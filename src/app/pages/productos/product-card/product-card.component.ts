@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output  } from '@angular/core';
 import { IProductCard } from 'src/app/models/crud/productos';
+import { ObtenerListadoProductosResult } from 'src/app/models/productos/producto';
 
 @Component({
   selector: 'app-product-card',
@@ -8,11 +9,12 @@ import { IProductCard } from 'src/app/models/crud/productos';
 })
 export class ProductCardComponent {
 
-  @Input() product?: IProductCard;
+  @Input() product?: ObtenerListadoProductosResult;
   @Input() swVer?: Boolean;
   @Output () verEmit: EventEmitter<Boolean> = new EventEmitter();
   @Output () agregarEmit: EventEmitter<Boolean> = new EventEmitter();
   @Output () editarEmit: EventEmitter<Boolean> = new EventEmitter();
+  @Output () modelosEmit: EventEmitter<Boolean> = new EventEmitter();
   @Output () eliminarEmit: EventEmitter<Boolean> = new EventEmitter();
   @Output () formulaEmit: EventEmitter<Boolean> = new EventEmitter();
 
@@ -27,6 +29,10 @@ export class ProductCardComponent {
 
   editar(){
     this.editarEmit.emit(true);
+  }
+
+  modelos(){
+    this.modelosEmit.emit(true);
   }
 
   eliminar(){

@@ -1,56 +1,22 @@
-<div class="h-full">
-  <nav class="bg-secondary">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
-        <div class="flex items-center">
-          <div class="flex-shrink-0">
-            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
-          </div>
-        </div>
-        <div class="hidden md:block">
-          <div class="ml-4 flex items-center md:ml-6">
-            <button type="button" class="relative rounded-full" (click)="onClose(false)">
-              <span class="absolute -inset-1.5"></span>
-              <span class="sr-only">View notifications</span>
-              <i class="text-gray-300 text-2xl inline-block">closed</i>
-            </button>
-          </div>
-        </div>
+<div class="overflow-auto" >
+  <p-progressBar mode="indeterminate" *ngIf="loading" class="my-2"></p-progressBar>
+  <div class="mx-auto max-w-7xl sm:px-4 lg:px-6" *ngFor="let par of parametros">
+    <div class="grid formgrid" *ngIf="par.swIsEtiqueta == false">
+      <div class="field col-12">
+        <label for="nombre">{{par.descripcion}}</label>
+        <input pInputText id="nombre" name="nombre" [(ngModel)]="par.value" type="{{par.type}}" placeholder="Digite" class="w-full p-inputtext-sm" />
       </div>
     </div>
-  </nav>
-  <div class="overflow-auto" style="height: 90%;">
-    <header class="bg-white">
-      <div class="mx-auto max-w-7xl px-4 pb-3 pt-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Selecciona parámetros para {{this.dataTransfer.producto.descripcion}}</h1>
+    <div class="grid formgrid" *ngIf="par.swIsEtiqueta == true">
+      <div class="field col-12">
+        <label for="categoria">{{par.descripcion}}</label>
+        <p-dropdown [options]="par.etiqueta" [(ngModel)]="par.value" placeholder="Seleccione" styleClass="w-full p-inputtext-sm"></p-dropdown>
       </div>
-    </header>
-    <p-progressBar mode="indeterminate" *ngIf="loading" class="my-2"></p-progressBar>
-    <main>
-      <div class="mx-auto max-w-7xl pb-6 sm:px-6 lg:px-8" *ngFor="let par of parametros">
-        <div class="flex mt-2" *ngIf="par.swIsEtiqueta == false">
-          <div class="w-full px-3">
-            <label for="nombre">{{par.descripcion}}</label>
-            <span class="p-float-label">
-              <input pInputText id="nombre" name="nombre" [(ngModel)]="par.value" type="{{par.type}}" placeholder="Digite" class="w-full p-inputtext-sm" />
-              <label for="nombre">{{par.descripcion}}</label>
-            </span>
-          </div>
-        </div>
-        <div class="flex mt-2" *ngIf="par.swIsEtiqueta == true">
-          <div class="w-full px-3">
-            <label for="categoria">{{par.descripcion}}</label>
-            <p-dropdown [options]="par.etiqueta" [(ngModel)]="par.value" placeholder="Seleccione" class="w-full"></p-dropdown>
-          </div>
-        </div>
-      </div>
+    </div>
+  </div>
 
-      <div class="flex mt-3">
-        <div class="w-5/6"></div>
-        <div class="w-1/6">
-          <button pButton label="Agregar" class="btn btn-third w-full" type="button" (click)="submit()"></button>
-        </div>
-      </div>
-    </main>
+  <div class="flex justify-content-end sm:px-4 lg:px-6">
+    <button pButton label="Agregar" type="button" (click)="submit()"></button>
   </div>
 </div>
+

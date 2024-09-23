@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ModalNotasComponent } from 'src/app/components/modal-notas/modal-notas.component';
 import { ModalNuevoRegistroCrmComponent } from 'src/app/components/modal-nuevo-registro-crm/modal-nuevo-registro-crm.component';
-import { RegistrosCRM } from 'src/app/models/crm/registros';
+import { FinalizacionSeguimientoCRMRequest, ObtenerListadoClientesCRMRequest, RegistrosCRM } from 'src/app/models/crm/registros';
 import { EstadosCRM } from 'src/app/models/parametrizacion/parametrizacion';
 import { Column } from 'src/app/models/table';
 import { MainService } from 'src/app/services/main.service';
@@ -61,8 +62,24 @@ export class ListadoGestionComponent implements OnInit {
       header: 'Seguimientos',
       width: '180px',
       visible: true,
+    },
+    {
+      field: 'finalizar',
+      header: 'Finalizar',
+      width: '180px',
+      visible: true,
     }
   ];
+
+  visibleDialogFinalizar: boolean = false;
+
+  registroFinalizar: {
+    id: number |null,
+    descripcion: string | null
+  } = {
+    id: null,
+    descripcion: null
+  }
 
   registros!: RegistrosCRM[];
 
@@ -75,14 +92,15 @@ export class ListadoGestionComponent implements OnInit {
   constructor(
     private MainService: MainService,
     private dialogService: DialogService,
+    private messageService: MessageService
   ) { }
 
   estadosSelect?: EstadosCRM[];
 
   form = new FormGroup({
     filtro: new FormControl(''),
-    estado: new FormControl(''),
-    rango_fecha: new FormControl<Date[] | null>(null),
+    estado: new FormControl<number | null>(null),
+    rango_fecha: new FormControl<string[] | null>(null),
   })
 
   ngOnInit(): void {
@@ -106,6 +124,45 @@ export class ListadoGestionComponent implements OnInit {
     })
   }
 
+  finalizarRegistro(){
+    this.loading = true;
+
+    if(this.registroFinalizar?.id != null && this.registroFinalizar?.descripcion != null){
+      let request: FinalizacionSeguimientoCRMRequest = {
+        estado: "Finalizado",
+        clienteId: this.registroFinalizar.id!,
+        usuarioCreacionId: 1,
+        fecha: new Date().toISOString(),
+        descripcion: this.registroFinalizar.descripcion!
+      }
+
+      this.MainService.CrmService.finalizacionSeguimientoCRM(request).subscribe({
+        next: (res) => {
+          if(res.isSuccess){
+            this.messageService.add({ severity: 'success', summary: 'Exito!', detail: 'Registro finalizado correctamente' });
+            this.registroFinalizar = {
+              id: null,
+              descripcion: null
+            }
+            this.visibleDialogFinalizar = false;
+            this.getRegistros();
+          }else{
+            this.messageService.add({ severity: 'error', summary: 'Exito!', detail: res.mensaje });
+          }
+        },
+        error: (err: any) => {
+          console.log(err)
+          this.loading = false
+        },
+        complete: () => {
+          this.loading = false
+        }
+      })
+    }else{
+      this.messageService.add({ severity: 'warn', summary: 'ALG', detail: 'Digite una observación' });
+    }
+  }
+
   getRegistros(event?: any){
 
     let inputValue: string = "";
@@ -117,25 +174,22 @@ export class ListadoGestionComponent implements OnInit {
     if ((event && inputValue.length >= 3) || !event) {
       this.loading = true;
 
-      let estado;
-      let start: Date;
-      let end: Date;
-      let filtro;
+      let request: ObtenerListadoClientesCRMRequest = {};
 
       if(this.form.value.estado){
-        estado = this.form.value.estado
+        request.estado = this.form.value.estado
       }
 
       if(this.form.value.rango_fecha){
-        start = this.form.value.rango_fecha[0]
-        end = this.form.value.rango_fecha[1]
+        request.start = this.form.value.rango_fecha[0]
+        request.end = this.form.value.rango_fecha[1]
       }
 
       if(event && inputValue.length >= 3){
-        filtro = inputValue
+        request.filtro = inputValue
       }
 
-      this.MainService.CrmService.getAll(estado,start!,end!,filtro).subscribe({
+      this.MainService.CrmService.getAll(request).subscribe({
         next: (res) => {
           this.registros = res.data;
         },
@@ -176,6 +230,14 @@ export class ListadoGestionComponent implements OnInit {
         this.reload();
       }
     });
+  }
+
+  openModalFinalizar(registro: RegistrosCRM){
+    this.registroFinalizar = {
+      id: registro.id!,
+      descripcion: null
+    }
+    this.visibleDialogFinalizar = true;
   }
 
 

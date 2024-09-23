@@ -4,9 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ModalClientesComponent } from 'src/app/components/modal-clientes/modal-clientes.component';
 import { ModalEspecificacionesComponent } from 'src/app/components/modal-productos/modal-especificaciones/modal-especificaciones.component';
-import { IProductCard } from 'src/app/models/crud/productos';
+import { ModalSelectModeloComponent } from 'src/app/components/modal-productos/modal-select-modelo/modal-select-modelo.component';
 import { FacturaDetalleProducto, factura } from 'src/app/models/factura/factura';
 import { Departamento, municipio } from 'src/app/models/parametrizacion/parametrizacion';
+import { ObtenerListadoProductosResult } from 'src/app/models/productos/producto';
 import { Response } from 'src/app/models/response/response';
 import { Column } from 'src/app/models/table';
 import { MainService } from 'src/app/services/main.service';
@@ -24,7 +25,7 @@ export class FacturasComponent implements OnInit {
   ref: DynamicDialogRef | undefined;
 
   loading: boolean = false;
-  products: IProductCard[] = [];
+  products: ObtenerListadoProductosResult[] = [];
   categorias: any = [];
   tipo: any = [
     'Productos',
@@ -54,6 +55,18 @@ export class FacturasComponent implements OnInit {
     {
       field: 'cantidad',
       header: 'Cantidad',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'precio',
+      header: 'Precio unitario',
+      width: '180px',
+      visible: true,
+    },
+    {
+      field: 'precio',
+      header: 'Precio total',
       width: '180px',
       visible: true,
     },
@@ -154,45 +167,93 @@ export class FacturasComponent implements OnInit {
     })
   }
 
-  agregar(event: any, producto: any){
+  agregar(event: any, producto: ObtenerListadoProductosResult){
 
-    this.ref = this.dialogService.open(ModalEspecificacionesComponent, {
-      header: "Producto",
-      width: '40vw',
-      data: {
-        producto: producto,
-      }
-    });
-
-    this.ref.onClose.subscribe((response: any) => {
-      if (response) {
-        console.log(response);
-
-        let facturaDetalles : FacturaDetalleProducto = {
-          idProducto: response.id,
-          clase: response.parametros.find((a:any) => a.descripcion == 'CLASE')?.value,
-          precio: response.parametros.find((a:any) => a.descripcion == 'PRECIO')?.value,
-          cantidad: response.parametros.find((a:any) => a.descripcion == 'CANTIDAD')?.value,
-          diametro: response.parametros.find((a:any) => a.descripcion == 'DIAMETRO')?.value,
-          material: response.parametros.find((a:any) => a.descripcion == 'MATERIAL')?.value,
-          espesor: response.parametros.find((a:any) => a.descripcion == 'ESPESOR')?.value,
-          ancho: response.parametros.find((a:any) => a.descripcion == 'ANCHO')?.value,
-          diametro_A: response.parametros.find((a:any) => a.descripcion == 'DIAMETRO_A')?.value,
-          diametro_B: response.parametros.find((a:any) => a.descripcion == 'DIAMETRO_B')?.value,
-          alto: response.parametros.find((a:any) => a.descripcion == 'ALTO')?.value,
-          union: response.parametros.find((a:any) => a.descripcion == 'UNION')?.value,
-          cierre: response.parametros.find((a:any) => a.descripcion == 'CIERRE')?.value
+    if(producto.swModelo){
+      this.ref = this.dialogService.open(ModalSelectModeloComponent, {
+        header: "Selecciona un modelo",
+        width: '40vw',
+        data: {
+          producto: producto,
         }
+      });
 
-        this.productosEnviar.push(facturaDetalles)
+      this.ref.onClose.subscribe((response: any) => {
+        if (response) {
+          console.log(response);
 
-        this.productosSelect.push(response);
+          response.forEach((item:any) => {
 
-        this.form.controls['facturaDetalles'].setValue(this.productosEnviar)
-        console.log(this.productosSelect);
-        console.log(this.form.value);
-      }
-    })
+            const precioLimpio = parseFloat(item.modelo.precioVenta.replace(/[.,\s]/g, ''));
+
+            const precioTotal = precioLimpio * item.cantidad;
+
+            let facturaDetalles : FacturaDetalleProducto = {
+              idProducto: item.producto.id,
+              precio: precioTotal,
+              cantidad: item.cantidad,
+              modelo: item.modelo.codigoModelo
+            }
+
+            let productoSelect = {
+              producto: item.producto.descripcion + " " + item.modelo.codigoModelo,
+              cantidad: item.cantidad,
+              precio: precioLimpio,
+              precioTotal: precioTotal
+            }
+
+            this.productosEnviar.push(facturaDetalles)
+
+            this.productosSelect.push(productoSelect);
+          })
+
+          this.form.controls['facturaDetalles'].setValue(this.productosEnviar)
+          console.log(this.productosSelect);
+          console.log(this.form.value);
+
+        }
+      })
+
+    }else{
+      this.ref = this.dialogService.open(ModalEspecificacionesComponent, {
+        header: "Producto",
+        width: '40vw',
+        data: {
+          producto: producto,
+        }
+      });
+
+      this.ref.onClose.subscribe((response: any) => {
+        if (response) {
+          console.log(response);
+
+          let facturaDetalles : FacturaDetalleProducto = {
+            idProducto: response.id,
+            clase: response.parametros.find((a:any) => a.descripcion == 'CLASE')?.value,
+            precio: response.parametros.find((a:any) => a.descripcion == 'PRECIO')?.value,
+            cantidad: response.parametros.find((a:any) => a.descripcion == 'CANTIDAD')?.value,
+            diametro: response.parametros.find((a:any) => a.descripcion == 'DIAMETRO')?.value,
+            material: response.parametros.find((a:any) => a.descripcion == 'MATERIAL')?.value,
+            espesor: response.parametros.find((a:any) => a.descripcion == 'ESPESOR')?.value,
+            ancho: response.parametros.find((a:any) => a.descripcion == 'ANCHO')?.value,
+            diametro_A: response.parametros.find((a:any) => a.descripcion == 'DIAMETRO_A')?.value,
+            diametro_B: response.parametros.find((a:any) => a.descripcion == 'DIAMETRO_B')?.value,
+            alto: response.parametros.find((a:any) => a.descripcion == 'ALTO')?.value,
+            union: response.parametros.find((a:any) => a.descripcion == 'UNION')?.value,
+            cierre: response.parametros.find((a:any) => a.descripcion == 'CIERRE')?.value
+          }
+
+          this.productosEnviar.push(facturaDetalles)
+
+          this.productosSelect.push(response);
+
+          this.form.controls['facturaDetalles'].setValue(this.productosEnviar)
+          console.log(this.productosSelect);
+          console.log(this.form.value);
+        }
+      })
+    }
+
   }
 
 

@@ -45,7 +45,7 @@
     <div class="formgrid grid" >
       <div class="field col-12 md:col-4 lg:col-4">
         <label htmlFor="codDepartamento">Departamento</label>
-        <p-dropdown placeholder="Seleccione" [options]="comboDepartamento" styleClass="w-full p-inputtext-sm" formControlName="codDepartamento" optionLabel="descripcion" optionValue="codigo" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
+        <p-dropdown placeholder="Seleccione" [options]="comboDepartamento" styleClass="w-full p-inputtext-sm" formControlName="codDepartamento" optionLabel="descripcion" optionValue="codigo" [autoDisplayFirst]="false" [showClear]="true" (ngModelChange)="cargaMunicipio()"></p-dropdown>
       </div>
 
       <div class="field col-12 md:col-4 lg:col-4">
@@ -61,23 +61,28 @@
   </p-card>
 
   <p-card header="Selecciona los productos" styleClass="mt-3" *ngIf="cliente">
-    <div class="field col-12 md:col-8">
-      <label htmlFor="categoria">Categoria</label>
-      <p-dropdown placeholder="Seleccione" [options]="categorias"  [(ngModel)]="categoriaSelect" styleClass="w-full p-inputtext-sm"  [(ngModel)]="categoriaSelect" optionLabel="descripcion" optionValue="id" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
-    </div>
-    <div class="field col-12 md:col-4">
-      <label  htmlFor="tipo">Tipo</label>
-      <p-dropdown placeholder="Seleccione" [options]="tipo" [(ngModel)]="tipoSelect" styleClass="w-full p-inputtext-sm" [autoDisplayFirst]="false" [showClear]="true"></p-dropdown>
+    <div class="formgrid grid">
+      <div class="field col-12 md:col-6">
+        <label htmlFor="categoria">Categoria</label>
+        <p-dropdown placeholder="Seleccione" [options]="categorias"  [(ngModel)]="categoriaSelect" styleClass="w-full p-inputtext-sm" optionLabel="descripcion" optionValue="id" [autoDisplayFirst]="false" [showClear]="true" [ngModelOptions]="{standalone: true}"></p-dropdown>
+      </div>
+      <div class="field col-12 md:col-4">
+        <label  htmlFor="tipo">Tipo</label>
+        <p-dropdown placeholder="Seleccione" [options]="tipo" [(ngModel)]="tipoSelect" styleClass="w-full p-inputtext-sm" [autoDisplayFirst]="false" [showClear]="true" [ngModelOptions]="{standalone: true}"></p-dropdown>
+      </div>
+      <div style="align-self: center;">
+        <p-button type="button" label="Buscar" (onClick)="cargaProductos()"></p-button>
+      </div>
     </div>
 
-
-    <div class="mt-3 grid grid-cols-5 gap-3" *ngIf="products">
+    <div class="mt-3 grid" *ngIf="products">
       <ng-container *ngFor="let item of products">
-        <div class="col-span-1">
+        <div class="col-2">
           <app-product-card [product]="item" (agregarEmit)="agregar($event, item)"></app-product-card>
         </div>
       </ng-container>
     </div>
+
   </p-card>
 
 
@@ -99,13 +104,14 @@
           <th *ngFor="let col of columnsTable" [pSortableColumn]="col.field" >
             {{ col.header }} <p-sortIcon [field]="col.field"></p-sortIcon>
           </th>
-          <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-producto>
         <tr>
           <td>{{ producto.producto }}</td>
           <td>{{ producto.cantidad }}</td>
+          <td>{{ producto.precio | currency:'COP':'symbol':'1.0-0':'es-CO'  }}</td>
+          <td>{{ producto.precioTotal  | currency:'COP':'symbol':'1.0-0':'es-CO' }}</td>
           <td>
             <p-button label="Eliminar" [link]="true" styleClass="button-link-secondary" icon="pi pi-trash text-1xl"
             (click)="eliminar(producto)"></p-button>
@@ -127,7 +133,7 @@
 
   </p-card>
 
-  <div class="flex justify-content-end" *ngIf="this.productosSelect.length >= 1">
+  <div class="flex justify-content-end mt-3" *ngIf="this.productosSelect.length >= 1">
     <p-button type="submit" [disabled]="!this.form.valid || this.loading" label="Generar"> </p-button>
   </div>
 

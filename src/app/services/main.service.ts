@@ -7,6 +7,7 @@ import { ClientesService } from './clientes.service';
 import { ProductosService } from './productos.service';
 import { FacturaService } from './factura.service';
 import { CrmService } from './crm.service';
+import { ModelosService } from './modelos.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +23,6 @@ export class MainService {
     public ClientesService: ClientesService,
     public FacturaService: FacturaService,
     public CrmService: CrmService,
+    public modelosService: ModelosService,
   ) { }
 }

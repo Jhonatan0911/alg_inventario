@@ -20,7 +20,7 @@
       </div>
       <div class="field col-12 md:col-3">
         <label for="estado">Estado</label>
-        <p-dropdown formControlName="estado" [options]="estadosSelect" optionLabel="descripcion" styleClass="w-full p-inputtext-sm" placeholder="Seleccione"></p-dropdown>
+        <p-dropdown formControlName="estado" [options]="estadosSelect" optionLabel="descripcion" optionValue="id" styleClass="w-full p-inputtext-sm" placeholder="Seleccione"></p-dropdown>
       </div>
       <div style="align-self: center;">
         <p-button class="w-100" type="submit" label="Buscar"></p-button>
@@ -72,11 +72,15 @@
           <p-button label="Seguimientos" [link]="true" styleClass="button-link-secondary" icon="ri-external-link-line text-1xl"
           (click)="openModalSeguimientos(r)"></p-button>
         </td>
+        <td>
+          <p-button label="Finalizar" [link]="true" styleClass="button-link-secondary" icon="ri-check-double-fill text-1xl"
+          (click)="openModalFinalizar(r)"></p-button>
+        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="7">
+        <td colspan="8">
           <div class="flex flex-column gap-3 align-items-center justify-content-center py-4">
             <i class="ri-error-warning-line text-4xl"></i>
             <span class="text-lg font-semibold">No hay información para mostrar</span>
@@ -88,3 +92,26 @@
   </p-table>
 
 </p-card>
+
+
+<p-dialog header="Finalizar registro" [(visible)]="visibleDialogFinalizar" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false" [resizable]="false" [closable]="false" [closeOnEscape]="false" [dismissableMask]="false">
+  <div class="formgrid grid">
+    <div class="col-12 field">
+      <label for="observacion">Observación</label>
+      <textarea pInputTextarea id="observacion" [(ngModel)]="registroFinalizar!.descripcion" rows="5" placeholder="Escriba observaciones" class="w-full p-inputtext-sm"></textarea>
+    </div>
+  </div>
+  <div class="flex justify-content-end gap-2">
+    <p-button
+      label="Cerrar"
+      icon="ri-close-circle-line"
+      severity="secondary"
+      (onClick)="visibleDialogFinalizar = false"
+    />
+    <p-button
+      label="Enviar"
+      icon="pi pi-send"
+      (onClick)="finalizarRegistro()"
+    />
+  </div>
+</p-dialog>

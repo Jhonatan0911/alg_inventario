@@ -37,10 +37,7 @@
           </div>
           <div class="w-2/3 px-3">
             <label for="formula">Digite una fórmula para calcular un precio final</label>
-            <span class="p-float-label">
-              <input pInputText id="formula" name="formula" [(ngModel)]="formula" type="text" class="w-full p-inputtext-sm" />
-              <label for="formula">Fórmula</label>
-            </span>
+            <input pInputText id="formula" name="formula" [(ngModel)]="formula" type="text" class="w-full p-inputtext-sm" />
             <div class="flex flex-row flex-wrap mt-3">
               <div class="basis-1/4" *ngFor="let item of teclado">
                 <button pButton type="button" label="{{ item }}" class="p-button-outlined w-full py-2" (click)="addFormula(item)"></button>

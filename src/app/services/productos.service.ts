@@ -4,6 +4,7 @@ import { catchError, map, retry, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { BaseService } from './baseService';
 import { Response } from '../models/response/response';
+import { ObtenerListadoProductosResult } from '../models/productos/producto';
 
 @Injectable({
   providedIn: 'root'
@@ -46,12 +47,12 @@ export class ProductosService extends BaseService {
   }
 
 
-  getAll(estado?:any, filtro?: any): Observable<any[]> {
+  getAll(estado?:any, filtro?: any): Observable<Response<ObtenerListadoProductosResult[]>> {
     let filtroEstado = estado ? estado : "ACT";
     let filtroKey = filtro ? filtro : "";
 
     return this.http
-    .get<any[]>(this._baseUrl + this.path + "ObtenerListadoProductos?Estado="+filtroEstado+"&Filtro="+filtroKey)
+    .get<Response<ObtenerListadoProductosResult[]>>(this._baseUrl + this.path + "ObtenerListadoProductos?Estado="+filtroEstado+"&Filtro="+filtroKey)
     .pipe(
       map((response) => response),
       tap((a) => {
